@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.ApikeyMapper">
+
+    <resultMap type="Apikey" id="ApikeyResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="seq"    column="seq"    />
+        <result property="errCode"    column="err_code"    />
+        <result property="errMsg"    column="err_msg"    />
+        <result property="status"    column="status"    />
+        <result property="weight"    column="weight"    />
+        <result property="uid"    column="uid"    />
+        <result property="platform"    column="platform"    />
+        <result property="keyUid"    column="key_uid"    />
+        <result property="apikey"    column="apikey"    />
+        <result property="secret"    column="secret"    />
+        <result property="passphrase"    column="passphrase"    />
+        <result property="perm"    column="perm"    />
+        <result property="memo"    column="memo"    />
+        <result property="usdtBalance"    column="usdt_balance"    />
+        <result property="balanceUpdateAt"    column="balance_update_at"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectApikeyVo">
+        select id, type, seq, err_code, err_msg, status, weight, uid, platform, key_uid, apikey, secret, passphrase, perm, memo, usdt_balance, balance_update_at, create_at, create_time, update_time, deleted from t_apikey
+    </sql>
+
+    <sql id="SelectDomainApikeyVo">
+        select a.id, a.type, a.seq, a.err_code, a.err_msg, a.status, a.weight, a.uid, a.platform, a.key_uid, a.apikey, a.secret, a.passphrase, a.perm, a.memo, a.usdt_balance, a.balance_update_at, a.create_at, a.create_time, a.update_time, a.deleted from t_apikey a
+    </sql>
+
+    <select id="selectApikeyList" parameterType="Apikey" resultMap="ApikeyResult">
+        <include refid="selectApikeyVo"/>
+        <where>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="seq != null "> and seq = #{seq}</if>
+            <if test="errCode != null  and errCode != ''"> and err_code = #{errCode}</if>
+            <if test="errMsg != null  and errMsg != ''"> and err_msg = #{errMsg}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="platform != null  and platform != ''"> and platform = #{platform}</if>
+            <if test="keyUid != null  and keyUid != ''"> and key_uid = #{keyUid}</if>
+            <if test="apikey != null  and apikey != ''"> and apikey = #{apikey}</if>
+            <if test="secret != null  and secret != ''"> and secret = #{secret}</if>
+            <if test="passphrase != null  and passphrase != ''"> and passphrase = #{passphrase}</if>
+            <if test="perm != null  and perm != ''"> and perm = #{perm}</if>
+            <if test="memo != null  and memo != ''"> and memo = #{memo}</if>
+            <if test="usdtBalance != null "> and usdt_balance = #{usdtBalance}</if>
+            <if test="balanceUpdateAt != null "> and balance_update_at = #{balanceUpdateAt}</if>
+            <if test="createAt != null "> and create_at = #{createAt}</if>
+        </where>
+    </select>
+
+    <select id="selectApikeyById" parameterType="Long" resultMap="ApikeyResult">
+        <include refid="selectApikeyVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertApikey" parameterType="Apikey" useGeneratedKeys="true" keyProperty="id">
+        insert into t_apikey
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="seq != null">seq,</if>
+            <if test="errCode != null">err_code,</if>
+            <if test="errMsg != null">err_msg,</if>
+            <if test="status != null">status,</if>
+            <if test="weight != null">weight,</if>
+            <if test="uid != null">uid,</if>
+            <if test="platform != null">platform,</if>
+            <if test="keyUid != null">key_uid,</if>
+            <if test="apikey != null">apikey,</if>
+            <if test="secret != null">secret,</if>
+            <if test="passphrase != null">passphrase,</if>
+            <if test="perm != null">perm,</if>
+            <if test="memo != null">memo,</if>
+            <if test="usdtBalance != null">usdt_balance,</if>
+            <if test="balanceUpdateAt != null">balance_update_at,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="seq != null">#{seq},</if>
+            <if test="errCode != null">#{errCode},</if>
+            <if test="errMsg != null">#{errMsg},</if>
+            <if test="status != null">#{status},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="platform != null">#{platform},</if>
+            <if test="keyUid != null">#{keyUid},</if>
+            <if test="apikey != null">#{apikey},</if>
+            <if test="secret != null">#{secret},</if>
+            <if test="passphrase != null">#{passphrase},</if>
+            <if test="perm != null">#{perm},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="usdtBalance != null">#{usdtBalance},</if>
+            <if test="balanceUpdateAt != null">#{balanceUpdateAt},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApikey" parameterType="Apikey">
+        update t_apikey
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="seq != null">seq = #{seq},</if>
+            <if test="errCode != null">err_code = #{errCode},</if>
+            <if test="errMsg != null">err_msg = #{errMsg},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="platform != null">platform = #{platform},</if>
+            <if test="keyUid != null">key_uid = #{keyUid},</if>
+            <if test="apikey != null">apikey = #{apikey},</if>
+            <if test="secret != null">secret = #{secret},</if>
+            <if test="passphrase != null">passphrase = #{passphrase},</if>
+            <if test="perm != null">perm = #{perm},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="usdtBalance != null">usdt_balance = #{usdtBalance},</if>
+            <if test="balanceUpdateAt != null">balance_update_at = #{balanceUpdateAt},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteApikeyById" parameterType="Long">
+        delete from t_apikey where id = #{id}
+    </delete>
+
+    <delete id="deleteApikeyByIds" parameterType="String">
+        delete from t_apikey where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

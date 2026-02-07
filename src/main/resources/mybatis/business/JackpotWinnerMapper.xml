@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.JackpotWinnerMapper">
+
+    <resultMap type="JackpotWinner" id="JackpotWinnerResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="wallet"    column="wallet"    />
+        <result property="traderId"    column="trader_id"    />
+        <result property="copyerId"    column="copyer_id"    />
+        <result property="bonus"    column="bonus"    />
+        <result property="checkHash"    column="check_hash"    />
+        <result property="memo"    column="memo"    />
+        <result property="closeAt"    column="close_at"    />
+        <result property="releaseAt"    column="release_at"    />
+        <result property="releasePeriod"    column="release_period"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createAt"    column="create_at"    />
+    </resultMap>
+
+    <sql id="selectJackpotWinnerVo">
+        select id, uid, wallet, trader_id, copyer_id, bonus, check_hash, memo, close_at, release_at, release_period, create_time, update_time, create_at from t_jackpot_winner
+    </sql>
+
+    <sql id="SelectDomainJackpotWinnerVo">
+        select a.id, a.uid, a.wallet, a.trader_id, a.copyer_id, a.bonus, a.check_hash, a.memo, a.close_at, a.release_at, a.release_period, a.create_time, a.update_time, a.create_at from t_jackpot_winner a
+    </sql>
+
+    <select id="selectJackpotWinnerList" parameterType="JackpotWinner" resultMap="JackpotWinnerResult">
+        <include refid="selectJackpotWinnerVo"/>
+        <where>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="wallet != null  and wallet != ''"> and wallet = #{wallet}</if>
+            <if test="traderId != null "> and trader_id = #{traderId}</if>
+            <if test="copyerId != null "> and copyer_id = #{copyerId}</if>
+            <if test="bonus != null "> and bonus = #{bonus}</if>
+            <if test="checkHash != null  and checkHash != ''"> and check_hash = #{checkHash}</if>
+            <if test="memo != null  and memo != ''"> and memo = #{memo}</if>
+            <if test="closeAt != null "> and close_at = #{closeAt}</if>
+            <if test="releaseAt != null "> and release_at = #{releaseAt}</if>
+            <if test="releasePeriod != null "> and release_period = #{releasePeriod}</if>
+            <if test="createAt != null "> and create_at = #{createAt}</if>
+        </where>
+    </select>
+
+    <select id="selectJackpotWinnerById" parameterType="Long" resultMap="JackpotWinnerResult">
+        <include refid="selectJackpotWinnerVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertJackpotWinner" parameterType="JackpotWinner" useGeneratedKeys="true" keyProperty="id">
+        insert into t_jackpot_winner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="wallet != null">wallet,</if>
+            <if test="traderId != null">trader_id,</if>
+            <if test="copyerId != null">copyer_id,</if>
+            <if test="bonus != null">bonus,</if>
+            <if test="checkHash != null">check_hash,</if>
+            <if test="memo != null">memo,</if>
+            <if test="closeAt != null">close_at,</if>
+            <if test="releaseAt != null">release_at,</if>
+            <if test="releasePeriod != null">release_period,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createAt != null">create_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="wallet != null">#{wallet},</if>
+            <if test="traderId != null">#{traderId},</if>
+            <if test="copyerId != null">#{copyerId},</if>
+            <if test="bonus != null">#{bonus},</if>
+            <if test="checkHash != null">#{checkHash},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="closeAt != null">#{closeAt},</if>
+            <if test="releaseAt != null">#{releaseAt},</if>
+            <if test="releasePeriod != null">#{releasePeriod},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createAt != null">#{createAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJackpotWinner" parameterType="JackpotWinner">
+        update t_jackpot_winner
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="wallet != null">wallet = #{wallet},</if>
+            <if test="traderId != null">trader_id = #{traderId},</if>
+            <if test="copyerId != null">copyer_id = #{copyerId},</if>
+            <if test="bonus != null">bonus = #{bonus},</if>
+            <if test="checkHash != null">check_hash = #{checkHash},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="closeAt != null">close_at = #{closeAt},</if>
+            <if test="releaseAt != null">release_at = #{releaseAt},</if>
+            <if test="releasePeriod != null">release_period = #{releasePeriod},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteJackpotWinnerById" parameterType="Long">
+        delete from t_jackpot_winner where id = #{id}
+    </delete>
+
+    <delete id="deleteJackpotWinnerByIds" parameterType="String">
+        delete from t_jackpot_winner where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.MerchantAssetFlowMapper">
+
+    <resultMap type="MerchantAssetFlow" id="MerchantAssetFlowResult">
+        <result property="id"    column="id"    />
+        <result property="mid"    column="mid"    />
+        <result property="uid"    column="uid"    />
+        <result property="scene"    column="scene"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="day"    column="day"    />
+        <result property="baseAmount"    column="base_amount"    />
+        <result property="currency"    column="currency"    />
+        <result property="exchangeRate"    column="exchange_rate"    />
+        <result property="balance"    column="balance"    />
+        <result property="frozen"    column="frozen"    />
+        <result property="relateId"    column="relate_id"    />
+        <result property="relateMemo"    column="relate_memo"    />
+        <result property="payUid"    column="pay_uid"    />
+        <result property="payChannel"    column="pay_channel"    />
+        <result property="clearDay"    column="clear_day"    />
+        <result property="beginBalance"    column="begin_balance"    />
+        <result property="beginFrozen"    column="begin_frozen"    />
+        <result property="payer"    column="payer"    />
+        <result property="payment"    column="payment"    />
+        <result property="refunded"    column="refunded"    />
+        <result property="refundAt"    column="refund_at"    />
+        <result property="memo"    column="memo"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="addr"    column="addr"    />
+        <result property="account"    column="account"    />
+        <result property="pid"    column="pid"    />
+    </resultMap>
+
+    <sql id="selectMerchantAssetFlowVo">
+        select id, mid, uid, pay_uid,pay_channel, scene, symbol, day, base_amount, currency, exchange_rate, balance, frozen, relate_id, relate_memo, clear_day, begin_balance, begin_frozen, payer, payment, refunded, refund_at, memo, create_at, create_time from p_merchant_asset_flow
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.mid,  a.uid, a.pay_uid,a.pay_channel,  a.scene,  a.symbol,  a.day,  a.base_amount,  a.currency,  a.exchange_rate,  a.balance,  a.frozen,  a.relate_id,  a.relate_memo,  a.clear_day,  a.begin_balance,  a.begin_frozen,  a.payer,  a.payment,  a.refunded,  a.refund_at,  a.memo,  a.create_at,  a.create_time,  l.account, b.pid from p_merchant_asset_flow a left join u_login l on a.uid = l.uid and l.type in (3)
+    </sql>
+
+    <select id="selectMerchantAssetFlowList" parameterType="MerchantAssetFlow" resultMap="MerchantAssetFlowResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="account != null and account != ''"> and l.account like concat('%',#{account},'%')</if>
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.day between #{params.beginDay} and #{params.endDay}</if>
+            <if test="currency != null  and currency != ''"> and a.currency = #{currency}</if>
+            <if test="relateId != null "> and a.relate_id = #{relateId}</if>
+            <if test="refunded != null "> and a.refunded = #{refunded}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectMerchantAssetFlowById" parameterType="Long" resultMap="MerchantAssetFlowResult">
+        <include refid="selectMerchantAssetFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMerchantAssetFlow" parameterType="MerchantAssetFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into p_merchant_asset_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mid != null">mid,</if>
+            <if test="uid != null">uid,</if>
+            <if test="scene != null">scene,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="day != null">day,</if>
+            <if test="baseAmount != null">base_amount,</if>
+            <if test="currency != null">currency,</if>
+            <if test="exchangeRate != null">exchange_rate,</if>
+            <if test="balance != null">balance,</if>
+            <if test="frozen != null">frozen,</if>
+            <if test="relateId != null">relate_id,</if>
+            <if test="relateMemo != null">relate_memo,</if>
+            <if test="payUid != null">pay_uid,</if>
+            <if test="payChannel != null">pay_channel,</if>
+            <if test="clearDay != null">clear_day,</if>
+            <if test="beginBalance != null">begin_balance,</if>
+            <if test="beginFrozen != null">begin_frozen,</if>
+            <if test="payer != null">payer,</if>
+            <if test="payment != null">payment,</if>
+            <if test="refunded != null">refunded,</if>
+            <if test="refundAt != null">refund_at,</if>
+            <if test="memo != null">memo,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mid != null">#{mid},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="scene != null">#{scene},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="day != null">#{day},</if>
+            <if test="baseAmount != null">#{baseAmount},</if>
+            <if test="currency != null">#{currency},</if>
+            <if test="exchangeRate != null">#{exchangeRate},</if>
+            <if test="balance != null">#{balance},</if>
+            <if test="frozen != null">#{frozen},</if>
+            <if test="relateId != null">#{relateId},</if>
+            <if test="relateMemo != null">#{relateMemo},</if>
+            <if test="payUid != null">#{payUid},</if>
+            <if test="payChannel != null">#{payChannel},</if>
+            <if test="clearDay != null">#{clearDay},</if>
+            <if test="beginBalance != null">#{beginBalance},</if>
+            <if test="beginFrozen != null">#{beginFrozen},</if>
+            <if test="payer != null">#{payer},</if>
+            <if test="payment != null">#{payment},</if>
+            <if test="refunded != null">#{refunded},</if>
+            <if test="refundAt != null">#{refundAt},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMerchantAssetFlow" parameterType="MerchantAssetFlow">
+        update p_merchant_asset_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mid != null">mid = #{mid},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="scene != null">scene = #{scene},</if>
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="day != null">day = #{day},</if>
+            <if test="baseAmount != null">base_amount = #{baseAmount},</if>
+            <if test="currency != null">currency = #{currency},</if>
+            <if test="exchangeRate != null">exchange_rate = #{exchangeRate},</if>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="frozen != null">frozen = #{frozen},</if>
+            <if test="relateId != null">relate_id = #{relateId},</if>
+            <if test="relateMemo != null">relate_memo = #{relateMemo},</if>
+            <if test="payUid != null">pay_uid = #{payUid},</if>
+            <if test="payChannel != null">pay_channel = #{payChannel},</if>
+            <if test="clearDay != null">clear_day = #{clearDay},</if>
+            <if test="beginBalance != null">begin_balance = #{beginBalance},</if>
+            <if test="beginFrozen != null">begin_frozen = #{beginFrozen},</if>
+            <if test="payer != null">payer = #{payer},</if>
+            <if test="payment != null">payment = #{payment},</if>
+            <if test="refunded != null">refunded = #{refunded},</if>
+            <if test="refundAt != null">refund_at = #{refundAt},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMerchantAssetFlowById" parameterType="Long">
+        delete from p_merchant_asset_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteMerchantAssetFlowByIds" parameterType="String">
+        delete from p_merchant_asset_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="MerchantAssetFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            and a.uid = b.id
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.day between #{params.beginDay} and #{params.endDay}</if>
+            <if test="currency != null  and currency != ''"> and a.currency = #{currency}</if>
+            <if test="relateId != null "> and a.relate_id = #{relateId}</if>
+            <if test="refunded != null "> and a.refunded = #{refunded}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="MerchantAssetFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            and a.uid = b.id
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.day between #{params.beginDay} and #{params.endDay}</if>
+            <if test="currency != null  and currency != ''"> and a.currency = #{currency}</if>
+            <if test="relateId != null "> and a.relate_id = #{relateId}</if>
+            <if test="refunded != null "> and a.refunded = #{refunded}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listDailyReport" resultType="com.ruoyi.project.business.dto.MerchantAssetFlowReportDTO">
+        SELECT a.DAY,
+        IFNULL(SUM(CASE WHEN a.scene = '0202' AND a.refunded = 0 THEN a.balance END),0) pay,
+        IFNULL(SUM(CASE WHEN a.scene = '0202' AND a.refunded = 1 THEN a.balance END),0) payRefund,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 0 AND a.currency = 'USDT' THEN a.actual_amount END),0) withdrawUsdt,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 0 AND a.currency = 'USDT' THEN a.prize_amount END),0) withdrawPrizeUsdt,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 1 AND a.currency = 'USDT' THEN a.balance END),0) withdrawRefundUsdt,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 0 AND a.currency = 'CNY' THEN a.balance END),0) withdrawOfCny,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 1 AND a.currency = 'CNY' THEN a.balance END),0) withdrawRefundOfCny,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 0 AND a.currency = 'CNY' THEN a.actual_amount END),0) withdrawCny,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 0 AND a.currency = 'CNY' THEN a.prize_amount END),0) withdrawPrizeCny,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 1 AND a.currency = 'CNY' THEN a.actual_amount END),0) withdrawRefundCny
+        FROM p_merchant_asset_flow a left join u_login l on a.uid = l.uid and l.type = 1 , u_member u
+        <where>
+            and a.uid = u.id
+            <if test="account != null and account != ''"> and l.account = #{account} </if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.`day` between #{params.beginDay} and #{params.endDay}</if>
+        </where>
+        group by a.day
+        order by a.day desc
+    </select>
+
+    <select id="listDailyReportWithChildren" resultType="com.ruoyi.project.business.dto.MerchantAssetFlowReportDTO">
+        SELECT a.DAY,
+        IFNULL(SUM(CASE WHEN a.scene = '0202' AND a.refunded = 0 THEN a.balance END),0) pay,
+        IFNULL(SUM(CASE WHEN a.scene = '0202' AND a.refunded = 1 THEN a.balance END),0) payRefund,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 0 AND a.currency = 'USDT' THEN a.actual_amount END),0) withdrawUsdt,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 0 AND a.currency = 'USDT' THEN a.prize_amount END),0) withdrawPrizeUsdt,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 1 AND a.currency = 'USDT' THEN a.balance END),0) withdrawRefundUsdt,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 0 AND a.currency = 'CNY' THEN a.balance END),0) withdrawOfCny,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 1 AND a.currency = 'CNY' THEN a.balance END),0) withdrawRefundOfCny,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 0 AND a.currency = 'CNY' THEN a.actual_amount END),0) withdrawCny,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 0 AND a.currency = 'CNY' THEN a.prize_amount END),0) withdrawPrizeCny,
+        IFNULL(SUM(CASE WHEN a.scene = '0103' AND a.refunded = 1 AND a.currency = 'CNY' THEN a.actual_amount END),0) withdrawRefundCny
+        FROM p_merchant_asset_flow a, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.`day` between #{params.beginDay} and #{params.endDay}</if>
+        </where>
+        group by a.day
+        order by a.day desc
+    </select>
+</mapper>

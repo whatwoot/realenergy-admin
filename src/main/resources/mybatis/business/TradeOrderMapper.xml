@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.TradeOrderMapper">
+
+    <resultMap type="TradeOrder" id="TradeOrderResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="op"    column="op"    />
+        <result property="tid"    column="tid"    />
+        <result property="uid"    column="uid"    />
+        <result property="ordId"    column="ord_id"    />
+        <result property="instId"    column="inst_id"    />
+        <result property="mgnMode"    column="mgn_mode"    />
+        <result property="filled"    column="filled"    />
+        <result property="side"    column="side"    />
+        <result property="posSide"    column="pos_side"    />
+        <result property="expectQuantity"    column="expect_quantity"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="lever"    column="lever"    />
+        <result property="actualProfit"    column="actual_profit"    />
+        <result property="fee"    column="fee"    />
+        <result property="feeCcy"    column="fee_ccy"    />
+        <result property="copyFee"    column="copy_fee"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="price"    column="price"    />
+        <result property="usedMargin"    column="used_margin"    />
+        <result property="signalId"    column="signal_id"    />
+        <result property="internal"    column="internal"    />
+        <result property="posId"    column="pos_id"    />
+        <result property="posFlowId"    column="pos_flow_id"    />
+        <result property="tag"    column="tag"    />
+        <result property="apiMsg"    column="api_msg"    />
+        <result property="orderDetail"    column="order_detail"    />
+        <result property="errCode"    column="err_code"    />
+        <result property="errMsg"    column="err_msg"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="updateAt"    column="update_at"    />
+        <result property="settled"    column="settled"    />
+        <result property="settleQueueAt"    column="settle_queue_at"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTradeOrderVo">
+        select id, type, op, tid, uid, ord_id, inst_id, mgn_mode, filled, side, pos_side, expect_quantity, quantity, lever, actual_profit, fee, fee_ccy, copy_fee, order_type, price, used_margin, signal_id, internal, pos_id, pos_flow_id, tag, api_msg, order_detail, err_code, err_msg, create_at, update_at, settled, settle_queue_at, create_time, update_time from t_trade_order
+    </sql>
+
+    <sql id="SelectDomainTradeOrderVo">
+        select a.id, a.type, a.op, a.tid, a.uid, a.ord_id, a.inst_id, a.mgn_mode, a.filled, a.side, a.pos_side, a.expect_quantity, a.quantity, a.lever, a.actual_profit, a.fee, a.fee_ccy, a.copy_fee, a.order_type, a.price, a.used_margin, a.signal_id, a.internal, a.pos_id, a.pos_flow_id, a.tag, a.api_msg, a.order_detail, a.err_code, a.err_msg, a.create_at, a.update_at, a.settled, a.settle_queue_at, a.create_time, a.update_time from t_trade_order a
+    </sql>
+
+    <select id="selectTradeOrderList" parameterType="TradeOrder" resultMap="TradeOrderResult">
+        <include refid="selectTradeOrderVo"/>
+        <where>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="op != null  and op != ''"> and op = #{op}</if>
+            <if test="tid != null "> and tid = #{tid}</if>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="ordId != null  and ordId != ''"> and ord_id = #{ordId}</if>
+            <if test="instId != null  and instId != ''"> and inst_id = #{instId}</if>
+            <if test="mgnMode != null  and mgnMode != ''"> and mgn_mode = #{mgnMode}</if>
+            <if test="filled != null "> and filled = #{filled}</if>
+            <if test="side != null  and side != ''"> and side = #{side}</if>
+            <if test="posSide != null  and posSide != ''"> and pos_side = #{posSide}</if>
+            <if test="expectQuantity != null "> and expect_quantity = #{expectQuantity}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="lever != null "> and lever = #{lever}</if>
+            <if test="actualProfit != null "> and actual_profit = #{actualProfit}</if>
+            <if test="fee != null "> and fee = #{fee}</if>
+            <if test="feeCcy != null  and feeCcy != ''"> and fee_ccy = #{feeCcy}</if>
+            <if test="copyFee != null "> and copy_fee = #{copyFee}</if>
+            <if test="orderType != null  and orderType != ''"> and order_type = #{orderType}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="usedMargin != null "> and used_margin = #{usedMargin}</if>
+            <if test="signalId != null  and signalId != ''"> and signal_id = #{signalId}</if>
+            <if test="internal != null "> and internal = #{internal}</if>
+            <if test="posId != null  and posId != ''"> and pos_id = #{posId}</if>
+            <if test="posFlowId != null "> and pos_flow_id = #{posFlowId}</if>
+            <if test="tag != null  and tag != ''"> and tag = #{tag}</if>
+            <if test="apiMsg != null  and apiMsg != ''"> and api_msg = #{apiMsg}</if>
+            <if test="orderDetail != null  and orderDetail != ''"> and order_detail = #{orderDetail}</if>
+            <if test="errCode != null  and errCode != ''"> and err_code = #{errCode}</if>
+            <if test="errMsg != null  and errMsg != ''"> and err_msg = #{errMsg}</if>
+            <if test="createAt != null "> and create_at = #{createAt}</if>
+            <if test="updateAt != null "> and update_at = #{updateAt}</if>
+            <if test="settled != null "> and settled = #{settled}</if>
+            <if test="settleQueueAt != null "> and settle_queue_at = #{settleQueueAt}</if>
+        </where>
+    </select>
+
+    <select id="selectTradeOrderById" parameterType="Long" resultMap="TradeOrderResult">
+        <include refid="selectTradeOrderVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTradeOrder" parameterType="TradeOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_trade_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="op != null">op,</if>
+            <if test="tid != null">tid,</if>
+            <if test="uid != null">uid,</if>
+            <if test="ordId != null">ord_id,</if>
+            <if test="instId != null">inst_id,</if>
+            <if test="mgnMode != null">mgn_mode,</if>
+            <if test="filled != null">filled,</if>
+            <if test="side != null">side,</if>
+            <if test="posSide != null">pos_side,</if>
+            <if test="expectQuantity != null">expect_quantity,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="lever != null">lever,</if>
+            <if test="actualProfit != null">actual_profit,</if>
+            <if test="fee != null">fee,</if>
+            <if test="feeCcy != null">fee_ccy,</if>
+            <if test="copyFee != null">copy_fee,</if>
+            <if test="orderType != null">order_type,</if>
+            <if test="price != null">price,</if>
+            <if test="usedMargin != null">used_margin,</if>
+            <if test="signalId != null">signal_id,</if>
+            <if test="internal != null">internal,</if>
+            <if test="posId != null">pos_id,</if>
+            <if test="posFlowId != null">pos_flow_id,</if>
+            <if test="tag != null">tag,</if>
+            <if test="apiMsg != null">api_msg,</if>
+            <if test="orderDetail != null">order_detail,</if>
+            <if test="errCode != null">err_code,</if>
+            <if test="errMsg != null">err_msg,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="updateAt != null">update_at,</if>
+            <if test="settled != null">settled,</if>
+            <if test="settleQueueAt != null">settle_queue_at,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="op != null">#{op},</if>
+            <if test="tid != null">#{tid},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="ordId != null">#{ordId},</if>
+            <if test="instId != null">#{instId},</if>
+            <if test="mgnMode != null">#{mgnMode},</if>
+            <if test="filled != null">#{filled},</if>
+            <if test="side != null">#{side},</if>
+            <if test="posSide != null">#{posSide},</if>
+            <if test="expectQuantity != null">#{expectQuantity},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="lever != null">#{lever},</if>
+            <if test="actualProfit != null">#{actualProfit},</if>
+            <if test="fee != null">#{fee},</if>
+            <if test="feeCcy != null">#{feeCcy},</if>
+            <if test="copyFee != null">#{copyFee},</if>
+            <if test="orderType != null">#{orderType},</if>
+            <if test="price != null">#{price},</if>
+            <if test="usedMargin != null">#{usedMargin},</if>
+            <if test="signalId != null">#{signalId},</if>
+            <if test="internal != null">#{internal},</if>
+            <if test="posId != null">#{posId},</if>
+            <if test="posFlowId != null">#{posFlowId},</if>
+            <if test="tag != null">#{tag},</if>
+            <if test="apiMsg != null">#{apiMsg},</if>
+            <if test="orderDetail != null">#{orderDetail},</if>
+            <if test="errCode != null">#{errCode},</if>
+            <if test="errMsg != null">#{errMsg},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="updateAt != null">#{updateAt},</if>
+            <if test="settled != null">#{settled},</if>
+            <if test="settleQueueAt != null">#{settleQueueAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTradeOrder" parameterType="TradeOrder">
+        update t_trade_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="op != null">op = #{op},</if>
+            <if test="tid != null">tid = #{tid},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="ordId != null">ord_id = #{ordId},</if>
+            <if test="instId != null">inst_id = #{instId},</if>
+            <if test="mgnMode != null">mgn_mode = #{mgnMode},</if>
+            <if test="filled != null">filled = #{filled},</if>
+            <if test="side != null">side = #{side},</if>
+            <if test="posSide != null">pos_side = #{posSide},</if>
+            <if test="expectQuantity != null">expect_quantity = #{expectQuantity},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="lever != null">lever = #{lever},</if>
+            <if test="actualProfit != null">actual_profit = #{actualProfit},</if>
+            <if test="fee != null">fee = #{fee},</if>
+            <if test="feeCcy != null">fee_ccy = #{feeCcy},</if>
+            <if test="copyFee != null">copy_fee = #{copyFee},</if>
+            <if test="orderType != null">order_type = #{orderType},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="usedMargin != null">used_margin = #{usedMargin},</if>
+            <if test="signalId != null">signal_id = #{signalId},</if>
+            <if test="internal != null">internal = #{internal},</if>
+            <if test="posId != null">pos_id = #{posId},</if>
+            <if test="posFlowId != null">pos_flow_id = #{posFlowId},</if>
+            <if test="tag != null">tag = #{tag},</if>
+            <if test="apiMsg != null">api_msg = #{apiMsg},</if>
+            <if test="orderDetail != null">order_detail = #{orderDetail},</if>
+            <if test="errCode != null">err_code = #{errCode},</if>
+            <if test="errMsg != null">err_msg = #{errMsg},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="updateAt != null">update_at = #{updateAt},</if>
+            <if test="settled != null">settled = #{settled},</if>
+            <if test="settleQueueAt != null">settle_queue_at = #{settleQueueAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTradeOrderById" parameterType="Long">
+        delete from t_trade_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTradeOrderByIds" parameterType="String">
+        delete from t_trade_order where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

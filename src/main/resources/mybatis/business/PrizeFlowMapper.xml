@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.PrizeFlowMapper">
+
+    <resultMap type="PrizeFlow" id="PrizeFlowResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="scene"    column="scene"    />
+        <result property="balance"    column="balance"    />
+        <result property="balanceBegin"    column="balance_begin"    />
+        <result property="day"    column="day"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="addr"    column="addr"    />
+        <result property="account"    column="account"    />
+        <result property="pid"    column="pid"    />
+    </resultMap>
+
+    <sql id="selectPrizeFlowVo">
+        select id, uid, scene, balance, balance_begin, day, create_at, create_time from b_prize_flow
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.uid,  a.scene,  a.balance,  a.balance_begin,  a.day,  a.create_at,  a.create_time,  l.account, b.pid from b_prize_flow a left join u_login l on a.uid = l.uid and l.type in (3)
+    </sql>
+
+    <select id="selectPrizeFlowList" parameterType="PrizeFlow" resultMap="PrizeFlowResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="account != null and account != ''"> and l.account like concat('%',#{account},'%')</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="params.beginCreateAt != null and params.beginCreateAt != '' and params.endCreateAt != null and params.endCreateAt != ''"> and a.create_at between #{params.beginCreateAt} and #{params.endCreateAt}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectPrizeFlowById" parameterType="Long" resultMap="PrizeFlowResult">
+        <include refid="selectPrizeFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPrizeFlow" parameterType="PrizeFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into b_prize_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="scene != null">scene,</if>
+            <if test="balance != null">balance,</if>
+            <if test="balanceBegin != null">balance_begin,</if>
+            <if test="day != null">day,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="scene != null">#{scene},</if>
+            <if test="balance != null">#{balance},</if>
+            <if test="balanceBegin != null">#{balanceBegin},</if>
+            <if test="day != null">#{day},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePrizeFlow" parameterType="PrizeFlow">
+        update b_prize_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="scene != null">scene = #{scene},</if>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="balanceBegin != null">balance_begin = #{balanceBegin},</if>
+            <if test="day != null">day = #{day},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePrizeFlowById" parameterType="Long">
+        delete from b_prize_flow where id = #{id}
+    </delete>
+
+    <delete id="deletePrizeFlowByIds" parameterType="String">
+        delete from b_prize_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="PrizeFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="params.beginCreateAt != null and params.beginCreateAt != '' and params.endCreateAt != null and params.endCreateAt != ''"> and a.create_at between #{params.beginCreateAt} and #{params.endCreateAt}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="PrizeFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="params.beginCreateAt != null and params.beginCreateAt != '' and params.endCreateAt != null and params.endCreateAt != ''"> and a.create_at between #{params.beginCreateAt} and #{params.endCreateAt}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+</mapper>

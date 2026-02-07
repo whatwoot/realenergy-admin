@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.QueueFlowMapper">
+
+    <resultMap type="QueueFlow" id="QueueFlowResult">
+        <result property="id"    column="id"    />
+        <result property="queueId"    column="queue_id"    />
+        <result property="uid"    column="uid"    />
+        <result property="round"    column="round"    />
+        <result property="rewardAmount"    column="reward_amount"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="addr"    column="addr"    />
+        <result property="account"    column="account"    />
+        <result property="pid"    column="pid"    />
+    </resultMap>
+
+    <sql id="selectQueueFlowVo">
+        select id, queue_id, uid, round, reward_amount, create_at, create_time from b_queue_flow
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.queue_id,  a.uid,  a.round,  a.reward_amount,  a.create_at,  a.create_time,  l.account, b.pid from b_queue_flow a left join u_login l on a.uid = l.uid and l.type in (3)
+    </sql>
+
+    <select id="selectQueueFlowList" parameterType="QueueFlow" resultMap="QueueFlowResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="account != null and account != ''"> and l.account like concat('%',#{account},'%')</if>
+            <if test="queueId != null "> and a.queue_id = #{queueId}</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="round != null "> and a.round = #{round}</if>
+            <if test="params.beginCreateAt != null and params.beginCreateAt != '' and params.endCreateAt != null and params.endCreateAt != ''"> and a.create_at between #{params.beginCreateAt} and #{params.endCreateAt}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectQueueFlowById" parameterType="Long" resultMap="QueueFlowResult">
+        <include refid="selectQueueFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertQueueFlow" parameterType="QueueFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into b_queue_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="queueId != null">queue_id,</if>
+            <if test="uid != null">uid,</if>
+            <if test="round != null">round,</if>
+            <if test="rewardAmount != null">reward_amount,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="queueId != null">#{queueId},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="round != null">#{round},</if>
+            <if test="rewardAmount != null">#{rewardAmount},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQueueFlow" parameterType="QueueFlow">
+        update b_queue_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="queueId != null">queue_id = #{queueId},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="round != null">round = #{round},</if>
+            <if test="rewardAmount != null">reward_amount = #{rewardAmount},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQueueFlowById" parameterType="Long">
+        delete from b_queue_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteQueueFlowByIds" parameterType="String">
+        delete from b_queue_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="QueueFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="queueId != null "> and a.queue_id = #{queueId}</if>
+            and a.uid = b.id
+            <if test="round != null "> and a.round = #{round}</if>
+            <if test="params.beginCreateAt != null and params.beginCreateAt != '' and params.endCreateAt != null and params.endCreateAt != ''"> and a.create_at between #{params.beginCreateAt} and #{params.endCreateAt}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="QueueFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="queueId != null "> and a.queue_id = #{queueId}</if>
+            and a.uid = b.id
+            <if test="round != null "> and a.round = #{round}</if>
+            <if test="params.beginCreateAt != null and params.beginCreateAt != '' and params.endCreateAt != null and params.endCreateAt != ''"> and a.create_at between #{params.beginCreateAt} and #{params.endCreateAt}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+</mapper>

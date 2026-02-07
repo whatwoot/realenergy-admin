@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.DailyReportMapper">
+
+    <resultMap type="DailyReport" id="DailyReportResult">
+        <result property="id"    column="id"    />
+        <result property="ymd"    column="ymd"    />
+        <result property="h1AvgAmount"    column="h1_avg_amount"    />
+        <result property="h1Num"    column="h1_num"    />
+        <result property="h1TotalAmount"    column="h1_total_amount"    />
+        <result property="h2AvgAmount"    column="h2_avg_amount"    />
+        <result property="h2Num"    column="h2_num"    />
+        <result property="h2TotalAmount"    column="h2_total_amount"    />
+        <result property="h3AvgAmount"    column="h3_avg_amount"    />
+        <result property="h3Num"    column="h3_num"    />
+        <result property="h3TotalAmount"    column="h3_total_amount"    />
+        <result property="h4AvgAmount"    column="h4_avg_amount"    />
+        <result property="h4Num"    column="h4_num"    />
+        <result property="h4TotalAmount"    column="h4_total_amount"    />
+        <result property="h5AvgAmount"    column="h5_avg_amount"    />
+        <result property="h5Num"    column="h5_num"    />
+        <result property="h5TotalAmount"    column="h5_total_amount"    />
+        <result property="h6AvgAmount"    column="h6_avg_amount"    />
+        <result property="h6Num"    column="h6_num"    />
+        <result property="h6TotalAmount"    column="h6_total_amount"    />
+        <result property="h7AvgAmount"    column="h7_avg_amount"    />
+        <result property="h7Num"    column="h7_num"    />
+        <result property="h7TotalAmount"    column="h7_total_amount"    />
+        <result property="invitePerAmount"    column="invite_per_amount"    />
+        <result property="inviteNum"    column="invite_num"    />
+        <result property="inviteTotalAmount"    column="invite_total_amount"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="totalInvestAmount"    column="total_invest_amount"    />
+        <result property="withdrawAmount"    column="withdraw_amount"    />
+        <result property="rechargeAmount"    column="recharge_amount"    />
+        <result property="sysAddAmount"    column="sys_add_amount"    />
+        <result property="sysReduceAmount"    column="sys_reduce_amount"    />
+        <result property="withdrawAlipayAmount"    column="withdraw_alipay_amount"    />
+        <result property="investAmount"    column="invest_amount"    />
+        <result property="nftSellAmount"    column="nft_sell_amount"    />
+        <result property="nftStaticAmount"    column="nft_static_amount"    />
+        <result property="staticAmount"    column="static_amount"    />
+        <result property="inviteAmount"    column="invite_amount"    />
+        <result property="dynamicAmount"    column="dynamic_amount"    />
+        <result property="sameLevelAmount"    column="same_level_amount"    />
+        <result property="overflowAmount"    column="overflow_amount"    />
+        <result property="inviteRankAmount"    column="invite_rank_amount"    />
+        <result property="poolAmount"    column="pool_amount"    />
+        <result property="nodeFeeAmount"    column="node_fee_amount"    />
+        <result property="exchangeUsdtAmount"    column="exchange_usdt_amount"    />
+        <result property="fundAmount"    column="fund_amount"    />
+        <result property="tokenMintQuantity"    column="token_mint_quantity"    />
+        <result property="nodeMintQuantity"    column="node_mint_quantity"    />
+        <result property="exchangeTokenAmount"    column="exchange_token_amount"    />
+        <result property="usdtAmount"    column="usdt_amount"    />
+        <result property="tokenAmount"    column="token_amount"    />
+    </resultMap>
+
+    <sql id="selectDailyReportVo">
+        select id, ymd, h1_avg_amount, h1_num, h1_total_amount, h2_avg_amount, h2_num, h2_total_amount, h3_avg_amount, h3_num, h3_total_amount, h4_avg_amount, h4_num, h4_total_amount, h5_avg_amount, h5_num, h5_total_amount, h6_avg_amount, h6_num, h6_total_amount, h7_avg_amount, h7_num, h7_total_amount, invite_per_amount, invite_num, invite_total_amount, create_time, total_invest_amount, withdraw_amount, recharge_amount, sys_add_amount, sys_reduce_amount, withdraw_alipay_amount, invest_amount, nft_sell_amount, nft_static_amount, static_amount, invite_amount, dynamic_amount, same_level_amount, overflow_amount, invite_rank_amount, pool_amount, node_fee_amount, exchange_usdt_amount, fund_amount, token_mint_quantity, node_mint_quantity, exchange_token_amount, usdt_amount, token_amount from b_daily_report
+    </sql>
+
+    <sql id="SelectDomainDailyReportVo">
+        select a.id, a.ymd, a.h1_avg_amount, a.h1_num, a.h1_total_amount, a.h2_avg_amount, a.h2_num, a.h2_total_amount, a.h3_avg_amount, a.h3_num, a.h3_total_amount, a.h4_avg_amount, a.h4_num, a.h4_total_amount, a.h5_avg_amount, a.h5_num, a.h5_total_amount, a.h6_avg_amount, a.h6_num, a.h6_total_amount, a.h7_avg_amount, a.h7_num, a.h7_total_amount, a.invite_per_amount, a.invite_num, a.invite_total_amount, a.create_time, a.total_invest_amount, a.withdraw_amount, a.recharge_amount, a.sys_add_amount, a.sys_reduce_amount, a.withdraw_alipay_amount, a.invest_amount, a.nft_sell_amount, a.nft_static_amount, a.static_amount, a.invite_amount, a.dynamic_amount, a.same_level_amount, a.overflow_amount, a.invite_rank_amount, a.pool_amount, a.node_fee_amount, a.exchange_usdt_amount, a.fund_amount, a.token_mint_quantity, a.node_mint_quantity, a.exchange_token_amount, a.usdt_amount, a.token_amount from b_daily_report a
+    </sql>
+
+    <select id="selectDailyReportList" parameterType="DailyReport" resultMap="DailyReportResult">
+        <include refid="selectDailyReportVo"/>
+        <where>
+            <if test="extraParams.beginYmd != null and extraParams.beginYmd != '' and extraParams.endYmd != null and extraParams.endYmd != ''"> and ymd between #{extraParams.beginYmd} and #{extraParams.endYmd}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectDailyReportById" parameterType="Long" resultMap="DailyReportResult">
+        <include refid="selectDailyReportVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDailyReport" parameterType="DailyReport" useGeneratedKeys="true" keyProperty="id">
+        insert into b_daily_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ymd != null">ymd,</if>
+            <if test="h1AvgAmount != null">h1_avg_amount,</if>
+            <if test="h1Num != null">h1_num,</if>
+            <if test="h1TotalAmount != null">h1_total_amount,</if>
+            <if test="h2AvgAmount != null">h2_avg_amount,</if>
+            <if test="h2Num != null">h2_num,</if>
+            <if test="h2TotalAmount != null">h2_total_amount,</if>
+            <if test="h3AvgAmount != null">h3_avg_amount,</if>
+            <if test="h3Num != null">h3_num,</if>
+            <if test="h3TotalAmount != null">h3_total_amount,</if>
+            <if test="h4AvgAmount != null">h4_avg_amount,</if>
+            <if test="h4Num != null">h4_num,</if>
+            <if test="h4TotalAmount != null">h4_total_amount,</if>
+            <if test="h5AvgAmount != null">h5_avg_amount,</if>
+            <if test="h5Num != null">h5_num,</if>
+            <if test="h5TotalAmount != null">h5_total_amount,</if>
+            <if test="h6AvgAmount != null">h6_avg_amount,</if>
+            <if test="h6Num != null">h6_num,</if>
+            <if test="h6TotalAmount != null">h6_total_amount,</if>
+            <if test="h7AvgAmount != null">h7_avg_amount,</if>
+            <if test="h7Num != null">h7_num,</if>
+            <if test="h7TotalAmount != null">h7_total_amount,</if>
+            <if test="invitePerAmount != null">invite_per_amount,</if>
+            <if test="inviteNum != null">invite_num,</if>
+            <if test="inviteTotalAmount != null">invite_total_amount,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="totalInvestAmount != null">total_invest_amount,</if>
+            <if test="withdrawAmount != null">withdraw_amount,</if>
+            <if test="rechargeAmount != null">recharge_amount,</if>
+            <if test="sysAddAmount != null">sys_add_amount,</if>
+            <if test="sysReduceAmount != null">sys_reduce_amount,</if>
+            <if test="withdrawAlipayAmount != null">withdraw_alipay_amount,</if>
+            <if test="investAmount != null">invest_amount,</if>
+            <if test="nftSellAmount != null">nft_sell_amount,</if>
+            <if test="nftStaticAmount != null">nft_static_amount,</if>
+            <if test="staticAmount != null">static_amount,</if>
+            <if test="inviteAmount != null">invite_amount,</if>
+            <if test="dynamicAmount != null">dynamic_amount,</if>
+            <if test="sameLevelAmount != null">same_level_amount,</if>
+            <if test="overflowAmount != null">overflow_amount,</if>
+            <if test="inviteRankAmount != null">invite_rank_amount,</if>
+            <if test="poolAmount != null">pool_amount,</if>
+            <if test="nodeFeeAmount != null">node_fee_amount,</if>
+            <if test="exchangeUsdtAmount != null">exchange_usdt_amount,</if>
+            <if test="fundAmount != null">fund_amount,</if>
+            <if test="tokenMintQuantity != null">token_mint_quantity,</if>
+            <if test="nodeMintQuantity != null">node_mint_quantity,</if>
+            <if test="exchangeTokenAmount != null">exchange_token_amount,</if>
+            <if test="usdtAmount != null">usdt_amount,</if>
+            <if test="tokenAmount != null">token_amount,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ymd != null">#{ymd},</if>
+            <if test="h1AvgAmount != null">#{h1AvgAmount},</if>
+            <if test="h1Num != null">#{h1Num},</if>
+            <if test="h1TotalAmount != null">#{h1TotalAmount},</if>
+            <if test="h2AvgAmount != null">#{h2AvgAmount},</if>
+            <if test="h2Num != null">#{h2Num},</if>
+            <if test="h2TotalAmount != null">#{h2TotalAmount},</if>
+            <if test="h3AvgAmount != null">#{h3AvgAmount},</if>
+            <if test="h3Num != null">#{h3Num},</if>
+            <if test="h3TotalAmount != null">#{h3TotalAmount},</if>
+            <if test="h4AvgAmount != null">#{h4AvgAmount},</if>
+            <if test="h4Num != null">#{h4Num},</if>
+            <if test="h4TotalAmount != null">#{h4TotalAmount},</if>
+            <if test="h5AvgAmount != null">#{h5AvgAmount},</if>
+            <if test="h5Num != null">#{h5Num},</if>
+            <if test="h5TotalAmount != null">#{h5TotalAmount},</if>
+            <if test="h6AvgAmount != null">#{h6AvgAmount},</if>
+            <if test="h6Num != null">#{h6Num},</if>
+            <if test="h6TotalAmount != null">#{h6TotalAmount},</if>
+            <if test="h7AvgAmount != null">#{h7AvgAmount},</if>
+            <if test="h7Num != null">#{h7Num},</if>
+            <if test="h7TotalAmount != null">#{h7TotalAmount},</if>
+            <if test="invitePerAmount != null">#{invitePerAmount},</if>
+            <if test="inviteNum != null">#{inviteNum},</if>
+            <if test="inviteTotalAmount != null">#{inviteTotalAmount},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="totalInvestAmount != null">#{totalInvestAmount},</if>
+            <if test="withdrawAmount != null">#{withdrawAmount},</if>
+            <if test="rechargeAmount != null">#{rechargeAmount},</if>
+            <if test="sysAddAmount != null">#{sysAddAmount},</if>
+            <if test="sysReduceAmount != null">#{sysReduceAmount},</if>
+            <if test="withdrawAlipayAmount != null">#{withdrawAlipayAmount},</if>
+            <if test="investAmount != null">#{investAmount},</if>
+            <if test="nftSellAmount != null">#{nftSellAmount},</if>
+            <if test="nftStaticAmount != null">#{nftStaticAmount},</if>
+            <if test="staticAmount != null">#{staticAmount},</if>
+            <if test="inviteAmount != null">#{inviteAmount},</if>
+            <if test="dynamicAmount != null">#{dynamicAmount},</if>
+            <if test="sameLevelAmount != null">#{sameLevelAmount},</if>
+            <if test="overflowAmount != null">#{overflowAmount},</if>
+            <if test="inviteRankAmount != null">#{inviteRankAmount},</if>
+            <if test="poolAmount != null">#{poolAmount},</if>
+            <if test="nodeFeeAmount != null">#{nodeFeeAmount},</if>
+            <if test="exchangeUsdtAmount != null">#{exchangeUsdtAmount},</if>
+            <if test="fundAmount != null">#{fundAmount},</if>
+            <if test="tokenMintQuantity != null">#{tokenMintQuantity},</if>
+            <if test="nodeMintQuantity != null">#{nodeMintQuantity},</if>
+            <if test="exchangeTokenAmount != null">#{exchangeTokenAmount},</if>
+            <if test="usdtAmount != null">#{usdtAmount},</if>
+            <if test="tokenAmount != null">#{tokenAmount},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDailyReport" parameterType="DailyReport">
+        update b_daily_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ymd != null">ymd = #{ymd},</if>
+            <if test="h1AvgAmount != null">h1_avg_amount = #{h1AvgAmount},</if>
+            <if test="h1Num != null">h1_num = #{h1Num},</if>
+            <if test="h1TotalAmount != null">h1_total_amount = #{h1TotalAmount},</if>
+            <if test="h2AvgAmount != null">h2_avg_amount = #{h2AvgAmount},</if>
+            <if test="h2Num != null">h2_num = #{h2Num},</if>
+            <if test="h2TotalAmount != null">h2_total_amount = #{h2TotalAmount},</if>
+            <if test="h3AvgAmount != null">h3_avg_amount = #{h3AvgAmount},</if>
+            <if test="h3Num != null">h3_num = #{h3Num},</if>
+            <if test="h3TotalAmount != null">h3_total_amount = #{h3TotalAmount},</if>
+            <if test="h4AvgAmount != null">h4_avg_amount = #{h4AvgAmount},</if>
+            <if test="h4Num != null">h4_num = #{h4Num},</if>
+            <if test="h4TotalAmount != null">h4_total_amount = #{h4TotalAmount},</if>
+            <if test="h5AvgAmount != null">h5_avg_amount = #{h5AvgAmount},</if>
+            <if test="h5Num != null">h5_num = #{h5Num},</if>
+            <if test="h5TotalAmount != null">h5_total_amount = #{h5TotalAmount},</if>
+            <if test="h6AvgAmount != null">h6_avg_amount = #{h6AvgAmount},</if>
+            <if test="h6Num != null">h6_num = #{h6Num},</if>
+            <if test="h6TotalAmount != null">h6_total_amount = #{h6TotalAmount},</if>
+            <if test="h7AvgAmount != null">h7_avg_amount = #{h7AvgAmount},</if>
+            <if test="h7Num != null">h7_num = #{h7Num},</if>
+            <if test="h7TotalAmount != null">h7_total_amount = #{h7TotalAmount},</if>
+            <if test="invitePerAmount != null">invite_per_amount = #{invitePerAmount},</if>
+            <if test="inviteNum != null">invite_num = #{inviteNum},</if>
+            <if test="inviteTotalAmount != null">invite_total_amount = #{inviteTotalAmount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="totalInvestAmount != null">total_invest_amount = #{totalInvestAmount},</if>
+            <if test="withdrawAmount != null">withdraw_amount = #{withdrawAmount},</if>
+            <if test="rechargeAmount != null">recharge_amount = #{rechargeAmount},</if>
+            <if test="sysAddAmount != null">sys_add_amount = #{sysAddAmount},</if>
+            <if test="sysReduceAmount != null">sys_reduce_amount = #{sysReduceAmount},</if>
+            <if test="withdrawAlipayAmount != null">withdraw_alipay_amount = #{withdrawAlipayAmount},</if>
+            <if test="investAmount != null">invest_amount = #{investAmount},</if>
+            <if test="nftSellAmount != null">nft_sell_amount = #{nftSellAmount},</if>
+            <if test="nftStaticAmount != null">nft_static_amount = #{nftStaticAmount},</if>
+            <if test="staticAmount != null">static_amount = #{staticAmount},</if>
+            <if test="inviteAmount != null">invite_amount = #{inviteAmount},</if>
+            <if test="dynamicAmount != null">dynamic_amount = #{dynamicAmount},</if>
+            <if test="sameLevelAmount != null">same_level_amount = #{sameLevelAmount},</if>
+            <if test="overflowAmount != null">overflow_amount = #{overflowAmount},</if>
+            <if test="inviteRankAmount != null">invite_rank_amount = #{inviteRankAmount},</if>
+            <if test="poolAmount != null">pool_amount = #{poolAmount},</if>
+            <if test="nodeFeeAmount != null">node_fee_amount = #{nodeFeeAmount},</if>
+            <if test="exchangeUsdtAmount != null">exchange_usdt_amount = #{exchangeUsdtAmount},</if>
+            <if test="fundAmount != null">fund_amount = #{fundAmount},</if>
+            <if test="tokenMintQuantity != null">token_mint_quantity = #{tokenMintQuantity},</if>
+            <if test="nodeMintQuantity != null">node_mint_quantity = #{nodeMintQuantity},</if>
+            <if test="exchangeTokenAmount != null">exchange_token_amount = #{exchangeTokenAmount},</if>
+            <if test="usdtAmount != null">usdt_amount = #{usdtAmount},</if>
+            <if test="tokenAmount != null">token_amount = #{tokenAmount},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDailyReportById" parameterType="Long">
+        delete from b_daily_report where id = #{id}
+    </delete>
+
+    <delete id="deleteDailyReportByIds" parameterType="String">
+        delete from b_daily_report where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

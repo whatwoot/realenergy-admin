@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.OrderMapper">
+
+    <resultMap type="Order" id="OrderResult">
+        <result property="id"    column="id"    />
+        <result property="sn"    column="sn"    />
+        <result property="uid"    column="uid"    />
+        <result property="name"    column="name"    />
+        <result property="email"    column="email"    />
+        <result property="mid"    column="mid"    />
+        <result property="pid"    column="pid"    />
+        <result property="merchantUid"    column="merchant_uid"    />
+        <result property="merchantName"    column="merchant_name"    />
+        <result property="merchantLegal"    column="merchant_legal"    />
+        <result property="merchantContact"    column="merchant_contact"    />
+        <result property="amount"    column="amount"    />
+        <result property="receiptSymbol"    column="receipt_symbol"    />
+        <result property="baseAmount"    column="base_amount"    />
+        <result property="currency"    column="currency"    />
+        <result property="exchangeRate"    column="exchange_rate"    />
+        <result property="paymentType"    column="payment_type"    />
+        <result property="paymentName"    column="payment_name"    />
+        <result property="paymentAccount"    column="payment_account"    />
+        <result property="paymentMemo"    column="payment_memo"    />
+        <result property="paymentCode"    column="payment_code"    />
+        <result property="payAt"    column="pay_at"    />
+        <result property="expireAt"    column="expire_at"    />
+        <result property="status"    column="status"    />
+        <result property="memo"    column="memo"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="addr"    column="addr"    />
+        <result property="account"    column="account"    />
+        <result property="puid"    column="puid"    />
+    </resultMap>
+
+    <sql id="selectOrderVo">
+        select id, sn, uid, name, email, mid, pid, merchant_uid, merchant_name, merchant_legal, merchant_contact, amount, receipt_symbol, base_amount, currency, exchange_rate, payment_type, payment_name, payment_account, payment_memo, payment_code, pay_at, expire_at, status, memo, create_time, update_time from b_order
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.sn,  a.uid,  a.name,  a.email,  a.mid,  a.pid,  a.merchant_uid,  a.merchant_name,  a.merchant_legal,  a.merchant_contact,  a.amount,  a.receipt_symbol,  a.base_amount,  a.currency,  a.exchange_rate,  a.payment_type,  a.payment_name,  a.payment_account,  a.payment_memo,  a.payment_code,  a.pay_at,  a.expire_at,  a.status,  a.memo,  a.create_time,  a.update_time,  l.account, b.pid as puid from b_order a left join u_login l on a.uid = l.uid and l.type in (3)
+    </sql>
+
+    <select id="selectOrderList" parameterType="Order" resultMap="OrderResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="account != null and account != ''"> and l.account like concat('%',#{account},'%')</if>
+            <if test="sn != null "> and a.sn = #{sn}</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="id != null">and a.id = #{id}</if>
+            <if test="name != null  and name != ''"> and a.name like concat('%', #{name}, '%')</if>
+            <if test="email != null  and email != ''"> and a.email = #{email}</if>
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            <if test="pid != null "> and a.pid = #{pid}</if>
+            <if test="merchantUid != null "> and a.merchant_uid = #{merchantUid}</if>
+            <if test="merchantName != null  and merchantName != ''"> and a.merchant_name like concat('%', #{merchantName}, '%')</if>
+            <if test="merchantLegal != null  and merchantLegal != ''"> and a.merchant_legal = #{merchantLegal}</if>
+            <if test="merchantContact != null  and merchantContact != ''"> and a.merchant_contact = #{merchantContact}</if>
+            <if test="amount != null "> and a.amount = #{amount}</if>
+            <if test="receiptSymbol != null  and receiptSymbol != ''"> and a.receipt_symbol = #{receiptSymbol}</if>
+            <if test="baseAmount != null "> and a.base_amount = #{baseAmount}</if>
+            <if test="currency != null  and currency != ''"> and a.currency = #{currency}</if>
+            <if test="exchangeRate != null "> and a.exchange_rate = #{exchangeRate}</if>
+            <if test="paymentType != null "> and a.payment_type = #{paymentType}</if>
+            <if test="paymentName != null  and paymentName != ''"> and a.payment_name like concat('%', #{paymentName}, '%')</if>
+            <if test="paymentAccount != null  and paymentAccount != ''"> and a.payment_account = #{paymentAccount}</if>
+            <if test="paymentMemo != null  and paymentMemo != ''"> and a.payment_memo = #{paymentMemo}</if>
+            <if test="paymentCode != null  and paymentCode != ''"> and a.payment_code = #{paymentCode}</if>
+            <if test="params.beginPayAt != null and params.beginPayAt != '' and params.endPayAt != null and params.endPayAt != ''"> and a.pay_at between #{params.beginPayAt} and #{params.endPayAt}</if>
+            <if test="expireAt != null "> and a.expire_at = #{expireAt}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="memo != null  and memo != ''"> and a.memo = #{memo}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectOrderById" parameterType="Long" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
+        insert into b_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sn != null">sn,</if>
+            <if test="uid != null">uid,</if>
+            <if test="name != null">name,</if>
+            <if test="email != null">email,</if>
+            <if test="mid != null">mid,</if>
+            <if test="pid != null">pid,</if>
+            <if test="merchantUid != null">merchant_uid,</if>
+            <if test="merchantName != null">merchant_name,</if>
+            <if test="merchantLegal != null">merchant_legal,</if>
+            <if test="merchantContact != null">merchant_contact,</if>
+            <if test="amount != null">amount,</if>
+            <if test="receiptSymbol != null">receipt_symbol,</if>
+            <if test="baseAmount != null">base_amount,</if>
+            <if test="currency != null">currency,</if>
+            <if test="exchangeRate != null">exchange_rate,</if>
+            <if test="paymentType != null">payment_type,</if>
+            <if test="paymentName != null">payment_name,</if>
+            <if test="paymentAccount != null">payment_account,</if>
+            <if test="paymentMemo != null">payment_memo,</if>
+            <if test="paymentCode != null">payment_code,</if>
+            <if test="payAt != null">pay_at,</if>
+            <if test="expireAt != null">expire_at,</if>
+            <if test="status != null">status,</if>
+            <if test="memo != null">memo,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sn != null">#{sn},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="name != null">#{name},</if>
+            <if test="email != null">#{email},</if>
+            <if test="mid != null">#{mid},</if>
+            <if test="pid != null">#{pid},</if>
+            <if test="merchantUid != null">#{merchantUid},</if>
+            <if test="merchantName != null">#{merchantName},</if>
+            <if test="merchantLegal != null">#{merchantLegal},</if>
+            <if test="merchantContact != null">#{merchantContact},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="receiptSymbol != null">#{receiptSymbol},</if>
+            <if test="baseAmount != null">#{baseAmount},</if>
+            <if test="currency != null">#{currency},</if>
+            <if test="exchangeRate != null">#{exchangeRate},</if>
+            <if test="paymentType != null">#{paymentType},</if>
+            <if test="paymentName != null">#{paymentName},</if>
+            <if test="paymentAccount != null">#{paymentAccount},</if>
+            <if test="paymentMemo != null">#{paymentMemo},</if>
+            <if test="paymentCode != null">#{paymentCode},</if>
+            <if test="payAt != null">#{payAt},</if>
+            <if test="expireAt != null">#{expireAt},</if>
+            <if test="status != null">#{status},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrder" parameterType="Order">
+        update b_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="mid != null">mid = #{mid},</if>
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="merchantUid != null">merchant_uid = #{merchantUid},</if>
+            <if test="merchantName != null">merchant_name = #{merchantName},</if>
+            <if test="merchantLegal != null">merchant_legal = #{merchantLegal},</if>
+            <if test="merchantContact != null">merchant_contact = #{merchantContact},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="receiptSymbol != null">receipt_symbol = #{receiptSymbol},</if>
+            <if test="baseAmount != null">base_amount = #{baseAmount},</if>
+            <if test="currency != null">currency = #{currency},</if>
+            <if test="exchangeRate != null">exchange_rate = #{exchangeRate},</if>
+            <if test="paymentType != null">payment_type = #{paymentType},</if>
+            <if test="paymentName != null">payment_name = #{paymentName},</if>
+            <if test="paymentAccount != null">payment_account = #{paymentAccount},</if>
+            <if test="paymentMemo != null">payment_memo = #{paymentMemo},</if>
+            <if test="paymentCode != null">payment_code = #{paymentCode},</if>
+            <if test="payAt != null">pay_at = #{payAt},</if>
+            <if test="expireAt != null">expire_at = #{expireAt},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderById" parameterType="Long">
+        delete from b_order where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderByIds" parameterType="String">
+        delete from b_order where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="OrderResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account = #{account} </if>
+            <if test="puid != null "> and u.pid = #{puid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="sn != null "> and a.sn = #{sn}</if>
+            and a.uid = b.id
+            <if test="name != null  and name != ''"> and a.name like concat('%', #{name}, '%')</if>
+            <if test="email != null  and email != ''"> and a.email = #{email}</if>
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            <if test="pid != null "> and a.pid = #{pid}</if>
+            <if test="id != null">and a.id = #{id}</if>
+            <if test="merchantUid != null "> and a.merchant_uid = #{merchantUid}</if>
+            <if test="merchantName != null  and merchantName != ''"> and a.merchant_name like concat('%', #{merchantName}, '%')</if>
+            <if test="merchantLegal != null  and merchantLegal != ''"> and a.merchant_legal = #{merchantLegal}</if>
+            <if test="merchantContact != null  and merchantContact != ''"> and a.merchant_contact = #{merchantContact}</if>
+            <if test="amount != null "> and a.amount = #{amount}</if>
+            <if test="receiptSymbol != null  and receiptSymbol != ''"> and a.receipt_symbol = #{receiptSymbol}</if>
+            <if test="baseAmount != null "> and a.base_amount = #{baseAmount}</if>
+            <if test="currency != null  and currency != ''"> and a.currency = #{currency}</if>
+            <if test="exchangeRate != null "> and a.exchange_rate = #{exchangeRate}</if>
+            <if test="paymentType != null "> and a.payment_type = #{paymentType}</if>
+            <if test="paymentName != null  and paymentName != ''"> and a.payment_name like concat('%', #{paymentName}, '%')</if>
+            <if test="paymentAccount != null  and paymentAccount != ''"> and a.payment_account = #{paymentAccount}</if>
+            <if test="paymentMemo != null  and paymentMemo != ''"> and a.payment_memo = #{paymentMemo}</if>
+            <if test="paymentCode != null  and paymentCode != ''"> and a.payment_code = #{paymentCode}</if>
+            <if test="params.beginPayAt != null and params.beginPayAt != '' and params.endPayAt != null and params.endPayAt != ''"> and a.pay_at between #{params.beginPayAt} and #{params.endPayAt}</if>
+            <if test="expireAt != null "> and a.expire_at = #{expireAt}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="memo != null  and memo != ''"> and a.memo = #{memo}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="OrderResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account = #{account} </if>
+            <if test="puid != null "> and u.pid = #{puid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="sn != null "> and a.sn = #{sn}</if>
+            and a.uid = b.id
+            <if test="name != null  and name != ''"> and a.name like concat('%', #{name}, '%')</if>
+            <if test="email != null  and email != ''"> and a.email = #{email}</if>
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            <if test="pid != null "> and a.pid = #{pid}</if>
+            <if test="id != null">and a.id = #{id}</if>
+            <if test="merchantUid != null "> and a.merchant_uid = #{merchantUid}</if>
+            <if test="merchantName != null  and merchantName != ''"> and a.merchant_name like concat('%', #{merchantName}, '%')</if>
+            <if test="merchantLegal != null  and merchantLegal != ''"> and a.merchant_legal = #{merchantLegal}</if>
+            <if test="merchantContact != null  and merchantContact != ''"> and a.merchant_contact = #{merchantContact}</if>
+            <if test="amount != null "> and a.amount = #{amount}</if>
+            <if test="receiptSymbol != null  and receiptSymbol != ''"> and a.receipt_symbol = #{receiptSymbol}</if>
+            <if test="baseAmount != null "> and a.base_amount = #{baseAmount}</if>
+            <if test="currency != null  and currency != ''"> and a.currency = #{currency}</if>
+            <if test="exchangeRate != null "> and a.exchange_rate = #{exchangeRate}</if>
+            <if test="paymentType != null "> and a.payment_type = #{paymentType}</if>
+            <if test="paymentName != null  and paymentName != ''"> and a.payment_name like concat('%', #{paymentName}, '%')</if>
+            <if test="paymentAccount != null  and paymentAccount != ''"> and a.payment_account = #{paymentAccount}</if>
+            <if test="paymentMemo != null  and paymentMemo != ''"> and a.payment_memo = #{paymentMemo}</if>
+            <if test="paymentCode != null  and paymentCode != ''"> and a.payment_code = #{paymentCode}</if>
+            <if test="params.beginPayAt != null and params.beginPayAt != '' and params.endPayAt != null and params.endPayAt != ''"> and a.pay_at between #{params.beginPayAt} and #{params.endPayAt}</if>
+            <if test="expireAt != null "> and a.expire_at = #{expireAt}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="memo != null  and memo != ''"> and a.memo = #{memo}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+</mapper>

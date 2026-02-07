@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.ChainWorkMapper">
+
+    <resultMap type="ChainWork" id="ChainWorkResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="chain"    column="chain"    />
+        <result property="fromAddr"    column="from_addr"    />
+        <result property="toAddr"    column="to_addr"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="amount"    column="amount"    />
+        <result property="contract"    column="contract"    />
+        <result property="param"    column="param"    />
+        <result property="gasFee"    column="gas_fee"    />
+        <result property="gasPrice"    column="gas_price"    />
+        <result property="status"    column="status"    />
+        <result property="txStatus"    column="tx_status"    />
+        <result property="blockNo"    column="block_no"    />
+        <result property="hash"    column="hash"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="blockTime"    column="block_time"    />
+        <result property="queueAt"    column="queue_at"    />
+        <result property="confirmAt"    column="confirm_at"    />
+        <result property="confirmBlockNo"    column="confirm_block_no"    />
+        <result property="receiptStatus"    column="receipt_status"    />
+        <result property="errMsg"    column="err_msg"    />
+        <result property="processed"    column="processed"    />
+        <result property="processAt"    column="process_at"    />
+        <result property="processMsg"    column="process_msg"    />
+        <result property="collected"    column="collected"    />
+        <result property="collectAt"    column="collect_at"    />
+        <result property="collectMsg"    column="collect_msg"    />
+        <result property="relateId"    column="relate_id"    />
+        <result property="memo"    column="memo"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectChainWorkVo">
+        select id, type, chain, from_addr, to_addr, symbol, amount, contract, param, gas_fee, gas_price, status, tx_status, block_no, hash, create_at, block_time, queue_at, confirm_at, confirm_block_no, receipt_status, err_msg, processed, process_at, process_msg, collected, collect_at, collect_msg, relate_id, memo, create_time, update_time from c_chain_work
+    </sql>
+
+    <sql id="SelectDomainChainWorkVo">
+        select a.id, a.type, a.chain, a.from_addr, a.to_addr, a.symbol, a.amount, a.contract, a.param, a.gas_fee, a.gas_price, a.status, a.tx_status, a.block_no, a.hash, a.create_at, a.block_time, a.queue_at, a.confirm_at, a.confirm_block_no, a.receipt_status, a.err_msg, a.processed, a.process_at, a.process_msg, a.collected, a.collect_at, a.collect_msg, a.relate_id, a.memo, a.create_time, a.update_time from c_chain_work a
+    </sql>
+
+    <select id="selectChainWorkList" parameterType="ChainWork" resultMap="ChainWorkResult">
+        <include refid="selectChainWorkVo"/>
+        <where>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="chain != null  and chain != ''"> and chain = #{chain}</if>
+            <if test="fromAddr != null  and fromAddr != ''"> and from_addr = #{fromAddr}</if>
+            <if test="toAddr != null  and toAddr != ''"> and to_addr = #{toAddr}</if>
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="txStatus != null "> and tx_status = #{txStatus}</if>
+            <if test="hash != null  and hash != ''"> and hash = #{hash}</if>
+            <if test="receiptStatus != null "> and receipt_status = #{receiptStatus}</if>
+            <if test="processed != null "> and processed = #{processed}</if>
+            <if test="collected != null "> and collected = #{collected}</if>
+            <if test="relateId != null "> and relate_id = #{relateId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectChainWorkById" parameterType="Long" resultMap="ChainWorkResult">
+        <include refid="selectChainWorkVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertChainWork" parameterType="ChainWork" useGeneratedKeys="true" keyProperty="id">
+        insert into c_chain_work
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="chain != null">chain,</if>
+            <if test="fromAddr != null">from_addr,</if>
+            <if test="toAddr != null">to_addr,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="amount != null">amount,</if>
+            <if test="contract != null">contract,</if>
+            <if test="param != null">param,</if>
+            <if test="gasFee != null">gas_fee,</if>
+            <if test="gasPrice != null">gas_price,</if>
+            <if test="status != null">status,</if>
+            <if test="txStatus != null">tx_status,</if>
+            <if test="blockNo != null">block_no,</if>
+            <if test="hash != null">hash,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="blockTime != null">block_time,</if>
+            <if test="queueAt != null">queue_at,</if>
+            <if test="confirmAt != null">confirm_at,</if>
+            <if test="confirmBlockNo != null">confirm_block_no,</if>
+            <if test="receiptStatus != null">receipt_status,</if>
+            <if test="errMsg != null">err_msg,</if>
+            <if test="processed != null">processed,</if>
+            <if test="processAt != null">process_at,</if>
+            <if test="processMsg != null">process_msg,</if>
+            <if test="collected != null">collected,</if>
+            <if test="collectAt != null">collect_at,</if>
+            <if test="collectMsg != null">collect_msg,</if>
+            <if test="relateId != null">relate_id,</if>
+            <if test="memo != null">memo,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="chain != null">#{chain},</if>
+            <if test="fromAddr != null">#{fromAddr},</if>
+            <if test="toAddr != null">#{toAddr},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="contract != null">#{contract},</if>
+            <if test="param != null">#{param},</if>
+            <if test="gasFee != null">#{gasFee},</if>
+            <if test="gasPrice != null">#{gasPrice},</if>
+            <if test="status != null">#{status},</if>
+            <if test="txStatus != null">#{txStatus},</if>
+            <if test="blockNo != null">#{blockNo},</if>
+            <if test="hash != null">#{hash},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="blockTime != null">#{blockTime},</if>
+            <if test="queueAt != null">#{queueAt},</if>
+            <if test="confirmAt != null">#{confirmAt},</if>
+            <if test="confirmBlockNo != null">#{confirmBlockNo},</if>
+            <if test="receiptStatus != null">#{receiptStatus},</if>
+            <if test="errMsg != null">#{errMsg},</if>
+            <if test="processed != null">#{processed},</if>
+            <if test="processAt != null">#{processAt},</if>
+            <if test="processMsg != null">#{processMsg},</if>
+            <if test="collected != null">#{collected},</if>
+            <if test="collectAt != null">#{collectAt},</if>
+            <if test="collectMsg != null">#{collectMsg},</if>
+            <if test="relateId != null">#{relateId},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateChainWork" parameterType="ChainWork">
+        update c_chain_work
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="chain != null">chain = #{chain},</if>
+            <if test="fromAddr != null">from_addr = #{fromAddr},</if>
+            <if test="toAddr != null">to_addr = #{toAddr},</if>
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="contract != null">contract = #{contract},</if>
+            <if test="param != null">param = #{param},</if>
+            <if test="gasFee != null">gas_fee = #{gasFee},</if>
+            <if test="gasPrice != null">gas_price = #{gasPrice},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="txStatus != null">tx_status = #{txStatus},</if>
+            <if test="blockNo != null">block_no = #{blockNo},</if>
+            <if test="hash != null">hash = #{hash},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="blockTime != null">block_time = #{blockTime},</if>
+            <if test="queueAt != null">queue_at = #{queueAt},</if>
+            <if test="confirmAt != null">confirm_at = #{confirmAt},</if>
+            <if test="confirmBlockNo != null">confirm_block_no = #{confirmBlockNo},</if>
+            <if test="receiptStatus != null">receipt_status = #{receiptStatus},</if>
+            <if test="errMsg != null">err_msg = #{errMsg},</if>
+            <if test="processed != null">processed = #{processed},</if>
+            <if test="processAt != null">process_at = #{processAt},</if>
+            <if test="processMsg != null">process_msg = #{processMsg},</if>
+            <if test="collected != null">collected = #{collected},</if>
+            <if test="collectAt != null">collect_at = #{collectAt},</if>
+            <if test="collectMsg != null">collect_msg = #{collectMsg},</if>
+            <if test="relateId != null">relate_id = #{relateId},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteChainWorkById" parameterType="Long">
+        delete from c_chain_work where id = #{id}
+    </delete>
+
+    <delete id="deleteChainWorkByIds" parameterType="String">
+        delete from c_chain_work where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.InviteRankMapper">
+
+    <resultMap type="InviteRank" id="InviteRankResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="ymd"    column="ymd"    />
+        <result property="inviteNum"    column="invite_num"    />
+        <result property="performance"    column="performance"    />
+        <result property="lastInvestAt"    column="last_invest_at"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectInviteRankVo">
+        select id, uid, nickname, ymd, invite_num, performance, last_invest_at, create_at, create_time, update_time from b_invite_rank
+    </sql>
+
+    <sql id="SelectDomainInviteRankVo">
+        select a.id, a.uid, a.nickname, a.ymd, a.invite_num, a.performance, a.last_invest_at, a.create_at, a.create_time, a.update_time from b_invite_rank a
+    </sql>
+
+    <select id="selectInviteRankList" parameterType="InviteRank" resultMap="InviteRankResult">
+        <include refid="selectInviteRankVo"/>
+        <where>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="params.beginYmd != null and params.beginYmd != '' and params.endYmd != null and params.endYmd != ''"> and ymd between #{params.beginYmd} and #{params.endYmd}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectInviteRankById" parameterType="Long" resultMap="InviteRankResult">
+        <include refid="selectInviteRankVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertInviteRank" parameterType="InviteRank" useGeneratedKeys="true" keyProperty="id">
+        insert into b_invite_rank
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="nickname != null">nickname,</if>
+            <if test="ymd != null">ymd,</if>
+            <if test="inviteNum != null">invite_num,</if>
+            <if test="performance != null">performance,</if>
+            <if test="lastInvestAt != null">last_invest_at,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="ymd != null">#{ymd},</if>
+            <if test="inviteNum != null">#{inviteNum},</if>
+            <if test="performance != null">#{performance},</if>
+            <if test="lastInvestAt != null">#{lastInvestAt},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInviteRank" parameterType="InviteRank">
+        update b_invite_rank
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="ymd != null">ymd = #{ymd},</if>
+            <if test="inviteNum != null">invite_num = #{inviteNum},</if>
+            <if test="performance != null">performance = #{performance},</if>
+            <if test="lastInvestAt != null">last_invest_at = #{lastInvestAt},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInviteRankById" parameterType="Long">
+        delete from b_invite_rank where id = #{id}
+    </delete>
+
+    <delete id="deleteInviteRankByIds" parameterType="String">
+        delete from b_invite_rank where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.SysNoticeMapper">
+
+    <resultMap type="SysNotice" id="SysNoticeResult">
+        <result property="noticeId"       column="notice_id"       />
+        <result property="noticeTitle"    column="notice_title"    />
+        <result property="noticeTitleEnUs"    column="notice_title_en_us"    />
+        <result property="noticeTitleZhTw"    column="notice_title_zh_tw"    />
+        <result property="noticeTitleZhCn"    column="notice_title_zh_cn"    />
+        <result property="noticeTitleKoKr"    column="notice_title_ko_kr"    />
+        <result property="noticeTitleRuRu"    column="notice_title_ru_ru"    />
+        <result property="noticeTitleJaJp"    column="notice_title_ja_jp"    />
+        <result property="noticeTitleDeDe"    column="notice_title_de_de"    />
+        <result property="noticeTitleEsEs"    column="notice_title_es_es"    />
+        <result property="noticeTitleViVn"    column="notice_title_vi_vn"    />
+        <result property="noticeTitleArSa"    column="notice_title_ar_sa"    />
+        <result property="noticeType"     column="notice_type"     />
+
+        <result property="coverUrl"  column="cover_url"  />
+
+        <result property="coverUrlEnUs"  column="cover_url_en_us"  />
+        <result property="coverUrlZhTw"  column="cover_url_zh_tw"  />
+        <result property="coverUrlZhCn"  column="cover_url_zh_cn"  />
+        <result property="coverUrlKoKr"  column="cover_url_ko_kr"  />
+        <result property="coverUrlRuRu"  column="cover_url_ru_ru"  />
+        <result property="coverUrlJaJp"  column="cover_url_ja_jp"  />
+        <result property="coverUrlDeDe"  column="cover_url_de_de"  />
+        <result property="coverUrlEsEs"  column="cover_url_es_es"  />
+        <result property="coverUrlViVn"  column="cover_url_vi_vn"  />
+        <result property="coverUrlArSa"  column="cover_url_ar_sa"  />
+
+        <result property="contentPrefix"  column="content_prefix"  />
+        <result property="contentPrefixEnUs"  column="content_prefix_en_us"  />
+        <result property="contentPrefixZhTw"  column="content_prefix_zh_tw"  />
+        <result property="contentPrefixZhCn"  column="content_prefix_zh_cn"  />
+        <result property="contentPrefixKoKr"  column="content_prefix_ko_kr"  />
+        <result property="contentPrefixRuRu"  column="content_prefix_ru_ru"  />
+        <result property="contentPrefixJaJp"  column="content_prefix_ja_jp"  />
+        <result property="contentPrefixDeDe"  column="content_prefix_de_de"  />
+        <result property="contentPrefixEsEs"  column="content_prefix_es_es"  />
+        <result property="contentPrefixViVn"  column="content_prefix_vi_vn"  />
+        <result property="contentPrefixArSa"  column="content_prefix_ar_sa"  />
+
+        <result property="noticeContent"  column="notice_content"  />
+        <result property="noticeContentEnUs"  column="notice_content_en_us"  />
+        <result property="noticeContentZhTw"  column="notice_content_zh_tw"  />
+        <result property="noticeContentZhCn"  column="notice_content_zh_cn"  />
+        <result property="noticeContentKoKr"  column="notice_content_ko_kr"  />
+        <result property="noticeContentRuRu"  column="notice_content_ru_ru"  />
+        <result property="noticeContentJaJp"  column="notice_content_ja_jp"  />
+        <result property="noticeContentDeDe"  column="notice_content_de_de"  />
+        <result property="noticeContentEsEs"  column="notice_content_es_es"  />
+        <result property="noticeContentViVn"  column="notice_content_vi_vn"  />
+        <result property="noticeContentArSa"  column="notice_content_ar_sa"  />
+
+        <result property="status"         column="status"          />
+        <result property="createBy"       column="create_by"       />
+        <result property="createTime"     column="create_time"     />
+        <result property="updateBy"       column="update_by"       />
+        <result property="updateTime"     column="update_time"     />
+        <result property="remark"         column="remark"          />
+    </resultMap>
+
+    <sql id="selectNoticeVo">
+        select notice_id, notice_title,
+               notice_title_en_us,
+               notice_title_zh_tw,
+               notice_title_zh_cn,
+               notice_title_ko_kr,
+               notice_title_ru_ru,
+               notice_title_ja_jp,
+               notice_title_de_de,
+               notice_title_es_es,
+               notice_title_vi_vn,
+               notice_title_ar_sa,
+               notice_type,
+               cover_url,
+               cover_url_en_us,
+               cover_url_zh_tw,
+               cover_url_zh_cn,
+               cover_url_ko_kr,
+               cover_url_ru_ru,
+               cover_url_ja_jp,
+               cover_url_de_de,
+               cover_url_es_es,
+               cover_url_vi_vn,
+               cover_url_ar_sa,
+               content_prefix,
+               content_prefix_en_us,
+               content_prefix_zh_tw,
+               content_prefix_zh_cn,
+               content_prefix_ko_kr,
+               content_prefix_ru_ru,
+               content_prefix_ja_jp,
+               content_prefix_de_de,
+               content_prefix_es_es,
+               content_prefix_vi_vn,
+               content_prefix_ar_sa,
+               notice_content,
+               notice_content_en_us,
+               notice_content_zh_tw,
+               notice_content_zh_cn,
+               notice_content_ko_kr,
+               notice_content_ru_ru,
+               notice_content_ja_jp,
+               notice_content_de_de,
+               notice_content_es_es,
+               notice_content_vi_vn,
+               notice_content_ar_sa,
+               status, create_by, create_time, update_by, update_time, remark
+		from sys_notice
+    </sql>
+
+    <select id="selectNoticeById" parameterType="Long" resultMap="SysNoticeResult">
+        <include refid="selectNoticeVo"/>
+        where notice_id = #{noticeId}
+    </select>
+
+    <select id="selectNoticeList" parameterType="SysNotice" resultMap="SysNoticeResult">
+        <include refid="selectNoticeVo"/>
+        <where>
+			<if test="noticeTitle != null and noticeTitle != ''">
+				AND (
+                notice_title like concat('%', #{noticeTitle}, '%')
+                or notice_title_en_us like concat('%', #{noticeTitle}, '%')
+                or notice_title_zh_tw like concat('%', #{noticeTitle}, '%')
+                )
+			</if>
+			<if test="noticeType != null and noticeType != ''">
+				AND notice_type = #{noticeType}
+			</if>
+			<if test="createBy != null and createBy != ''">
+				AND create_by like concat('%', #{createBy}, '%')
+			</if>
+		</where>
+        order by notice_id desc
+    </select>
+
+    <insert id="insertNotice" parameterType="SysNotice">
+        insert into sys_notice (
+			<if test="noticeTitle != null and noticeTitle != '' ">notice_title, </if>
+			<if test="noticeTitleEnUs != null and noticeTitleEnUs != '' ">notice_title_en_us, </if>
+			<if test="noticeTitleZhTw != null and noticeTitleZhTw != '' ">notice_title_zh_tw, </if>
+			<if test="noticeTitleZhCn != null and noticeTitleZhCn != '' ">notice_title_zh_cn, </if>
+			<if test="noticeTitleKoKr != null and noticeTitleKoKr != '' ">notice_title_ko_kr, </if>
+			<if test="noticeTitleRuRu != null and noticeTitleRuRu != '' ">notice_title_ru_ru, </if>
+			<if test="noticeTitleJaJp != null and noticeTitleJaJp != '' ">notice_title_ja_jp, </if>
+			<if test="noticeTitleDeDe != null and noticeTitleDeDe != '' ">notice_title_de_de, </if>
+			<if test="noticeTitleEsEs != null and noticeTitleEsEs != '' ">notice_title_es_es, </if>
+			<if test="noticeTitleViVn != null and noticeTitleViVn != '' ">notice_title_vi_vn, </if>
+			<if test="noticeTitleArSa != null and noticeTitleArSa != '' ">notice_title_ar_sa, </if>
+			<if test="noticeType != null and noticeType != '' ">notice_type, </if>
+			<if test="coverUrl != null and coverUrl != '' ">cover_url, </if>
+			<if test="coverUrlEnUs != null and coverUrlEnUs != '' ">cover_url_en_us, </if>
+			<if test="coverUrlZhTw != null and coverUrlZhTw != '' ">cover_url_zh_tw, </if>
+			<if test="coverUrlZhCn != null and coverUrlZhCn != '' ">cover_url_zh_cn, </if>
+			<if test="coverUrlKoKr != null and coverUrlKoKr != '' ">cover_url_ko_kr, </if>
+			<if test="coverUrlRuRu != null and coverUrlRuRu != '' ">cover_url_ru_ru, </if>
+			<if test="coverUrlJaJp != null and coverUrlJaJp != '' ">cover_url_ja_jp, </if>
+			<if test="coverUrlDeDe != null and coverUrlDeDe != '' ">cover_url_de_de, </if>
+			<if test="coverUrlEsEs != null and coverUrlEsEs != '' ">cover_url_es_es, </if>
+			<if test="coverUrlViVn != null and coverUrlViVn != '' ">cover_url_vi_vn, </if>
+			<if test="coverUrlArSa != null and coverUrlArSa != '' ">cover_url_ar_sa, </if>
+			<if test="contentPrefix != null and contentPrefix != '' ">content_prefix, </if>
+			<if test="contentPrefixEnUs != null and contentPrefixEnUs != '' ">content_prefix_en_us, </if>
+			<if test="contentPrefixZhTw != null and contentPrefixZhTw != '' ">content_prefix_zh_tw, </if>
+			<if test="contentPrefixZhCn != null and contentPrefixZhCn != '' ">content_prefix_zh_cn, </if>
+			<if test="contentPrefixKoKr != null and contentPrefixKoKr != '' ">content_prefix_ko_kr, </if>
+			<if test="contentPrefixRuRu != null and contentPrefixRuRu != '' ">content_prefix_ru_ru, </if>
+			<if test="contentPrefixJaJp != null and contentPrefixJaJp != '' ">content_prefix_ja_jp, </if>
+			<if test="contentPrefixDeDe != null and contentPrefixDeDe != '' ">content_prefix_de_de, </if>
+			<if test="contentPrefixEsEs != null and contentPrefixEsEs != '' ">content_prefix_es_es, </if>
+			<if test="contentPrefixViVn != null and contentPrefixViVn != '' ">content_prefix_vi_vn, </if>
+			<if test="contentPrefixArSa != null and contentPrefixArSa != '' ">content_prefix_ar_sa, </if>
+			<if test="noticeContent != null and noticeContent != '' ">notice_content, </if>
+			<if test="noticeContentEnUs != null and noticeContentEnUs != '' ">notice_content_en_us, </if>
+			<if test="noticeContentZhTw != null and noticeContentZhTw != '' ">notice_content_zh_tw, </if>
+			<if test="noticeContentZhCn != null and noticeContentZhCn != '' ">notice_content_zh_cn, </if>
+			<if test="noticeContentKoKr != null and noticeContentKoKr != '' ">notice_content_ko_kr, </if>
+			<if test="noticeContentRuRu != null and noticeContentRuRu != '' ">notice_content_ru_ru, </if>
+			<if test="noticeContentJaJp != null and noticeContentJaJp != '' ">notice_content_ja_jp, </if>
+			<if test="noticeContentDeDe != null and noticeContentDeDe != '' ">notice_content_de_de, </if>
+			<if test="noticeContentEsEs != null and noticeContentEsEs != '' ">notice_content_es_es, </if>
+			<if test="noticeContentViVn != null and noticeContentViVn != '' ">notice_content_vi_vn, </if>
+			<if test="noticeContentArSa != null and noticeContentArSa != '' ">notice_content_ar_sa, </if>
+			<if test="status != null and status != '' ">status, </if>
+			<if test="remark != null and remark != ''">remark,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			create_time
+ 		)values(
+			<if test="noticeTitle != null and noticeTitle != ''">#{noticeTitle}, </if>
+			<if test="noticeTitleEnUs != null and noticeTitleEnUs != ''">#{noticeTitleEnUs}, </if>
+			<if test="noticeTitleZhTw != null and noticeTitleZhTw != ''">#{noticeTitleZhTw}, </if>
+			<if test="noticeTitleZhCn != null and noticeTitleZhCn != ''">#{noticeTitleZhCn}, </if>
+			<if test="noticeTitleKoKr != null and noticeTitleKoKr != ''">#{noticeTitleKoKr}, </if>
+			<if test="noticeTitleRuRu != null and noticeTitleRuRu != ''">#{noticeTitleRuRu}, </if>
+			<if test="noticeTitleJaJp != null and noticeTitleJaJp != ''">#{noticeTitleJaJp}, </if>
+			<if test="noticeTitleDeDe != null and noticeTitleDeDe != ''">#{noticeTitleDeDe}, </if>
+			<if test="noticeTitleEsEs != null and noticeTitleEsEs != ''">#{noticeTitleEsEs}, </if>
+			<if test="noticeTitleViVn != null and noticeTitleViVn != ''">#{noticeTitleViVn}, </if>
+			<if test="noticeTitleArSa != null and noticeTitleArSa != ''">#{noticeTitleArSa}, </if>
+			<if test="noticeType != null and noticeType != ''">#{noticeType}, </if>
+
+            <if test="coverUrl != null and coverUrl != '' ">#{coverUrl}, </if>
+            <if test="coverUrlEnUs != null and coverUrlEnUs != '' ">#{coverUrlEnUs}, </if>
+            <if test="coverUrlZhTw != null and coverUrlZhTw != '' ">#{coverUrlZhTw}, </if>
+            <if test="coverUrlZhCn != null and coverUrlZhCn != '' ">#{coverUrlZhCn}, </if>
+            <if test="coverUrlKoKr != null and coverUrlKoKr != '' ">#{coverUrlKoKr}, </if>
+            <if test="coverUrlRuRu != null and coverUrlRuRu != '' ">#{coverUrlRuRu}, </if>
+            <if test="coverUrlJaJp != null and coverUrlJaJp != '' ">#{coverUrlJaJp}, </if>
+            <if test="coverUrlDeDe != null and coverUrlDeDe != '' ">#{coverUrlDeDe}, </if>
+            <if test="coverUrlEsEs != null and coverUrlEsEs != '' ">#{coverUrlEsEs}, </if>
+            <if test="coverUrlViVn != null and coverUrlViVn != '' ">#{coverUrlViVn}, </if>
+            <if test="coverUrlArSa != null and coverUrlArSa != '' ">#{coverUrlArSa}, </if>
+
+            <if test="contentPrefix != null and contentPrefix != '' ">#{contentPrefix}, </if>
+
+            <if test="contentPrefixEnUs != null and contentPrefixEnUs != '' ">#{contentPrefixEnUs}, </if>
+            <if test="contentPrefixZhTw != null and contentPrefixZhTw != '' ">#{contentPrefixZhTw}, </if>
+            <if test="contentPrefixZhCn != null and contentPrefixZhCn != '' ">#{contentPrefixZhCn}, </if>
+            <if test="contentPrefixKoKr != null and contentPrefixKoKr != '' ">#{contentPrefixKoKr}, </if>
+            <if test="contentPrefixRuRu != null and contentPrefixRuRu != '' ">#{contentPrefixRuRu}, </if>
+            <if test="contentPrefixJaJp != null and contentPrefixJaJp != '' ">#{contentPrefixJaJp}, </if>
+            <if test="contentPrefixDeDe != null and contentPrefixDeDe != '' ">#{contentPrefixDeDe}, </if>
+            <if test="contentPrefixEsEs != null and contentPrefixEsEs != '' ">#{contentPrefixEsEs}, </if>
+            <if test="contentPrefixViVn != null and contentPrefixViVn != '' ">#{contentPrefixViVn}, </if>
+            <if test="contentPrefixArSa != null and contentPrefixArSa != '' ">#{contentPrefixArSa}, </if>
+
+			<if test="noticeContent != null and noticeContent != ''">#{noticeContent}, </if>
+			<if test="noticeContentEnUs != null and noticeContentEnUs != ''">#{noticeContentEnUs}, </if>
+			<if test="noticeContentZhTw != null and noticeContentZhTw != ''">#{noticeContentZhTw}, </if>
+			<if test="noticeContentZhCn != null and noticeContentZhCn != ''">#{noticeContentZhCn}, </if>
+			<if test="noticeContentKoKr != null and noticeContentKoKr != ''">#{noticeContentKoKr}, </if>
+			<if test="noticeContentRuRu != null and noticeContentRuRu != ''">#{noticeContentRuRu}, </if>
+			<if test="noticeContentJaJp != null and noticeContentJaJp != ''">#{noticeContentJaJp}, </if>
+			<if test="noticeContentDeDe != null and noticeContentDeDe != ''">#{noticeContentDeDe}, </if>
+			<if test="noticeContentEsEs != null and noticeContentEsEs != ''">#{noticeContentEsEs}, </if>
+			<if test="noticeContentViVn != null and noticeContentViVn != ''">#{noticeContentViVn}, </if>
+			<if test="noticeContentArSa != null and noticeContentArSa != ''">#{noticeContentArSa}, </if>
+			<if test="status != null and status != ''">#{status}, </if>
+			<if test="remark != null and remark != ''">#{remark},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			sysdate()
+		)
+    </insert>
+
+    <update id="updateNotice" parameterType="SysNotice">
+        update sys_notice
+        <set>
+            <if test="noticeTitle != null and noticeTitle != ''">notice_title = #{noticeTitle}, </if>
+            <if test="noticeTitleEnUs != null and noticeTitleEnUs != ''">notice_title_en_us = #{noticeTitleEnUs}, </if>
+            <if test="noticeTitleZhTw != null and noticeTitleZhTw != ''">notice_title_zh_tw = #{noticeTitleZhTw}, </if>
+            <if test="noticeTitleZhCn != null and noticeTitleZhCn != ''">notice_title_zh_cn = #{noticeTitleZhCn}, </if>
+            <if test="noticeTitleKoKr != null and noticeTitleKoKr != ''">notice_title_ko_kr = #{noticeTitleKoKr}, </if>
+            <if test="noticeTitleRuRu != null and noticeTitleRuRu != ''">notice_title_ru_ru = #{noticeTitleRuRu}, </if>
+            <if test="noticeTitleJaJp != null and noticeTitleJaJp != ''">notice_title_ja_jp = #{noticeTitleJaJp}, </if>
+            <if test="noticeTitleDeDe != null and noticeTitleDeDe != ''">notice_title_de_de = #{noticeTitleDeDe}, </if>
+            <if test="noticeTitleEsEs != null and noticeTitleEsEs != ''">notice_title_es_es = #{noticeTitleEsEs}, </if>
+            <if test="noticeTitleViVn != null and noticeTitleViVn != ''">notice_title_vi_vn = #{noticeTitleViVn}, </if>
+            <if test="noticeTitleArSa != null and noticeTitleArSa != ''">notice_title_ar_sa = #{noticeTitleArSa}, </if>
+            <if test="noticeType != null and noticeType != ''">notice_type = #{noticeType}, </if>
+            <if test="coverUrl != null">cover_url = #{coverUrl}, </if>
+            <if test="coverUrlEnUs != null">cover_url_en_us = #{coverUrlEnUs}, </if>
+            <if test="coverUrlZhTw != null">cover_url_zh_tw = #{coverUrlZhTw}, </if>
+            <if test="coverUrlZhCn != null">cover_url_zh_cn = #{coverUrlZhCn}, </if>
+            <if test="coverUrlKoKr != null">cover_url_ko_kr = #{coverUrlKoKr}, </if>
+            <if test="coverUrlRuRu != null">cover_url_ru_ru = #{coverUrlRuRu}, </if>
+            <if test="coverUrlJaJp != null">cover_url_ja_jp = #{coverUrlJaJp}, </if>
+            <if test="coverUrlDeDe != null">cover_url_de_de = #{coverUrlDeDe}, </if>
+            <if test="coverUrlEsEs != null">cover_url_es_es = #{coverUrlEsEs}, </if>
+            <if test="coverUrlViVn != null">cover_url_vi_vn = #{coverUrlViVn}, </if>
+            <if test="coverUrlArSa != null">cover_url_ar_sa = #{coverUrlArSa}, </if>
+            <if test="contentPrefix != null">content_prefix = #{contentPrefix}, </if>
+            <if test="contentPrefixEnUs != null">content_prefix_en_us = #{contentPrefixEnUs}, </if>
+            <if test="contentPrefixZhTw != null">content_prefix_zh_tw = #{contentPrefixZhTw}, </if>
+            <if test="contentPrefixZhCn != null">content_prefix_zh_cn = #{contentPrefixZhCn}, </if>
+            <if test="contentPrefixKoKr != null">content_prefix_ko_kr = #{contentPrefixKoKr}, </if>
+            <if test="contentPrefixRuRu != null">content_prefix_ru_ru = #{contentPrefixRuRu}, </if>
+            <if test="contentPrefixJaJp != null">content_prefix_ja_jp = #{contentPrefixJaJp}, </if>
+            <if test="contentPrefixDeDe != null">content_prefix_de_de = #{contentPrefixDeDe}, </if>
+            <if test="contentPrefixEsEs != null">content_prefix_es_es = #{contentPrefixEsEs}, </if>
+            <if test="contentPrefixViVn != null">content_prefix_vi_vn = #{contentPrefixViVn}, </if>
+            <if test="contentPrefixArSa != null">content_prefix_ar_sa = #{contentPrefixArSa}, </if>
+
+            <if test="noticeContent != null">notice_content = #{noticeContent}, </if>
+            <if test="noticeContentEnUs != null">notice_content_en_us = #{noticeContentEnUs}, </if>
+            <if test="noticeContentZhTw != null">notice_content_zh_tw = #{noticeContentZhTw}, </if>
+            <if test="noticeContentZhCn != null">notice_content_zh_cn = #{noticeContentZhCn}, </if>
+            <if test="noticeContentKoKr != null">notice_content_ko_kr = #{noticeContentKoKr}, </if>
+            <if test="noticeContentRuRu != null">notice_content_ru_ru = #{noticeContentRuRu}, </if>
+            <if test="noticeContentJaJp != null">notice_content_ja_jp = #{noticeContentJaJp}, </if>
+            <if test="noticeContentDeDe != null">notice_content_de_de = #{noticeContentDeDe}, </if>
+            <if test="noticeContentEsEs != null">notice_content_es_es = #{noticeContentEsEs}, </if>
+            <if test="noticeContentViVn != null">notice_content_vi_vn = #{noticeContentViVn}, </if>
+            <if test="noticeContentArSa != null">notice_content_ar_sa = #{noticeContentArSa}, </if>
+            <if test="status != null and status != ''">status = #{status}, </if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+ 			update_time = sysdate()
+        </set>
+        where notice_id = #{noticeId}
+    </update>
+
+    <delete id="deleteNoticeById" parameterType="Long">
+        delete from sys_notice where notice_id = #{noticeId}
+    </delete>
+
+    <delete id="deleteNoticeByIds" parameterType="Long">
+        delete from sys_notice where notice_id in
+        <foreach item="noticeId" collection="array" open="(" separator="," close=")">
+            #{noticeId}
+        </foreach>
+    </delete>
+
+</mapper>

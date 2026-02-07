@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.MerchantPaymentMapper">
+
+    <resultMap type="MerchantPayment" id="MerchantPaymentResult">
+        <result property="id"    column="id"    />
+        <result property="mid"    column="mid"    />
+        <result property="uid"    column="uid"    />
+        <result property="type"    column="type"    />
+        <result property="account"    column="account"    />
+        <result property="name"    column="name"    />
+        <result property="currency"    column="currency"    />
+        <result property="memo"    column="memo"    />
+        <result property="codeUrl"    column="code_url"    />
+        <result property="code"    column="code"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="weight"    column="weight"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="addr"    column="addr"    />
+        <result property="email"    column="email"    />
+        <result property="pid"    column="pid"    />
+    </resultMap>
+
+    <sql id="selectMerchantPaymentVo">
+        select id, mid, uid, type, account, name, currency, memo, code_url, code, create_at, create_time, update_time, weight, deleted from p_merchant_payment
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.mid,  a.uid,  a.type,  a.account,  a.name,  a.currency,  a.memo,  a.code_url,  a.code,  a.create_at,  a.create_time,  a.update_time,  a.weight,  a.deleted,  l.account email, b.pid from p_merchant_payment a left join u_login l on a.uid = l.uid and l.type in (3)
+    </sql>
+
+    <select id="selectMerchantPaymentList" parameterType="MerchantPayment" resultMap="MerchantPaymentResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="email != null and email != ''"> and l.account like concat('%',#{email},'%')</if>
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="type != null "> and a.type = #{type}</if>
+            <if test="weight != null "> and a.weight = #{weight}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectMerchantPaymentById" parameterType="Long" resultMap="MerchantPaymentResult">
+        <include refid="selectMerchantPaymentVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMerchantPayment" parameterType="MerchantPayment" useGeneratedKeys="true" keyProperty="id">
+        insert into p_merchant_payment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mid != null">mid,</if>
+            <if test="uid != null">uid,</if>
+            <if test="type != null">type,</if>
+            <if test="account != null">account,</if>
+            <if test="name != null">name,</if>
+            <if test="currency != null">currency,</if>
+            <if test="memo != null">memo,</if>
+            <if test="codeUrl != null">code_url,</if>
+            <if test="code != null">code,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="weight != null">weight,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mid != null">#{mid},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="type != null">#{type},</if>
+            <if test="account != null">#{account},</if>
+            <if test="name != null">#{name},</if>
+            <if test="currency != null">#{currency},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="codeUrl != null">#{codeUrl},</if>
+            <if test="code != null">#{code},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMerchantPayment" parameterType="MerchantPayment">
+        update p_merchant_payment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mid != null">mid = #{mid},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="account != null">account = #{account},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="currency != null">currency = #{currency},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="codeUrl != null">code_url = #{codeUrl},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMerchantPaymentById" parameterType="Long">
+        delete from p_merchant_payment where id = #{id}
+    </delete>
+
+    <delete id="deleteMerchantPaymentByIds" parameterType="String">
+        delete from p_merchant_payment where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="MerchantPaymentResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="email != null  and email != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="email != null  and email != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            and a.uid = b.id
+            <if test="type != null "> and a.type = #{type}</if>
+            <if test="weight != null "> and a.weight = #{weight}</if>
+            and a.deleted = 0
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="MerchantPaymentResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="email != null  and email != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="email != null  and email != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            and a.uid = b.id
+            <if test="type != null "> and a.type = #{type}</if>
+            <if test="weight != null "> and a.weight = #{weight}</if>
+            and a.deleted = 0
+        </where>
+        order by b.n, b.id
+    </select>
+</mapper>

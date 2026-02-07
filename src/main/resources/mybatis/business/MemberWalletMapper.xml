@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.MemberWalletMapper">
+
+    <resultMap type="MemberWallet" id="MemberWalletResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="chain"    column="chain"    />
+        <result property="uid"    column="uid"    />
+        <result property="name"    column="name"    />
+        <result property="wallet"    column="wallet"    />
+        <result property="memo"    column="memo"    />
+        <result property="seq"    column="seq"    />
+        <result property="weight"    column="weight"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="addr"    column="addr"    />
+        <result property="account"    column="account"    />
+        <result property="pid"    column="pid"    />
+    </resultMap>
+
+    <sql id="selectMemberWalletVo">
+        select id, type, chain, uid, name, wallet, memo, seq, weight, create_at, create_time, update_time, deleted from u_member_wallet
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.type,  a.chain,  a.uid,  a.name,  a.wallet,  a.memo,  a.seq,  a.weight,  a.create_at,  a.create_time,  a.update_time,  a.deleted,  l.account, b.pid from u_member_wallet a left join u_login l on a.uid = l.uid and l.type in (3)
+    </sql>
+
+    <select id="selectMemberWalletList" parameterType="MemberWallet" resultMap="MemberWalletResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="account != null and account != ''"> and l.account like concat('%',#{account},'%')</if>
+            <if test="type != null "> and a.type = #{type}</if>
+            <if test="chain != null  and chain != ''"> and a.chain = #{chain}</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="wallet != null  and wallet != ''"> and a.wallet = #{wallet}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectMemberWalletById" parameterType="Long" resultMap="MemberWalletResult">
+        <include refid="selectMemberWalletVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMemberWallet" parameterType="MemberWallet" useGeneratedKeys="true" keyProperty="id">
+        insert into u_member_wallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="chain != null">chain,</if>
+            <if test="uid != null">uid,</if>
+            <if test="name != null">name,</if>
+            <if test="wallet != null">wallet,</if>
+            <if test="memo != null">memo,</if>
+            <if test="seq != null">seq,</if>
+            <if test="weight != null">weight,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="chain != null">#{chain},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="name != null">#{name},</if>
+            <if test="wallet != null">#{wallet},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="seq != null">#{seq},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMemberWallet" parameterType="MemberWallet">
+        update u_member_wallet
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="chain != null">chain = #{chain},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="wallet != null">wallet = #{wallet},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="seq != null">seq = #{seq},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMemberWalletById" parameterType="Long">
+        delete from u_member_wallet where id = #{id}
+    </delete>
+
+    <delete id="deleteMemberWalletByIds" parameterType="String">
+        delete from u_member_wallet where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="MemberWalletResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="type != null "> and a.type = #{type}</if>
+            <if test="chain != null  and chain != ''"> and a.chain = #{chain}</if>
+            and a.uid = b.id
+            <if test="wallet != null  and wallet != ''"> and a.wallet = #{wallet}</if>
+            and a.deleted = 0
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="MemberWalletResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="type != null "> and a.type = #{type}</if>
+            <if test="chain != null  and chain != ''"> and a.chain = #{chain}</if>
+            and a.uid = b.id
+            <if test="wallet != null  and wallet != ''"> and a.wallet = #{wallet}</if>
+            and a.deleted = 0
+        </where>
+        order by b.n, b.id
+    </select>
+</mapper>

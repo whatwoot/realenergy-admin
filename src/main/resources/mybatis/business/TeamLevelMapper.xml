@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.TeamLevelMapper">
+
+    <resultMap type="TeamLevel" id="TeamLevelResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="fundFlowAmount"    column="fund_flow_amount"    />
+        <result property="teamFundFlowAmount"    column="team_fund_flow_amount"    />
+        <result property="levelInviterNum"    column="level_inviter_num"    />
+        <result property="sameLevelRate"    column="same_level_rate"    />
+        <result property="sameLevelSource"    column="same_level_source"    />
+        <result property="sameLevelLimit"    column="same_level_limit"    />
+        <result property="levelRate"    column="level_rate"    />
+        <result property="smallerPerformance"    column="smaller_performance" />
+        <result property="differential"    column="differential"    />
+        <result property="status"    column="status"    />
+        <result property="weight"    column="weight"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTeamLevelVo">
+        select id, name, fund_flow_amount, team_fund_flow_amount, smaller_performance, level_inviter_num, same_level_rate, same_level_source, same_level_limit, level_rate, differential, status, weight, create_time, update_time from u_team_level
+    </sql>
+
+    <sql id="SelectDomainTeamLevelVo">
+        select a.id, a.name, a.fund_flow_amount, a.team_fund_flow_amount, a.smaller_performance, a.level_inviter_num, a.same_level_rate, a.same_level_source, a.same_level_limit, a.level_rate, a.differential, a.status, a.weight, a.create_time, a.update_time from u_team_level a
+    </sql>
+
+    <select id="selectTeamLevelList" parameterType="TeamLevel" resultMap="TeamLevelResult">
+        <include refid="selectTeamLevelVo"/>
+        <where>
+        </where>
+    </select>
+
+    <select id="selectTeamLevelById" parameterType="Long" resultMap="TeamLevelResult">
+        <include refid="selectTeamLevelVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTeamLevel" parameterType="TeamLevel" useGeneratedKeys="true" keyProperty="id">
+        insert into u_team_level
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="fundFlowAmount != null">fund_flow_amount,</if>
+            <if test="teamFundFlowAmount != null">team_fund_flow_amount,</if>
+            <if test="levelInviterNum != null">level_inviter_num,</if>
+            <if test="sameLevelRate != null">same_level_rate,</if>
+            <if test="sameLevelSource != null">same_level_source,</if>
+            <if test="sameLevelLimit != null">same_level_limit,</if>
+            <if test="levelRate != null">level_rate,</if>
+            <if test="differential != null">differential,</if>
+            <if test="status != null">status,</if>
+            <if test="weight != null">weight,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="fundFlowAmount != null">#{fundFlowAmount},</if>
+            <if test="teamFundFlowAmount != null">#{teamFundFlowAmount},</if>
+            <if test="levelInviterNum != null">#{levelInviterNum},</if>
+            <if test="sameLevelRate != null">#{sameLevelRate},</if>
+            <if test="sameLevelSource != null">#{sameLevelSource},</if>
+            <if test="sameLevelLimit != null">#{sameLevelLimit},</if>
+            <if test="levelRate != null">#{levelRate},</if>
+            <if test="differential != null">#{differential},</if>
+            <if test="status != null">#{status},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTeamLevel" parameterType="TeamLevel">
+        update u_team_level
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="fundFlowAmount != null">fund_flow_amount = #{fundFlowAmount},</if>
+            <if test="teamFundFlowAmount != null">team_fund_flow_amount = #{teamFundFlowAmount},</if>
+            <if test="levelInviterNum != null">level_inviter_num = #{levelInviterNum},</if>
+            <if test="sameLevelRate != null">same_level_rate = #{sameLevelRate},</if>
+            <if test="sameLevelSource != null">same_level_source = #{sameLevelSource},</if>
+            <if test="sameLevelLimit != null">same_level_limit = #{sameLevelLimit},</if>
+            <if test="levelRate != null">level_rate = #{levelRate},</if>
+            <if test="differential != null">differential = #{differential},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTeamLevelById" parameterType="Long">
+        delete from u_team_level where id = #{id}
+    </delete>
+
+    <delete id="deleteTeamLevelByIds" parameterType="String">
+        delete from u_team_level where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

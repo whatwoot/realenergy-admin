@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.InvestFlowMapper">
+
+    <resultMap type="InvestFlow" id="InvestFlowResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="amount"    column="amount"    />
+        <result property="num"    column="num"    />
+        <result property="investAmount"    column="invest_amount"    />
+        <result property="bonusAmount"    column="bonus_amount"    />
+        <result property="nftAmount"    column="nft_amount"    />
+        <result property="tokenAmount"    column="token_amount"    />
+        <result property="returnAmount"    column="return_amount"    />
+        <result property="leftAmount"    column="left_amount"    />
+        <result property="bonusRate"    column="bonus_rate"    />
+        <result property="prized"    column="prized"    />
+        <result property="status"    column="status"    />
+        <result property="lastBonusDay"    column="last_bonus_day"    />
+        <result property="nextNftBonusDay"    column="next_nft_bonus_day"    />
+        <result property="period"    column="period"    />
+        <result property="ymd"    column="ymd"    />
+        <result property="investAt"    column="invest_at"    />
+        <result property="sold"    column="sold"    />
+        <result property="applyId"    column="apply_id"    />
+        <result property="auditAt"    column="audit_at"    />
+        <result property="endAt"    column="end_at"    />
+        <result property="source"    column="source"    />
+        <result property="canSell"    column="can_sell"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="addr"    column="addr"    />
+        <result property="account"    column="account"    />
+        <result property="pid"    column="pid"    />
+    </resultMap>
+
+    <sql id="selectInvestFlowVo">
+        select id, uid, amount, num, invest_amount, bonus_amount, nft_amount, token_amount, return_amount, left_amount, bonus_rate, prized, status, last_bonus_day, next_nft_bonus_day, period, ymd, invest_at, sold, apply_id, audit_at, end_at, source, can_sell, create_time, update_time, deleted from b_invest_flow
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.uid,  a.amount,  a.num,  a.invest_amount,  a.bonus_amount,  a.nft_amount,  a.token_amount,  a.return_amount,  a.left_amount,  a.bonus_rate,  a.prized,  a.status,  a.last_bonus_day,  a.next_nft_bonus_day,  a.period,  a.ymd,  a.invest_at,  a.sold,  a.apply_id,  a.audit_at,  a.end_at,  a.source,  a.can_sell,  a.create_time,  a.update_time,  a.deleted,  l.account, b.pid from b_invest_flow a left join u_login l on a.uid = l.uid and l.type in (3)
+    </sql>
+
+    <select id="selectInvestFlowList" parameterType="InvestFlow" resultMap="InvestFlowResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="account != null and account != ''"> and l.account like concat('%',#{account},'%')</if>
+            <if test="id != null "> and a.id = #{id}</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="prized != null "> and a.prized = #{prized}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="lastBonusDay != null "> and a.last_bonus_day = #{lastBonusDay}</if>
+            <if test="params.beginYmd != null and params.beginYmd != '' and params.endYmd != null and params.endYmd != ''"> and a.ymd between #{params.beginYmd} and #{params.endYmd}</if>
+            <if test="sold != null "> and a.sold = #{sold}</if>
+            <if test="canSell != null "> and a.can_sell = #{canSell}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectInvestFlowById" parameterType="Long" resultMap="InvestFlowResult">
+        <include refid="selectInvestFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertInvestFlow" parameterType="InvestFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into b_invest_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="amount != null">amount,</if>
+            <if test="num != null">num,</if>
+            <if test="investAmount != null">invest_amount,</if>
+            <if test="bonusAmount != null">bonus_amount,</if>
+            <if test="nftAmount != null">nft_amount,</if>
+            <if test="tokenAmount != null">token_amount,</if>
+            <if test="returnAmount != null">return_amount,</if>
+            <if test="leftAmount != null">left_amount,</if>
+            <if test="bonusRate != null">bonus_rate,</if>
+            <if test="prized != null">prized,</if>
+            <if test="status != null">status,</if>
+            <if test="lastBonusDay != null">last_bonus_day,</if>
+            <if test="nextNftBonusDay != null">next_nft_bonus_day,</if>
+            <if test="period != null">period,</if>
+            <if test="ymd != null">ymd,</if>
+            <if test="investAt != null">invest_at,</if>
+            <if test="sold != null">sold,</if>
+            <if test="applyId != null">apply_id,</if>
+            <if test="auditAt != null">audit_at,</if>
+            <if test="endAt != null">end_at,</if>
+            <if test="source != null">source,</if>
+            <if test="canSell != null">can_sell,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="num != null">#{num},</if>
+            <if test="investAmount != null">#{investAmount},</if>
+            <if test="bonusAmount != null">#{bonusAmount},</if>
+            <if test="nftAmount != null">#{nftAmount},</if>
+            <if test="tokenAmount != null">#{tokenAmount},</if>
+            <if test="returnAmount != null">#{returnAmount},</if>
+            <if test="leftAmount != null">#{leftAmount},</if>
+            <if test="bonusRate != null">#{bonusRate},</if>
+            <if test="prized != null">#{prized},</if>
+            <if test="status != null">#{status},</if>
+            <if test="lastBonusDay != null">#{lastBonusDay},</if>
+            <if test="nextNftBonusDay != null">#{nextNftBonusDay},</if>
+            <if test="period != null">#{period},</if>
+            <if test="ymd != null">#{ymd},</if>
+            <if test="investAt != null">#{investAt},</if>
+            <if test="sold != null">#{sold},</if>
+            <if test="applyId != null">#{applyId},</if>
+            <if test="auditAt != null">#{auditAt},</if>
+            <if test="endAt != null">#{endAt},</if>
+            <if test="source != null">#{source},</if>
+            <if test="canSell != null">#{canSell},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInvestFlow" parameterType="InvestFlow">
+        update b_invest_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="investAmount != null">invest_amount = #{investAmount},</if>
+            <if test="bonusAmount != null">bonus_amount = #{bonusAmount},</if>
+            <if test="nftAmount != null">nft_amount = #{nftAmount},</if>
+            <if test="tokenAmount != null">token_amount = #{tokenAmount},</if>
+            <if test="returnAmount != null">return_amount = #{returnAmount},</if>
+            <if test="leftAmount != null">left_amount = #{leftAmount},</if>
+            <if test="bonusRate != null">bonus_rate = #{bonusRate},</if>
+            <if test="prized != null">prized = #{prized},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="lastBonusDay != null">last_bonus_day = #{lastBonusDay},</if>
+            <if test="nextNftBonusDay != null">next_nft_bonus_day = #{nextNftBonusDay},</if>
+            <if test="period != null">period = #{period},</if>
+            <if test="ymd != null">ymd = #{ymd},</if>
+            <if test="investAt != null">invest_at = #{investAt},</if>
+            <if test="sold != null">sold = #{sold},</if>
+            <if test="applyId != null">apply_id = #{applyId},</if>
+            <if test="auditAt != null">audit_at = #{auditAt},</if>
+            <if test="endAt != null">end_at = #{endAt},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="canSell != null">can_sell = #{canSell},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInvestFlowById" parameterType="Long">
+        delete from b_invest_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteInvestFlowByIds" parameterType="String">
+        delete from b_invest_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="InvestFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="id != null "> and a.id = #{id}</if>
+            <if test="prized != null "> and a.prized = #{prized}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="lastBonusDay != null "> and a.last_bonus_day = #{lastBonusDay}</if>
+            <if test="params.beginYmd != null and params.beginYmd != '' and params.endYmd != null and params.endYmd != ''"> and a.ymd between #{params.beginYmd} and #{params.endYmd}</if>
+            <if test="sold != null "> and a.sold = #{sold}</if>
+            <if test="canSell != null "> and a.can_sell = #{canSell}</if>
+            and a.deleted = 0
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="InvestFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="id != null "> and a.id = #{id}</if>
+            <if test="prized != null "> and a.prized = #{prized}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="lastBonusDay != null "> and a.last_bonus_day = #{lastBonusDay}</if>
+            <if test="params.beginYmd != null and params.beginYmd != '' and params.endYmd != null and params.endYmd != ''"> and a.ymd between #{params.beginYmd} and #{params.endYmd}</if>
+            <if test="sold != null "> and a.sold = #{sold}</if>
+            <if test="canSell != null "> and a.can_sell = #{canSell}</if>
+            and a.deleted = 0
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listByIds" resultMap="InvestFlowResult">
+        <include refid="selectInvestFlowVo"/>
+        where id in
+        <foreach collection="ids" item="item" open="(" close=")" separator="," >
+            #{item}
+        </foreach>
+    </select>
+</mapper>

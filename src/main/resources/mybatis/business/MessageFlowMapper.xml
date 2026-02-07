@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.MessageFlowMapper">
+
+    <resultMap type="MessageFlow" id="MessageFlowResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="serviceName"    column="service_name"    />
+        <result property="uid"    column="uid"    />
+        <result property="sender"    column="sender"    />
+        <result property="receiver"    column="receiver"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="code"    column="code"    />
+        <result property="param"    column="param"    />
+        <result property="status"    column="status"    />
+        <result property="resp"    column="resp"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="queueAt"    column="queue_at"    />
+        <result property="errProvider"    column="err_provider"    />
+        <result property="errNum"    column="err_num"    />
+        <result property="errMsg"    column="err_msg"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectMessageFlowVo">
+        select id, type, service_name, uid, sender, receiver, nickname, title, content, code, param, status, resp, create_at, queue_at, err_provider, err_num, err_msg, create_time, update_time, deleted from o_message_flow
+    </sql>
+
+    <sql id="SelectDomainMessageFlowVo">
+        select a.id, a.type, a.service_name, a.uid, a.sender, a.receiver, a.nickname, a.title, a.content, a.code, a.param, a.status, a.resp, a.create_at, a.queue_at, a.err_provider, a.err_num, a.err_msg, a.create_time, a.update_time, a.deleted from o_message_flow a
+    </sql>
+
+    <select id="selectMessageFlowList" parameterType="MessageFlow" resultMap="MessageFlowResult">
+        <include refid="selectMessageFlowVo"/>
+        <where>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="serviceName != null  and serviceName != ''"> and service_name = #{serviceName}</if>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="receiver != null  and receiver != ''"> and receiver = #{receiver}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="params.beginCreateAt != null and params.beginCreateAt != '' and params.endCreateAt != null and params.endCreateAt != ''"> and create_at between #{params.beginCreateAt} and #{params.endCreateAt}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectMessageFlowById" parameterType="Long" resultMap="MessageFlowResult">
+        <include refid="selectMessageFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMessageFlow" parameterType="MessageFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into o_message_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="serviceName != null">service_name,</if>
+            <if test="uid != null">uid,</if>
+            <if test="sender != null">sender,</if>
+            <if test="receiver != null">receiver,</if>
+            <if test="nickname != null">nickname,</if>
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="code != null">code,</if>
+            <if test="param != null">param,</if>
+            <if test="status != null">status,</if>
+            <if test="resp != null">resp,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="queueAt != null">queue_at,</if>
+            <if test="errProvider != null">err_provider,</if>
+            <if test="errNum != null">err_num,</if>
+            <if test="errMsg != null">err_msg,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="serviceName != null">#{serviceName},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="sender != null">#{sender},</if>
+            <if test="receiver != null">#{receiver},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="code != null">#{code},</if>
+            <if test="param != null">#{param},</if>
+            <if test="status != null">#{status},</if>
+            <if test="resp != null">#{resp},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="queueAt != null">#{queueAt},</if>
+            <if test="errProvider != null">#{errProvider},</if>
+            <if test="errNum != null">#{errNum},</if>
+            <if test="errMsg != null">#{errMsg},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMessageFlow" parameterType="MessageFlow">
+        update o_message_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="serviceName != null">service_name = #{serviceName},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="sender != null">sender = #{sender},</if>
+            <if test="receiver != null">receiver = #{receiver},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="param != null">param = #{param},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="resp != null">resp = #{resp},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="queueAt != null">queue_at = #{queueAt},</if>
+            <if test="errProvider != null">err_provider = #{errProvider},</if>
+            <if test="errNum != null">err_num = #{errNum},</if>
+            <if test="errMsg != null">err_msg = #{errMsg},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMessageFlowById" parameterType="Long">
+        delete from o_message_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteMessageFlowByIds" parameterType="String">
+        delete from o_message_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.AssetFlowMapper">
+
+    <resultMap type="AssetFlow" id="AssetFlowResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="scene"    column="scene"    />
+        <result property="type"    column="type"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="ymd"    column="ymd"    />
+        <result property="balance"    column="balance"    />
+        <result property="frozen"    column="frozen"    />
+        <result property="relateId"    column="relate_id"    />
+        <result property="relateMemo"    column="relate_memo"    />
+        <result property="clearDay"    column="clear_day"    />
+        <result property="beginBalance"    column="begin_balance"    />
+        <result property="beginFrozen"    column="begin_frozen"    />
+        <result property="memo"    column="memo"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="refunded"    column="refunded"    />
+        <result property="publiced"    column="publiced"    />
+        <result property="refundAt"    column="refund_at"    />
+        <result property="createTime"    column="create_time"    />
+
+        <result property="account"    column="account"    />
+        <result property="pid"    column="pid"    />
+    </resultMap>
+
+    <sql id="selectAssetFlowVo">
+        select id, uid, type, scene, symbol, ymd, balance, frozen,publiced,refunded,refund_at , relate_id, relate_memo, clear_day, begin_balance, begin_frozen, memo, create_at, create_time from a_asset_flow
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.uid, a.type, a.scene,  a.symbol,  a.ymd,  a.balance,  a.frozen, a.publiced, a.refunded, a.refund_at , a.relate_id,  a.relate_memo,  a.clear_day,  a.begin_balance,  a.begin_frozen,  a.memo,  a.create_at,  a.create_time,  l.account, b.pid from a_asset_flow a left join u_login l on l.uid = a.uid and l.type  = 3
+    </sql>
+
+    <select id="selectAssetFlowList" parameterType="AssetFlow" resultMap="AssetFlowResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="account != null and account != ''"> and l.account like concat('%',#{account},'%')</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="type != null "> and a.type = #{type}</if>
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="symbol != null  and symbol != ''"> and a.symbol = #{symbol}</if>
+            <if test="refunded != null "> and a.refunded = #{refunded}</if>
+            <if test="publiced != null "> and a.publiced = #{publiced}</if>
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.ymd between #{params.beginDay} and #{params.endDay}</if>
+            <if test="relateId != null "> and a.relate_id = #{relateId}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectAssetFlowById" parameterType="Long" resultMap="AssetFlowResult">
+        <include refid="selectAssetFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAssetFlow" parameterType="AssetFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into a_asset_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="scene != null">scene,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="ymd != null">ymd,</if>
+            <if test="balance != null">balance,</if>
+            <if test="frozen != null">frozen,</if>
+            <if test="relateId != null">relate_id,</if>
+            <if test="relateMemo != null">relate_memo,</if>
+            <if test="clearDay != null">clear_day,</if>
+            <if test="beginBalance != null">begin_balance,</if>
+            <if test="beginFrozen != null">begin_frozen,</if>
+            <if test="memo != null">memo,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="scene != null">#{scene},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="ymd != null">#{ymd},</if>
+            <if test="balance != null">#{balance},</if>
+            <if test="frozen != null">#{frozen},</if>
+            <if test="relateId != null">#{relateId},</if>
+            <if test="relateMemo != null">#{relateMemo},</if>
+            <if test="clearDay != null">#{clearDay},</if>
+            <if test="beginBalance != null">#{beginBalance},</if>
+            <if test="beginFrozen != null">#{beginFrozen},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetFlow" parameterType="AssetFlow">
+        update a_asset_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="scene != null">scene = #{scene},</if>
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="ymd != null">ymd = #{ymd},</if>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="frozen != null">frozen = #{frozen},</if>
+            <if test="relateId != null">relate_id = #{relateId},</if>
+            <if test="relateMemo != null">relate_memo = #{relateMemo},</if>
+            <if test="clearDay != null">clear_day = #{clearDay},</if>
+            <if test="beginBalance != null">begin_balance = #{beginBalance},</if>
+            <if test="beginFrozen != null">begin_frozen = #{beginFrozen},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAssetFlowById" parameterType="Long">
+        delete from a_asset_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetFlowByIds" parameterType="String">
+        delete from a_asset_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="AssetFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null and account != ''"> and ul.account = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+            and u.deleted = 0
+        </where>
+        union all
+        select n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id,  pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="type != null "> and a.type = #{type}</if>
+            <if test="scene != null and scene != ''"> and a.scene = #{scene}</if>
+            <if test="symbol != null and symbol != ''"> and a.symbol = #{symbol}</if>
+            <if test="refunded != null"> and a.refunded = #{refunded}</if>
+            <if test="publiced != null"> and a.publiced = #{publiced}</if>
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.ymd between #{params.beginDay} and #{params.endDay}</if>
+            <if test="relateId != null "> and a.relate_id = #{relateId}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="AssetFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null and account != ''"> and ul.account = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+            and u.deleted = 0
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id and e.deleted =0
+        ) select distinct id,  pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="type != null "> and a.type = #{type}</if>
+            <if test="scene != null and scene != ''"> and a.scene = #{scene}</if>
+            <if test="symbol != null and symbol != ''"> and a.symbol = #{symbol}</if>
+            <if test="refunded != null"> and a.refunded = #{refunded}</if>
+            <if test="publiced != null"> and a.publiced = #{publiced}</if>
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.ymd between #{params.beginDay} and #{params.endDay}</if>
+            <if test="relateId != null "> and a.relate_id = #{relateId}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listDailyWithChildren" resultType="com.ruoyi.project.business.dto.AssetFlowGroupDTO">
+        select a.ymd,
+        ifnull(sum(case a.scene when '0101' then a.balance else 0 end),0) 'sysRecharge',
+        ifnull(sum(case a.scene when '0102' then a.balance else 0 end),0) 'sysReduce',
+        ifnull(sum(case when a.scene = '0103' and a.refunded = 0 then a.balance else 0 end),0) 'withdraw',
+        ifnull(sum(case when a.scene = '0103' and a.refunded = 1 then a.balance else 0 end),0) 'withdrawRefund',
+        ifnull(sum(case a.scene when '0104' then a.balance else 0 end),0) 'recharge',
+        ifnull(sum(case when a.scene = '0201' and a.refunded = 0 then a.balance else 0 end),0) 'pay',
+        ifnull(sum(case when a.scene = '0201' and a.refunded = 1 then a.balance else 0 end),0) 'payRefund',
+        ifnull(sum(case a.scene when '0301' then a.balance else 0 end),0) 'invest',
+        ifnull(sum(case a.scene when '0401' then a.balance else 0 end),0) 'statics',
+        ifnull(sum(case a.scene when '0402' then a.balance else 0 end),0) 'teamInvite',
+        ifnull(sum(case a.scene when '0503' then a.balance else 0 end),0) 'publicRank',
+        ifnull(sum(case when a.scene = '0601' and a.symbol = 'USDT' then a.balance else 0 end),0) 'exchange'
+        from a_asset_flow a, (
+            WITH RECURSIVE cte AS (
+            select 0 as n, u.* from u_member u <if test="account != null and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+            <where>
+                <if test="uid != null "> and u.id = #{uid}</if>
+                <if test="account != null and account != ''"> and ul.account = #{account} </if>
+                and u.deleted = 0
+            </where>
+            union all
+            select n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+            ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.ymd  between #{params.beginDay} and #{params.endDay}</if>
+        </where>
+        group by a.ymd
+        order by a.ymd desc
+    </select>
+
+    <select id="listDailyWithParents" resultType="com.ruoyi.project.business.dto.AssetFlowGroupDTO">
+        select a.ymd,
+        ifnull(sum(case a.scene when '0101' then a.balance else 0 end),0) 'sysRecharge',
+        ifnull(sum(case a.scene when '0102' then a.balance else 0 end),0) 'sysReduce',
+        ifnull(sum(case when a.scene = '0103' and a.refunded = 0 then a.balance else 0 end),0) 'withdraw',
+        ifnull(sum(case when a.scene = '0103' and a.refunded = 1 then a.balance else 0 end),0) 'withdrawRefund',
+        ifnull(sum(case a.scene when '0104' then a.balance else 0 end),0) 'recharge',
+        ifnull(sum(case when a.scene = '0201' and a.refunded = 0 then a.balance else 0 end),0) 'pay',
+        ifnull(sum(case when a.scene = '0201' and a.refunded = 1 then a.balance else 0 end),0) 'payRefund',
+        ifnull(sum(case a.scene when '0301' then a.balance else 0 end),0) 'invest',
+        ifnull(sum(case a.scene when '0401' then a.balance else 0 end),0) 'statics',
+        ifnull(sum(case a.scene when '0402' then a.balance else 0 end),0) 'teamInvite',
+        ifnull(sum(case a.scene when '0503' then a.balance else 0 end),0) 'publicRank',
+        ifnull(sum(case when a.scene = '0601' and a.symbol = 'USDT' then a.balance else 0 end),0) 'exchange'
+        from a_asset_flow a, (
+            WITH RECURSIVE cte AS (
+            select 0 as n, u.* from u_member u <if test="account != null and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+            <where>
+                <if test="uid != null "> and u.id = #{uid}</if>
+                <if test="account != null and account != ''"> and ul.account = #{account} </if>
+                and u.deleted = 0
+            </where>
+            union all
+            select n+1,e.* from u_member e inner join `cte` c on c.pid = e.id and e.deleted =0
+            ) select distinct id,  pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.ymd  between #{params.beginDay} and #{params.endDay}</if>
+        </where>
+        group by a.ymd
+        order by a.ymd desc
+    </select>
+
+    <select id="selectDailyAssetFlowList" parameterType="com.ruoyi.project.business.domain.AssetFlow" resultType="com.ruoyi.project.business.dto.AssetFlowGroupDTO">
+        select a.ymd,
+        ifnull(sum(case a.scene when '0101' then a.balance else 0 end),0) 'sysRecharge',
+        ifnull(sum(case a.scene when '0102' then a.balance else 0 end),0) 'sysReduce',
+        ifnull(sum(case when a.scene = '0103' and a.refunded = 0 then a.balance else 0 end),0) 'withdraw',
+        ifnull(sum(case when a.scene = '0103' and a.refunded = 1 then a.balance else 0 end),0) 'withdrawRefund',
+        ifnull(sum(case a.scene when '0104' then a.balance else 0 end),0) 'recharge',
+        ifnull(sum(case when a.scene = '0201' and a.refunded = 0 then a.balance else 0 end),0) 'pay',
+        ifnull(sum(case when a.scene = '0201' and a.refunded = 1 then a.balance else 0 end),0) 'payRefund',
+        ifnull(sum(case a.scene when '0301' then a.balance else 0 end),0) 'invest',
+        ifnull(sum(case a.scene when '0401' then a.balance else 0 end),0) 'statics',
+        ifnull(sum(case a.scene when '0402' then a.balance else 0 end),0) 'teamInvite',
+        ifnull(sum(case a.scene when '0503' then a.balance else 0 end),0) 'publicRank',
+        ifnull(sum(case when a.scene = '0601' and a.symbol = 'USDT' then a.balance else 0 end),0) 'exchange'
+        from a_asset_flow a, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="uid != null ">and a.uid = #{uid}</if>
+            <if test="account != null and account != ''"> and b.email = #{account} </if>
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.ymd  between #{params.beginDay} and #{params.endDay}</if>
+
+        </where>
+        group by a.ymd
+        order by a.ymd desc
+    </select>
+</mapper>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.PayFlowMapper">
+
+    <resultMap type="PayFlow" id="PayFlowResult">
+        <result property="id"    column="id"    />
+        <result property="scene"    column="scene"    />
+        <result property="relateId"    column="relate_id"    />
+        <result property="provider"    column="provider"    />
+        <result property="uid"    column="uid"    />
+        <result property="amount"    column="amount"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="payMode"    column="pay_mode"    />
+        <result property="payChannel"    column="pay_channel"    />
+        <result property="status"    column="status"    />
+        <result property="payStatus"    column="pay_status"    />
+        <result property="extInfo"    column="ext_info"    />
+        <result property="resp"    column="resp"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="notifyAt"    column="notify_at"    />
+        <result property="fallbackAt"    column="fallback_at"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="account"    column="account"    />
+        <result property="pid"    column="pid"    />
+    </resultMap>
+
+    <sql id="selectPayFlowVo">
+        select id, scene, relate_id, provider, uid, amount, quantity, pay_mode, pay_channel, status, pay_status, ext_info, resp, create_at, notify_at, fallback_at, create_time, update_time from z_pay_flow
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.scene,  a.relate_id,  a.provider,  a.uid,  a.amount,  a.quantity,  a.pay_mode,  a.pay_channel,  a.status,  a.pay_status,  a.ext_info,  a.resp,  a.create_at,  a.notify_at,  a.fallback_at,  a.create_time,  a.update_time,  l.account, b.pid from z_pay_flow a left join u_login l on a.uid = l.uid and l.type in (3)
+    </sql>
+
+    <select id="selectPayFlowList" parameterType="PayFlow" resultMap="PayFlowResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="account != null and account != ''"> and l.account like concat('%',#{account},'%')</if>
+            <if test="id != null "> and a.id = #{id}</if>
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="relateId != null "> and a.relate_id = #{relateId}</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="payMode != null  and payMode != ''"> and a.pay_mode = #{payMode}</if>
+            <if test="payChannel != null  and payChannel != ''"> and a.pay_channel = #{payChannel}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="payStatus != null "> and a.pay_status = #{payStatus}</if>
+            <if test="extraParams.beginCreateAt != null and extraParams.beginCreateAt != '' and extraParams.endCreateAt != null and extraParams.endCreateAt != ''"> and a.create_at between #{extraParams.beginCreateAt} and #{extraParams.endCreateAt}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectPayFlowById" parameterType="Long" resultMap="PayFlowResult">
+        <include refid="selectPayFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPayFlow" parameterType="PayFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into z_pay_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scene != null">scene,</if>
+            <if test="relateId != null">relate_id,</if>
+            <if test="provider != null">provider,</if>
+            <if test="uid != null">uid,</if>
+            <if test="amount != null">amount,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="payMode != null">pay_mode,</if>
+            <if test="payChannel != null">pay_channel,</if>
+            <if test="status != null">status,</if>
+            <if test="payStatus != null">pay_status,</if>
+            <if test="extInfo != null">ext_info,</if>
+            <if test="resp != null">resp,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="notifyAt != null">notify_at,</if>
+            <if test="fallbackAt != null">fallback_at,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="scene != null">#{scene},</if>
+            <if test="relateId != null">#{relateId},</if>
+            <if test="provider != null">#{provider},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="payMode != null">#{payMode},</if>
+            <if test="payChannel != null">#{payChannel},</if>
+            <if test="status != null">#{status},</if>
+            <if test="payStatus != null">#{payStatus},</if>
+            <if test="extInfo != null">#{extInfo},</if>
+            <if test="resp != null">#{resp},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="notifyAt != null">#{notifyAt},</if>
+            <if test="fallbackAt != null">#{fallbackAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePayFlow" parameterType="PayFlow">
+        update z_pay_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="scene != null">scene = #{scene},</if>
+            <if test="relateId != null">relate_id = #{relateId},</if>
+            <if test="provider != null">provider = #{provider},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="payMode != null">pay_mode = #{payMode},</if>
+            <if test="payChannel != null">pay_channel = #{payChannel},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="payStatus != null">pay_status = #{payStatus},</if>
+            <if test="extInfo != null">ext_info = #{extInfo},</if>
+            <if test="resp != null">resp = #{resp},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="notifyAt != null">notify_at = #{notifyAt},</if>
+            <if test="fallbackAt != null">fallback_at = #{fallbackAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePayFlowById" parameterType="Long">
+        delete from z_pay_flow where id = #{id}
+    </delete>
+
+    <delete id="deletePayFlowByIds" parameterType="String">
+        delete from z_pay_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="PayFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="id != null "> and a.id = #{id}</if>
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="relateId != null "> and a.relate_id = #{relateId}</if>
+            and a.uid = b.id
+            <if test="payMode != null  and payMode != ''"> and a.pay_mode = #{payMode}</if>
+            <if test="payChannel != null  and payChannel != ''"> and a.pay_channel = #{payChannel}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="payStatus != null "> and a.pay_status = #{payStatus}</if>
+            <if test="extraParams.beginCreateAt != null and extraParams.beginCreateAt != '' and extraParams.endCreateAt != null and extraParams.endCreateAt != ''"> and a.create_at between #{extraParams.beginCreateAt} and #{extraParams.endCreateAt}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="PayFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            <if test="id != null "> and a.id = #{id}</if>
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="relateId != null "> and a.relate_id = #{relateId}</if>
+            and a.uid = b.id
+            <if test="id != null  and id != ''"> and a.id = #{id}</if>
+            <if test="payMode != null  and payMode != ''"> and a.pay_mode = #{payMode}</if>
+            <if test="payChannel != null  and payChannel != ''"> and a.pay_channel = #{payChannel}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="payStatus != null "> and a.pay_status = #{payStatus}</if>
+            <if test="extraParams.beginCreateAt != null and extraParams.beginCreateAt != '' and extraParams.endCreateAt != null and extraParams.endCreateAt != ''"> and a.create_at between #{extraParams.beginCreateAt} and #{extraParams.endCreateAt}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+</mapper>

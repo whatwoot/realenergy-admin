@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.ApplyFlowMapper">
+
+    <resultMap type="ApplyFlow" id="ApplyFlowResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="scene"    column="scene"    />
+        <result property="status"    column="status"    />
+        <result property="params"    column="params"    />
+        <result property="auditAt"    column="audit_at"    />
+        <result property="auditMsg"    column="audit_msg"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="account"    column="account"    />
+        <result property="pid"    column="pid"    />
+    </resultMap>
+
+    <sql id="selectApplyFlowVo">
+        select id, uid, scene, status, params, audit_at, audit_msg, create_at, create_time, update_time from s_apply_flow
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.uid,  a.scene,  a.status,  a.params,  a.audit_at,  a.audit_msg,  a.create_at,  a.create_time,  a.update_time,  l.account, b.pid from s_apply_flow a left join u_login l on a.uid = l.uid and l.type in (3)
+    </sql>
+
+    <select id="selectApplyFlowList" parameterType="ApplyFlow" resultMap="ApplyFlowResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="id != null  and id != ''"> and a.id = #{id}</if>
+            <if test="account != null and account != ''"> and l.account like concat('%',#{account},'%')</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="extraParams.beginCreateAt != null and extraParams.beginCreateAt != '' and extraParams.endCreateAt != null and extraParams.endCreateAt != ''"> and a.create_at between #{extraParams.beginCreateAt} and #{extraParams.endCreateAt}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectApplyFlowById" parameterType="Long" resultMap="ApplyFlowResult">
+        <include refid="selectApplyFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertApplyFlow" parameterType="ApplyFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into s_apply_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="scene != null">scene,</if>
+            <if test="status != null">status,</if>
+            <if test="params != null">params,</if>
+            <if test="auditAt != null">audit_at,</if>
+            <if test="auditMsg != null">audit_msg,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="scene != null">#{scene},</if>
+            <if test="status != null">#{status},</if>
+            <if test="params != null">#{params},</if>
+            <if test="auditAt != null">#{auditAt},</if>
+            <if test="auditMsg != null">#{auditMsg},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApplyFlow" parameterType="ApplyFlow">
+        update s_apply_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="scene != null">scene = #{scene},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="params != null">params = #{params},</if>
+            <if test="auditAt != null">audit_at = #{auditAt},</if>
+            <if test="auditMsg != null">audit_msg = #{auditMsg},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteApplyFlowById" parameterType="Long">
+        delete from s_apply_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteApplyFlowByIds" parameterType="String">
+        delete from s_apply_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="ApplyFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="id != null  and id != ''"> and a.id = #{id}</if>
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="extraParams.beginCreateAt != null and extraParams.beginCreateAt != '' and extraParams.endCreateAt != null and extraParams.endCreateAt != ''"> and a.create_at between #{extraParams.beginCreateAt} and #{extraParams.endCreateAt}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="ApplyFlowResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="id != null  and id != ''"> and a.id = #{id}</if>
+            <if test="scene != null  and scene != ''"> and a.scene = #{scene}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="extraParams.beginCreateAt != null and extraParams.beginCreateAt != '' and extraParams.endCreateAt != null and extraParams.endCreateAt != ''"> and a.create_at between #{extraParams.beginCreateAt} and #{extraParams.endCreateAt}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+</mapper>

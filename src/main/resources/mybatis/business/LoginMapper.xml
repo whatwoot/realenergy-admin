@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.LoginMapper">
+
+    <resultMap type="Login" id="LoginResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="type"    column="type"    />
+        <result property="account"    column="account"    />
+        <result property="secret"    column="secret"    />
+        <result property="status"    column="status"    />
+        <result property="salt"    column="salt"    />
+        <result property="memo"    column="memo"    />
+        <result property="bindAt"    column="bind_at"    />
+        <result property="showed"    column="showed"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectLoginVo">
+        select id, uid, type, account, secret, status, salt, memo, bind_at, showed, create_time, update_time, deleted from u_login
+    </sql>
+
+    <sql id="SelectDomainLoginVo">
+        select a.id, a.uid, a.type, a.account, a.secret, a.status, a.salt, a.memo, a.bind_at, a.showed, a.create_time, a.update_time, a.deleted from u_login a
+    </sql>
+
+    <select id="selectLoginList" parameterType="Login" resultMap="LoginResult">
+        <include refid="selectLoginVo"/>
+        <where>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="account != null  and account != ''"> and account = #{account}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="showed != null "> and showed = #{showed}</if>
+        </where>
+    </select>
+
+    <select id="selectLoginById" parameterType="Long" resultMap="LoginResult">
+        <include refid="selectLoginVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLogin" parameterType="Login" useGeneratedKeys="true" keyProperty="id">
+        insert into u_login
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="type != null">type,</if>
+            <if test="account != null">account,</if>
+            <if test="secret != null">secret,</if>
+            <if test="status != null">status,</if>
+            <if test="salt != null">salt,</if>
+            <if test="memo != null">memo,</if>
+            <if test="bindAt != null">bind_at,</if>
+            <if test="showed != null">showed,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="type != null">#{type},</if>
+            <if test="account != null">#{account},</if>
+            <if test="secret != null">#{secret},</if>
+            <if test="status != null">#{status},</if>
+            <if test="salt != null">#{salt},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="bindAt != null">#{bindAt},</if>
+            <if test="showed != null">#{showed},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLogin" parameterType="Login">
+        update u_login
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="account != null">account = #{account},</if>
+            <if test="secret != null">secret = #{secret},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="salt != null">salt = #{salt},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="bindAt != null">bind_at = #{bindAt},</if>
+            <if test="showed != null">showed = #{showed},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLoginById" parameterType="Long">
+        delete from u_login where id = #{id}
+    </delete>
+
+    <delete id="deleteLoginByIds" parameterType="String">
+        delete from u_login where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectByUids" resultType="com.ruoyi.project.business.domain.Login">
+        select * from u_login
+        where uid in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

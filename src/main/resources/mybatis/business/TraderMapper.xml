@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.TraderMapper">
+
+    <resultMap type="Trader" id="TraderResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="name"    column="name"    />
+        <result property="strategy"    column="strategy"    />
+        <result property="platform"    column="platform"    />
+        <result property="cate"    column="cate"    />
+        <result property="closedEnd"    column="closed_end"    />
+        <result property="tradeTotalIncome"    column="trade_total_income"    />
+        <result property="tradeYieldRate"    column="trade_yield_rate"    />
+        <result property="annualizedReturnRate"    column="annualized_return_rate"    />
+        <result property="maxDrawdown"    column="max_drawdown"    />
+        <result property="principalAmount"    column="principal_amount"    />
+        <result property="participantCount"    column="participant_count"    />
+        <result property="currentAmount"    column="current_amount"    />
+        <result property="fundAmount"    column="fund_amount"    />
+        <result property="winRate"    column="win_rate"    />
+        <result property="tradeCount"    column="trade_count"    />
+        <result property="limitNum"    column="limit_num"    />
+        <result property="limitAmount"    column="limit_amount"    />
+        <result property="closedDay"    column="closed_day"    />
+        <result property="participantNum"    column="participant_num"    />
+        <result property="followTotalIncome"    column="follow_total_income"    />
+        <result property="followYieldRate"    column="follow_yield_rate"    />
+        <result property="profitList"    column="profit_list"    />
+        <result property="startAt"    column="start_at"    />
+        <result property="lastStartAt"    column="last_start_at"    />
+        <result property="status"    column="status"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="volume"    column="volume"    />
+        <result property="compensation"    column="compensation"    />
+        <result property="fundAdjustAmount"    column="fund_adjust_amount"    />
+        <result property="minAmount"    column="min_amount"    />
+        <result property="maxAmount"    column="max_amount"    />
+        <result property="showed"    column="showed"    />
+        <result property="rates"    column="rates"    />
+        <result property="fullRates"    column="full_rates"    />
+        <result property="marginRate"    column="margin_rate"    />
+        <result property="warnMarginRate"    column="warn_margin_rate"    />
+        <result property="stopMarginRate"    column="stop_margin_rate"    />
+    </resultMap>
+
+    <sql id="selectTraderVo">
+        select id, title, name, strategy, platform, cate, closed_end, trade_total_income, trade_yield_rate, annualized_return_rate, max_drawdown, principal_amount, participant_count, current_amount, fund_amount, win_rate, trade_count, limit_num, limit_amount, closed_day, participant_num, follow_total_income, follow_yield_rate, profit_list, start_at, last_start_at, status, create_at, create_time, update_time, volume, compensation, fund_adjust_amount, min_amount, max_amount, showed, rates, full_rates, margin_rate, warn_margin_rate, stop_margin_rate from t_trader
+    </sql>
+
+    <sql id="SelectDomainTraderVo">
+        select a.id, a.title, a.name, a.strategy, a.platform, a.cate, a.closed_end, a.trade_total_income, a.trade_yield_rate, a.annualized_return_rate, a.max_drawdown, a.principal_amount, a.participant_count, a.current_amount, a.fund_amount, a.win_rate, a.trade_count, a.limit_num, a.limit_amount, a.closed_day, a.participant_num, a.follow_total_income, a.follow_yield_rate, a.profit_list, a.start_at, a.last_start_at, a.status, a.create_at, a.create_time, a.update_time, a.volume, a.compensation, a.fund_adjust_amount, a.min_amount, a.max_amount, a.showed, a.rates, a.full_rates, a.margin_rate, a.warn_margin_rate, a.stop_margin_rate from t_trader a
+    </sql>
+
+    <select id="selectTraderList" parameterType="Trader" resultMap="TraderResult">
+        <include refid="selectTraderVo"/>
+        <where>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="strategy != null  and strategy != ''"> and strategy = #{strategy}</if>
+            <if test="platform != null  and platform != ''"> and platform = #{platform}</if>
+            <if test="cate != null "> and cate = #{cate}</if>
+            <if test="closedEnd != null "> and closed_end = #{closedEnd}</if>
+            <if test="tradeTotalIncome != null "> and trade_total_income = #{tradeTotalIncome}</if>
+            <if test="tradeYieldRate != null "> and trade_yield_rate = #{tradeYieldRate}</if>
+            <if test="annualizedReturnRate != null "> and annualized_return_rate = #{annualizedReturnRate}</if>
+            <if test="maxDrawdown != null "> and max_drawdown = #{maxDrawdown}</if>
+            <if test="principalAmount != null "> and principal_amount = #{principalAmount}</if>
+            <if test="participantCount != null "> and participant_count = #{participantCount}</if>
+            <if test="currentAmount != null "> and current_amount = #{currentAmount}</if>
+            <if test="fundAmount != null "> and fund_amount = #{fundAmount}</if>
+            <if test="winRate != null "> and win_rate = #{winRate}</if>
+            <if test="tradeCount != null "> and trade_count = #{tradeCount}</if>
+            <if test="limitNum != null "> and limit_num = #{limitNum}</if>
+            <if test="limitAmount != null "> and limit_amount = #{limitAmount}</if>
+            <if test="closedDay != null "> and closed_day = #{closedDay}</if>
+            <if test="participantNum != null "> and participant_num = #{participantNum}</if>
+            <if test="followTotalIncome != null "> and follow_total_income = #{followTotalIncome}</if>
+            <if test="followYieldRate != null "> and follow_yield_rate = #{followYieldRate}</if>
+            <if test="profitList != null  and profitList != ''"> and profit_list = #{profitList}</if>
+            <if test="startAt != null "> and start_at = #{startAt}</if>
+            <if test="lastStartAt != null "> and last_start_at = #{lastStartAt}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="createAt != null "> and create_at = #{createAt}</if>
+            <if test="volume != null "> and volume = #{volume}</if>
+            <if test="compensation != null "> and compensation = #{compensation}</if>
+            <if test="fundAdjustAmount != null "> and fund_adjust_amount = #{fundAdjustAmount}</if>
+            <if test="minAmount != null "> and min_amount = #{minAmount}</if>
+            <if test="maxAmount != null "> and max_amount = #{maxAmount}</if>
+            <if test="showed != null "> and showed = #{showed}</if>
+            <if test="rates != null  and rates != ''"> and rates = #{rates}</if>
+            <if test="fullRates != null  and fullRates != ''"> and full_rates = #{fullRates}</if>
+            <if test="marginRate != null "> and margin_rate = #{marginRate}</if>
+            <if test="warnMarginRate != null "> and warn_margin_rate = #{warnMarginRate}</if>
+            <if test="stopMarginRate != null "> and stop_margin_rate = #{stopMarginRate}</if>
+        </where>
+    </select>
+
+    <select id="selectTraderById" parameterType="Long" resultMap="TraderResult">
+        <include refid="selectTraderVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTrader" parameterType="Trader" useGeneratedKeys="true" keyProperty="id">
+        insert into t_trader
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="name != null">name,</if>
+            <if test="strategy != null">strategy,</if>
+            <if test="platform != null">platform,</if>
+            <if test="cate != null">cate,</if>
+            <if test="closedEnd != null">closed_end,</if>
+            <if test="tradeTotalIncome != null">trade_total_income,</if>
+            <if test="tradeYieldRate != null">trade_yield_rate,</if>
+            <if test="annualizedReturnRate != null">annualized_return_rate,</if>
+            <if test="maxDrawdown != null">max_drawdown,</if>
+            <if test="principalAmount != null">principal_amount,</if>
+            <if test="participantCount != null">participant_count,</if>
+            <if test="currentAmount != null">current_amount,</if>
+            <if test="fundAmount != null">fund_amount,</if>
+            <if test="winRate != null">win_rate,</if>
+            <if test="tradeCount != null">trade_count,</if>
+            <if test="limitNum != null">limit_num,</if>
+            <if test="limitAmount != null">limit_amount,</if>
+            <if test="closedDay != null">closed_day,</if>
+            <if test="participantNum != null">participant_num,</if>
+            <if test="followTotalIncome != null">follow_total_income,</if>
+            <if test="followYieldRate != null">follow_yield_rate,</if>
+            <if test="profitList != null">profit_list,</if>
+            <if test="startAt != null">start_at,</if>
+            <if test="lastStartAt != null">last_start_at,</if>
+            <if test="status != null">status,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="volume != null">volume,</if>
+            <if test="compensation != null">compensation,</if>
+            <if test="fundAdjustAmount != null">fund_adjust_amount,</if>
+            <if test="minAmount != null">min_amount,</if>
+            <if test="maxAmount != null">max_amount,</if>
+            <if test="showed != null">showed,</if>
+            <if test="rates != null">rates,</if>
+            <if test="fullRates != null">full_rates,</if>
+            <if test="marginRate != null">margin_rate,</if>
+            <if test="warnMarginRate != null">warn_margin_rate,</if>
+            <if test="stopMarginRate != null">stop_margin_rate,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="name != null">#{name},</if>
+            <if test="strategy != null">#{strategy},</if>
+            <if test="platform != null">#{platform},</if>
+            <if test="cate != null">#{cate},</if>
+            <if test="closedEnd != null">#{closedEnd},</if>
+            <if test="tradeTotalIncome != null">#{tradeTotalIncome},</if>
+            <if test="tradeYieldRate != null">#{tradeYieldRate},</if>
+            <if test="annualizedReturnRate != null">#{annualizedReturnRate},</if>
+            <if test="maxDrawdown != null">#{maxDrawdown},</if>
+            <if test="principalAmount != null">#{principalAmount},</if>
+            <if test="participantCount != null">#{participantCount},</if>
+            <if test="currentAmount != null">#{currentAmount},</if>
+            <if test="fundAmount != null">#{fundAmount},</if>
+            <if test="winRate != null">#{winRate},</if>
+            <if test="tradeCount != null">#{tradeCount},</if>
+            <if test="limitNum != null">#{limitNum},</if>
+            <if test="limitAmount != null">#{limitAmount},</if>
+            <if test="closedDay != null">#{closedDay},</if>
+            <if test="participantNum != null">#{participantNum},</if>
+            <if test="followTotalIncome != null">#{followTotalIncome},</if>
+            <if test="followYieldRate != null">#{followYieldRate},</if>
+            <if test="profitList != null">#{profitList},</if>
+            <if test="startAt != null">#{startAt},</if>
+            <if test="lastStartAt != null">#{lastStartAt},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="volume != null">#{volume},</if>
+            <if test="compensation != null">#{compensation},</if>
+            <if test="fundAdjustAmount != null">#{fundAdjustAmount},</if>
+            <if test="minAmount != null">#{minAmount},</if>
+            <if test="maxAmount != null">#{maxAmount},</if>
+            <if test="showed != null">#{showed},</if>
+            <if test="rates != null">#{rates},</if>
+            <if test="fullRates != null">#{fullRates},</if>
+            <if test="marginRate != null">#{marginRate},</if>
+            <if test="warnMarginRate != null">#{warnMarginRate},</if>
+            <if test="stopMarginRate != null">#{stopMarginRate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTrader" parameterType="Trader">
+        update t_trader
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="strategy != null">strategy = #{strategy},</if>
+            <if test="platform != null">platform = #{platform},</if>
+            <if test="cate != null">cate = #{cate},</if>
+            <if test="closedEnd != null">closed_end = #{closedEnd},</if>
+            <if test="tradeTotalIncome != null">trade_total_income = #{tradeTotalIncome},</if>
+            <if test="tradeYieldRate != null">trade_yield_rate = #{tradeYieldRate},</if>
+            <if test="annualizedReturnRate != null">annualized_return_rate = #{annualizedReturnRate},</if>
+            <if test="maxDrawdown != null">max_drawdown = #{maxDrawdown},</if>
+            <if test="principalAmount != null">principal_amount = #{principalAmount},</if>
+            <if test="participantCount != null">participant_count = #{participantCount},</if>
+            <if test="currentAmount != null">current_amount = #{currentAmount},</if>
+            <if test="fundAmount != null">fund_amount = #{fundAmount},</if>
+            <if test="winRate != null">win_rate = #{winRate},</if>
+            <if test="tradeCount != null">trade_count = #{tradeCount},</if>
+            <if test="limitNum != null">limit_num = #{limitNum},</if>
+            <if test="limitAmount != null">limit_amount = #{limitAmount},</if>
+            <if test="closedDay != null">closed_day = #{closedDay},</if>
+            <if test="participantNum != null">participant_num = #{participantNum},</if>
+            <if test="followTotalIncome != null">follow_total_income = #{followTotalIncome},</if>
+            <if test="followYieldRate != null">follow_yield_rate = #{followYieldRate},</if>
+            <if test="profitList != null">profit_list = #{profitList},</if>
+            <if test="startAt != null">start_at = #{startAt},</if>
+            <if test="lastStartAt != null">last_start_at = #{lastStartAt},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="volume != null">volume = #{volume},</if>
+            <if test="compensation != null">compensation = #{compensation},</if>
+            <if test="fundAdjustAmount != null">fund_adjust_amount = #{fundAdjustAmount},</if>
+            <if test="minAmount != null">min_amount = #{minAmount},</if>
+            <if test="maxAmount != null">max_amount = #{maxAmount},</if>
+            <if test="showed != null">showed = #{showed},</if>
+            <if test="rates != null">rates = #{rates},</if>
+            <if test="fullRates != null">full_rates = #{fullRates},</if>
+            <if test="marginRate != null">margin_rate = #{marginRate},</if>
+            <if test="warnMarginRate != null">warn_margin_rate = #{warnMarginRate},</if>
+            <if test="stopMarginRate != null">stop_margin_rate = #{stopMarginRate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTraderById" parameterType="Long">
+        delete from t_trader where id = #{id}
+    </delete>
+
+    <delete id="deleteTraderByIds" parameterType="String">
+        delete from t_trader where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

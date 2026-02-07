@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.DecPriceHisMapper">
+
+    <resultMap type="DecPriceHis" id="DecPriceHisResult">
+        <result property="id"    column="id"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="poolAddr"    column="pool_addr"    />
+        <result property="reserve0"    column="reserve0"    />
+        <result property="reserve1"    column="reserve1"    />
+        <result property="decimals0"    column="decimals0"    />
+        <result property="decimals1"    column="decimals1"    />
+        <result property="priceTime"    column="price_time"    />
+        <result property="price"    column="price"    />
+        <result property="priceDirection"    column="price_direction"    />
+        <result property="blockNo"    column="block_no"    />
+        <result property="status"    column="status"    />
+        <result property="updateAt"    column="update_at"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectDecPriceHisVo">
+        select id, symbol, pool_addr, reserve0, reserve1, decimals0, decimals1, price_time, price, price_direction, block_no, status, update_at, create_time from c_dec_price_his
+    </sql>
+
+    <sql id="SelectDomainDecPriceHisVo">
+        select a.id, a.symbol, a.pool_addr, a.reserve0, a.reserve1, a.decimals0, a.decimals1, a.price_time, a.price, a.price_direction, a.block_no, a.status, a.update_at, a.create_time from c_dec_price_his a
+    </sql>
+
+    <select id="selectDecPriceHisList" parameterType="DecPriceHis" resultMap="DecPriceHisResult">
+        <include refid="selectDecPriceHisVo"/>
+        <where>
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="poolAddr != null  and poolAddr != ''"> and pool_addr = #{poolAddr}</if>
+            <if test="reserve0 != null "> and reserve0 = #{reserve0}</if>
+            <if test="reserve1 != null "> and reserve1 = #{reserve1}</if>
+            <if test="decimals0 != null "> and decimals0 = #{decimals0}</if>
+            <if test="decimals1 != null "> and decimals1 = #{decimals1}</if>
+            <if test="priceTime != null "> and price_time = #{priceTime}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="priceDirection != null "> and price_direction = #{priceDirection}</if>
+            <if test="blockNo != null "> and block_no = #{blockNo}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="updateAt != null "> and update_at = #{updateAt}</if>
+        </where>
+    </select>
+
+    <select id="selectDecPriceHisById" parameterType="Long" resultMap="DecPriceHisResult">
+        <include refid="selectDecPriceHisVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDecPriceHis" parameterType="DecPriceHis" useGeneratedKeys="true" keyProperty="id">
+        insert into c_dec_price_his
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="symbol != null">symbol,</if>
+            <if test="poolAddr != null">pool_addr,</if>
+            <if test="reserve0 != null">reserve0,</if>
+            <if test="reserve1 != null">reserve1,</if>
+            <if test="decimals0 != null">decimals0,</if>
+            <if test="decimals1 != null">decimals1,</if>
+            <if test="priceTime != null">price_time,</if>
+            <if test="price != null">price,</if>
+            <if test="priceDirection != null">price_direction,</if>
+            <if test="blockNo != null">block_no,</if>
+            <if test="status != null">status,</if>
+            <if test="updateAt != null">update_at,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="symbol != null">#{symbol},</if>
+            <if test="poolAddr != null">#{poolAddr},</if>
+            <if test="reserve0 != null">#{reserve0},</if>
+            <if test="reserve1 != null">#{reserve1},</if>
+            <if test="decimals0 != null">#{decimals0},</if>
+            <if test="decimals1 != null">#{decimals1},</if>
+            <if test="priceTime != null">#{priceTime},</if>
+            <if test="price != null">#{price},</if>
+            <if test="priceDirection != null">#{priceDirection},</if>
+            <if test="blockNo != null">#{blockNo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="updateAt != null">#{updateAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDecPriceHis" parameterType="DecPriceHis">
+        update c_dec_price_his
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="poolAddr != null">pool_addr = #{poolAddr},</if>
+            <if test="reserve0 != null">reserve0 = #{reserve0},</if>
+            <if test="reserve1 != null">reserve1 = #{reserve1},</if>
+            <if test="decimals0 != null">decimals0 = #{decimals0},</if>
+            <if test="decimals1 != null">decimals1 = #{decimals1},</if>
+            <if test="priceTime != null">price_time = #{priceTime},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="priceDirection != null">price_direction = #{priceDirection},</if>
+            <if test="blockNo != null">block_no = #{blockNo},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateAt != null">update_at = #{updateAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDecPriceHisById" parameterType="Long">
+        delete from c_dec_price_his where id = #{id}
+    </delete>
+
+    <delete id="deleteDecPriceHisByIds" parameterType="String">
+        delete from c_dec_price_his where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

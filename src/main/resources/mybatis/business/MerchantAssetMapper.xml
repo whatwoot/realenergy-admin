@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.MerchantAssetMapper">
+
+    <resultMap type="MerchantAsset" id="MerchantAssetResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="mid"    column="mid"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="balance"    column="balance"    />
+        <result property="frozen"    column="frozen"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="addr"    column="addr"    />
+        <result property="account"    column="account"    />
+        <result property="pid"    column="pid"    />
+    </resultMap>
+
+    <sql id="selectMerchantAssetVo">
+        select id, uid, mid, symbol, balance, frozen, create_time, update_time from p_merchant_asset
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.uid,  a.mid,  a.symbol,  a.balance,  a.frozen,  a.create_time,  a.update_time,  l.account, b.pid from p_merchant_asset a left join u_login l on a.uid = l.uid and l.type in (3)
+    </sql>
+
+    <select id="selectMerchantAssetList" parameterType="MerchantAsset" resultMap="MerchantAssetResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="account != null and account != ''"> and l.account like concat('%',#{account},'%')</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            <if test="symbol != null  and symbol != ''"> and a.symbol = #{symbol}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectMerchantAssetById" parameterType="Long" resultMap="MerchantAssetResult">
+        <include refid="selectMerchantAssetVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMerchantAsset" parameterType="MerchantAsset" useGeneratedKeys="true" keyProperty="id">
+        insert into p_merchant_asset
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="mid != null">mid,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="balance != null">balance,</if>
+            <if test="frozen != null">frozen,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="mid != null">#{mid},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="balance != null">#{balance},</if>
+            <if test="frozen != null">#{frozen},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMerchantAsset" parameterType="MerchantAsset">
+        update p_merchant_asset
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="mid != null">mid = #{mid},</if>
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="frozen != null">frozen = #{frozen},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMerchantAssetById" parameterType="Long">
+        delete from p_merchant_asset where id = #{id}
+    </delete>
+
+    <delete id="deleteMerchantAssetByIds" parameterType="String">
+        delete from p_merchant_asset where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="MerchantAssetResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            <if test="symbol != null  and symbol != ''"> and a.symbol = #{symbol}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="MerchantAssetResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account  = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="mid != null "> and a.mid = #{mid}</if>
+            <if test="symbol != null  and symbol != ''"> and a.symbol = #{symbol}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+</mapper>

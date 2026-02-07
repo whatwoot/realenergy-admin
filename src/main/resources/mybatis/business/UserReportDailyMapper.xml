@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.UserReportDailyMapper">
+
+    <resultMap type="UserReportDaily" id="UserReportDailyResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="day"    column="day"    />
+        <result property="performance"    column="performance"    />
+        <result property="teamPerformance"    column="team_performance"    />
+        <result property="bigTeamPerformance"    column="big_team_performance"    />
+        <result property="smallTeamPerformance"    column="small_team_performance"    />
+        <result property="gainPerformance"    column="gain_performance"    />
+        <result property="gainTeamPerformance"    column="gain_team_performance"    />
+        <result property="beginSmallTeamPerformance"    column="begin_small_team_performance"    />
+        <result property="gainSmallTeamPerformance"    column="gain_small_team_performance"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="addr"    column="addr"    />
+        <result property="account"    column="account"    />
+        <result property="pid"    column="pid"    />
+    </resultMap>
+
+    <sql id="selectUserReportDailyVo">
+        select id, uid, day, performance, team_performance, big_team_performance, small_team_performance, gain_performance, gain_team_performance, begin_small_team_performance, gain_small_team_performance, create_time from b_user_report_daily
+    </sql>
+
+    <sql id="SelectDomainVo">
+        select a.id,  a.uid,  a.day,  a.performance,  a.team_performance,  a.big_team_performance,  a.small_team_performance,  a.gain_performance,  a.gain_team_performance,  a.begin_small_team_performance,  a.gain_small_team_performance,  a.create_time,  l.account, b.pid from b_user_report_daily a left join u_login l on a.uid = l.uid and l.type in (3)
+    </sql>
+
+    <select id="selectUserReportDailyList" parameterType="UserReportDaily" resultMap="UserReportDailyResult">
+        <include refid="SelectDomainVo"/>, u_member b
+        <where>
+            and a.uid = b.id
+            and b.deleted = 0
+            <if test="account != null and account != ''"> and l.account = #{account}</if>
+            <if test="uid != null "> and a.uid = #{uid}</if>
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.day between #{params.beginDay} and #{params.endDay}</if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectUserReportDailyById" parameterType="Long" resultMap="UserReportDailyResult">
+        <include refid="selectUserReportDailyVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertUserReportDaily" parameterType="UserReportDaily" useGeneratedKeys="true" keyProperty="id">
+        insert into b_user_report_daily
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="day != null">day,</if>
+            <if test="performance != null">performance,</if>
+            <if test="teamPerformance != null">team_performance,</if>
+            <if test="bigTeamPerformance != null">big_team_performance,</if>
+            <if test="smallTeamPerformance != null">small_team_performance,</if>
+            <if test="gainPerformance != null">gain_performance,</if>
+            <if test="gainTeamPerformance != null">gain_team_performance,</if>
+            <if test="beginSmallTeamPerformance != null">begin_small_team_performance,</if>
+            <if test="gainSmallTeamPerformance != null">gain_small_team_performance,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="day != null">#{day},</if>
+            <if test="performance != null">#{performance},</if>
+            <if test="teamPerformance != null">#{teamPerformance},</if>
+            <if test="bigTeamPerformance != null">#{bigTeamPerformance},</if>
+            <if test="smallTeamPerformance != null">#{smallTeamPerformance},</if>
+            <if test="gainPerformance != null">#{gainPerformance},</if>
+            <if test="gainTeamPerformance != null">#{gainTeamPerformance},</if>
+            <if test="beginSmallTeamPerformance != null">#{beginSmallTeamPerformance},</if>
+            <if test="gainSmallTeamPerformance != null">#{gainSmallTeamPerformance},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserReportDaily" parameterType="UserReportDaily">
+        update b_user_report_daily
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="day != null">day = #{day},</if>
+            <if test="performance != null">performance = #{performance},</if>
+            <if test="teamPerformance != null">team_performance = #{teamPerformance},</if>
+            <if test="bigTeamPerformance != null">big_team_performance = #{bigTeamPerformance},</if>
+            <if test="smallTeamPerformance != null">small_team_performance = #{smallTeamPerformance},</if>
+            <if test="gainPerformance != null">gain_performance = #{gainPerformance},</if>
+            <if test="gainTeamPerformance != null">gain_team_performance = #{gainTeamPerformance},</if>
+            <if test="beginSmallTeamPerformance != null">begin_small_team_performance = #{beginSmallTeamPerformance},</if>
+            <if test="gainSmallTeamPerformance != null">gain_small_team_performance = #{gainSmallTeamPerformance},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserReportDailyById" parameterType="Long">
+        delete from b_user_report_daily where id = #{id}
+    </delete>
+
+    <delete id="deleteUserReportDailyByIds" parameterType="String">
+        delete from b_user_report_daily where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="UserReportDailyResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''"> join u_login ul on u.id = ul.uid and ul.type in (3) </if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on e.pid = c.id and e.deleted = 0
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.day between #{params.beginDay} and #{params.endDay}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+
+    <select id="listWithParents" resultMap="UserReportDailyResult">
+        <include refid="SelectDomainVo"/>, (
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="account != null  and account != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            and u.deleted = 0
+            <if test="uid != null "> and u.id = #{uid}</if>
+            <if test="account != null  and account != ''"> and ul.account = #{account} </if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+        </where>
+        union all
+        select  n+1,e.* from u_member e inner join `cte` c on c.pid = e.id
+        ) select distinct id, pid, n from `cte`
+        ) b
+        <where>
+            and a.uid = b.id
+            <if test="params.beginDay != null and params.beginDay != '' and params.endDay != null and params.endDay != ''"> and a.day between #{params.beginDay} and #{params.endDay}</if>
+        </where>
+        order by b.n, b.id
+    </select>
+</mapper>

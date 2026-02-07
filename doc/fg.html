@@ -1,0 +1,13 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/2.1.0/fingerprint2.js"></script>
+<script>
+    requestIdleCallback(function () {
+
+        Fingerprint2.get(function (components) {
+            console.log(components) // an array of components: {key: ..., value: ...}
+            var values = components.map(function (component) { return component.value })
+            console.log(values);
+            var hash = Fingerprint2.x64hash128(values.join(''), 31)
+            console.log(hash)
+        })
+    })
+</script>

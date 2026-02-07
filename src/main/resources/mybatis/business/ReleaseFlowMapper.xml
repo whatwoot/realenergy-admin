@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.ReleaseFlowMapper">
+
+    <resultMap type="ReleaseFlow" id="ReleaseFlowResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="amount"    column="amount"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="price"    column="price"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="closeAt"    column="close_at"    />
+        <result property="releaseAt"    column="release_at"    />
+        <result property="releasePeriod"    column="release_period"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="status"    column="status"    />
+        <result property="type"    column="type"    />
+        <result property="lastReleaseDay"    column="last_release_day"    />
+        <result property="leftAmount"    column="left_amount"    />
+    </resultMap>
+
+    <sql id="selectReleaseFlowVo">
+        select id, uid, amount, quantity, price, order_id, close_at, release_at, release_period, create_time, update_time, status, type, last_release_day, left_amount from t_release_flow
+    </sql>
+
+    <sql id="SelectDomainReleaseFlowVo">
+        select a.id, a.uid, a.amount, a.quantity, a.price, a.order_id, a.close_at, a.release_at, a.release_period, a.create_time, a.update_time, a.status, a.type, a.last_release_day, a.left_amount from t_release_flow a
+    </sql>
+
+    <select id="selectReleaseFlowList" parameterType="ReleaseFlow" resultMap="ReleaseFlowResult">
+        <include refid="selectReleaseFlowVo"/>
+        <where>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
+            <if test="closeAt != null "> and close_at = #{closeAt}</if>
+            <if test="releaseAt != null "> and release_at = #{releaseAt}</if>
+            <if test="releasePeriod != null "> and release_period = #{releasePeriod}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="lastReleaseDay != null "> and last_release_day = #{lastReleaseDay}</if>
+            <if test="leftAmount != null "> and left_amount = #{leftAmount}</if>
+        </where>
+    </select>
+
+    <select id="selectReleaseFlowById" parameterType="Long" resultMap="ReleaseFlowResult">
+        <include refid="selectReleaseFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertReleaseFlow" parameterType="ReleaseFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into t_release_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="amount != null">amount,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="price != null">price,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="closeAt != null">close_at,</if>
+            <if test="releaseAt != null">release_at,</if>
+            <if test="releasePeriod != null">release_period,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="status != null">status,</if>
+            <if test="type != null">type,</if>
+            <if test="lastReleaseDay != null">last_release_day,</if>
+            <if test="leftAmount != null">left_amount,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="price != null">#{price},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="closeAt != null">#{closeAt},</if>
+            <if test="releaseAt != null">#{releaseAt},</if>
+            <if test="releasePeriod != null">#{releasePeriod},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="type != null">#{type},</if>
+            <if test="lastReleaseDay != null">#{lastReleaseDay},</if>
+            <if test="leftAmount != null">#{leftAmount},</if>
+         </trim>
+    </insert>
+
+    <update id="updateReleaseFlow" parameterType="ReleaseFlow">
+        update t_release_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="closeAt != null">close_at = #{closeAt},</if>
+            <if test="releaseAt != null">release_at = #{releaseAt},</if>
+            <if test="releasePeriod != null">release_period = #{releasePeriod},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="lastReleaseDay != null">last_release_day = #{lastReleaseDay},</if>
+            <if test="leftAmount != null">left_amount = #{leftAmount},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteReleaseFlowById" parameterType="Long">
+        delete from t_release_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteReleaseFlowByIds" parameterType="String">
+        delete from t_release_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.CopyerMapper">
+
+    <resultMap type="Copyer" id="CopyerResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="uid"    column="uid"    />
+        <result property="traderId"    column="trader_id"    />
+        <result property="totalIncome"    column="total_income"    />
+        <result property="yieldRate"    column="yield_rate"    />
+        <result property="annualizedReturnRate"    column="annualized_return_rate"    />
+        <result property="maxDrawdown"    column="max_drawdown"    />
+        <result property="currentAmount"    column="current_amount"    />
+        <result property="principalAmount"    column="principal_amount"    />
+        <result property="marginQuantity"    column="margin_quantity"    />
+        <result property="marginPrice"    column="margin_price"    />
+        <result property="marginAmount"    column="margin_amount"    />
+        <result property="tradeCount"    column="trade_count"    />
+        <result property="winNum"    column="win_num"    />
+        <result property="winRate"    column="win_rate"    />
+        <result property="startAt"    column="start_at"    />
+        <result property="stopAt"    column="stop_at"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="status"    column="status"    />
+        <result property="errMsg"    column="err_msg"    />
+        <result property="parents"    column="parents"    />
+        <result property="parentsRate"    column="parents_rate"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="totalFee"    column="total_fee"    />
+        <result property="profitList"    column="profit_list"    />
+        <result property="wins"    column="wins"    />
+        <result property="jackpots"    column="jackpots"    />
+    </resultMap>
+
+    <sql id="selectCopyerVo">
+        select id, name, uid, trader_id, total_income, yield_rate, annualized_return_rate, max_drawdown, current_amount, principal_amount, margin_quantity, margin_price, margin_amount, trade_count, win_num, win_rate, start_at, stop_at, create_at, status, err_msg, parents, parents_rate, create_time, update_time, total_fee, profit_list, wins, jackpots from t_copyer
+    </sql>
+
+    <sql id="SelectDomainCopyerVo">
+        select a.id, a.name, a.uid, a.trader_id, a.total_income, a.yield_rate, a.annualized_return_rate, a.max_drawdown, a.current_amount, a.principal_amount, a.margin_quantity, a.margin_price, a.margin_amount, a.trade_count, a.win_num, a.win_rate, a.start_at, a.stop_at, a.create_at, a.status, a.err_msg, a.parents, a.parents_rate, a.create_time, a.update_time, a.total_fee, a.profit_list, a.wins, a.jackpots from t_copyer a
+    </sql>
+
+    <select id="selectCopyerList" parameterType="Copyer" resultMap="CopyerResult">
+        <include refid="selectCopyerVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="traderId != null "> and trader_id = #{traderId}</if>
+            <if test="totalIncome != null "> and total_income = #{totalIncome}</if>
+            <if test="yieldRate != null "> and yield_rate = #{yieldRate}</if>
+            <if test="annualizedReturnRate != null "> and annualized_return_rate = #{annualizedReturnRate}</if>
+            <if test="maxDrawdown != null "> and max_drawdown = #{maxDrawdown}</if>
+            <if test="currentAmount != null "> and current_amount = #{currentAmount}</if>
+            <if test="principalAmount != null "> and principal_amount = #{principalAmount}</if>
+            <if test="marginQuantity != null "> and margin_quantity = #{marginQuantity}</if>
+            <if test="marginPrice != null "> and margin_price = #{marginPrice}</if>
+            <if test="marginAmount != null "> and margin_amount = #{marginAmount}</if>
+            <if test="tradeCount != null "> and trade_count = #{tradeCount}</if>
+            <if test="winNum != null "> and win_num = #{winNum}</if>
+            <if test="winRate != null "> and win_rate = #{winRate}</if>
+            <if test="startAt != null "> and start_at = #{startAt}</if>
+            <if test="stopAt != null "> and stop_at = #{stopAt}</if>
+            <if test="createAt != null "> and create_at = #{createAt}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="errMsg != null  and errMsg != ''"> and err_msg = #{errMsg}</if>
+            <if test="parents != null  and parents != ''"> and parents = #{parents}</if>
+            <if test="parentsRate != null "> and parents_rate = #{parentsRate}</if>
+            <if test="totalFee != null "> and total_fee = #{totalFee}</if>
+            <if test="profitList != null  and profitList != ''"> and profit_list = #{profitList}</if>
+            <if test="wins != null "> and wins = #{wins}</if>
+            <if test="jackpots != null "> and jackpots = #{jackpots}</if>
+        </where>
+    </select>
+
+    <select id="selectCopyerById" parameterType="Long" resultMap="CopyerResult">
+        <include refid="selectCopyerVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCopyer" parameterType="Copyer" useGeneratedKeys="true" keyProperty="id">
+        insert into t_copyer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="uid != null">uid,</if>
+            <if test="traderId != null">trader_id,</if>
+            <if test="totalIncome != null">total_income,</if>
+            <if test="yieldRate != null">yield_rate,</if>
+            <if test="annualizedReturnRate != null">annualized_return_rate,</if>
+            <if test="maxDrawdown != null">max_drawdown,</if>
+            <if test="currentAmount != null">current_amount,</if>
+            <if test="principalAmount != null">principal_amount,</if>
+            <if test="marginQuantity != null">margin_quantity,</if>
+            <if test="marginPrice != null">margin_price,</if>
+            <if test="marginAmount != null">margin_amount,</if>
+            <if test="tradeCount != null">trade_count,</if>
+            <if test="winNum != null">win_num,</if>
+            <if test="winRate != null">win_rate,</if>
+            <if test="startAt != null">start_at,</if>
+            <if test="stopAt != null">stop_at,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="status != null">status,</if>
+            <if test="errMsg != null">err_msg,</if>
+            <if test="parents != null">parents,</if>
+            <if test="parentsRate != null">parents_rate,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="totalFee != null">total_fee,</if>
+            <if test="profitList != null">profit_list,</if>
+            <if test="wins != null">wins,</if>
+            <if test="jackpots != null">jackpots,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="traderId != null">#{traderId},</if>
+            <if test="totalIncome != null">#{totalIncome},</if>
+            <if test="yieldRate != null">#{yieldRate},</if>
+            <if test="annualizedReturnRate != null">#{annualizedReturnRate},</if>
+            <if test="maxDrawdown != null">#{maxDrawdown},</if>
+            <if test="currentAmount != null">#{currentAmount},</if>
+            <if test="principalAmount != null">#{principalAmount},</if>
+            <if test="marginQuantity != null">#{marginQuantity},</if>
+            <if test="marginPrice != null">#{marginPrice},</if>
+            <if test="marginAmount != null">#{marginAmount},</if>
+            <if test="tradeCount != null">#{tradeCount},</if>
+            <if test="winNum != null">#{winNum},</if>
+            <if test="winRate != null">#{winRate},</if>
+            <if test="startAt != null">#{startAt},</if>
+            <if test="stopAt != null">#{stopAt},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="status != null">#{status},</if>
+            <if test="errMsg != null">#{errMsg},</if>
+            <if test="parents != null">#{parents},</if>
+            <if test="parentsRate != null">#{parentsRate},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="totalFee != null">#{totalFee},</if>
+            <if test="profitList != null">#{profitList},</if>
+            <if test="wins != null">#{wins},</if>
+            <if test="jackpots != null">#{jackpots},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCopyer" parameterType="Copyer">
+        update t_copyer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="traderId != null">trader_id = #{traderId},</if>
+            <if test="totalIncome != null">total_income = #{totalIncome},</if>
+            <if test="yieldRate != null">yield_rate = #{yieldRate},</if>
+            <if test="annualizedReturnRate != null">annualized_return_rate = #{annualizedReturnRate},</if>
+            <if test="maxDrawdown != null">max_drawdown = #{maxDrawdown},</if>
+            <if test="currentAmount != null">current_amount = #{currentAmount},</if>
+            <if test="principalAmount != null">principal_amount = #{principalAmount},</if>
+            <if test="marginQuantity != null">margin_quantity = #{marginQuantity},</if>
+            <if test="marginPrice != null">margin_price = #{marginPrice},</if>
+            <if test="marginAmount != null">margin_amount = #{marginAmount},</if>
+            <if test="tradeCount != null">trade_count = #{tradeCount},</if>
+            <if test="winNum != null">win_num = #{winNum},</if>
+            <if test="winRate != null">win_rate = #{winRate},</if>
+            <if test="startAt != null">start_at = #{startAt},</if>
+            <if test="stopAt != null">stop_at = #{stopAt},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="errMsg != null">err_msg = #{errMsg},</if>
+            <if test="parents != null">parents = #{parents},</if>
+            <if test="parentsRate != null">parents_rate = #{parentsRate},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="totalFee != null">total_fee = #{totalFee},</if>
+            <if test="profitList != null">profit_list = #{profitList},</if>
+            <if test="wins != null">wins = #{wins},</if>
+            <if test="jackpots != null">jackpots = #{jackpots},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCopyerById" parameterType="Long">
+        delete from t_copyer where id = #{id}
+    </delete>
+
+    <delete id="deleteCopyerByIds" parameterType="String">
+        delete from t_copyer where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

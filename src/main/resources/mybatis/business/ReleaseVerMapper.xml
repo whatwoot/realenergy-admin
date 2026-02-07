@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.ReleaseVerMapper">
+
+    <resultMap type="ReleaseVer" id="ReleaseVerResult">
+        <result property="id"    column="id"    />
+        <result property="platform"    column="platform"    />
+        <result property="ver"    column="ver"    />
+        <result property="lowestVer"    column="lowest_ver"    />
+        <result property="forceUpdate"    column="force_update"    />
+        <result property="updates"    column="updates"    />
+        <result property="updatesEnUs"    column="updates_en_us"    />
+        <result property="updatesKoKr"    column="updates_ko_kr"    />
+        <result property="updatesZhTw"    column="updates_zh_tw"    />
+        <result property="status"    column="status"    />
+        <result property="downType"    column="down_type"    />
+        <result property="downloadUrl"    column="download_url"    />
+        <result property="jumpUrl"    column="jump_url"    />
+        <result property="appStoreUrl"    column="app_store_url"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectReleaseVerVo">
+        select id, platform, ver, lowest_ver, force_update, updates, status,updates_en_us,updates_ko_kr,updates_zh_tw, down_type, download_url, jump_url,app_store_url, create_at, create_time from app_release_ver
+    </sql>
+
+    <sql id="SelectDomainReleaseVerVo">
+        select a.id, a.platform, a.ver, a.lowest_ver, a.force_update, a.updates,a.updates_en_us,a.updates_ko_kr,a.updates_zh_tw, a.status,a.down_type, a.download_url, a.jump_url,  a.app_store_url, a.create_at, a.create_time from app_release_ver a
+    </sql>
+
+    <select id="selectReleaseVerList" parameterType="ReleaseVer" resultMap="ReleaseVerResult">
+        <include refid="selectReleaseVerVo"/>
+        <where>
+            <if test="platform != null  and platform != ''"> and platform = #{platform}</if>
+            <if test="ver != null  and ver != ''"> and ver = #{ver}</if>
+            <if test="forceUpdate != null "> and force_update = #{forceUpdate}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectReleaseVerById" parameterType="Long" resultMap="ReleaseVerResult">
+        <include refid="selectReleaseVerVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertReleaseVer" parameterType="ReleaseVer" useGeneratedKeys="true" keyProperty="id">
+        insert into app_release_ver
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platform != null">platform,</if>
+            <if test="ver != null">ver,</if>
+            <if test="lowestVer != null">lowest_ver,</if>
+            <if test="forceUpdate != null">force_update,</if>
+            <if test="updates != null">updates,</if>
+            <if test="updatesZhTw != null">updates_zh_tw,</if>
+            <if test="updatesEnUs != null">updates_en_us,</if>
+            <if test="updatesKoKr != null">updates_ko_kr,</if>
+            <if test="status != null">status,</if>
+            <if test="downType != null">down_type,</if>
+            <if test="downloadUrl != null">download_url,</if>
+            <if test="appStoreUrl != null">app_store_url,</if>
+            <if test="jumpUrl != null">jump_url,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platform != null">#{platform},</if>
+            <if test="ver != null">#{ver},</if>
+            <if test="lowestVer != null">#{lowestVer},</if>
+            <if test="forceUpdate != null">#{forceUpdate},</if>
+            <if test="updates != null">#{updates},</if>
+            <if test="updatesZhTw != null">#{updatesZhTw},</if>
+            <if test="updatesEnUs != null">#{updatesEnUs},</if>
+            <if test="updatesKoKr != null">#{updatesKoKr},</if>
+            <if test="status != null">#{status},</if>
+            <if test="downType != null">#{downType},</if>
+            <if test="downloadUrl != null">#{downloadUrl},</if>
+            <if test="appStoreUrl != null">#{appStoreUrl},</if>
+            <if test="jumpUrl != null">#{jumpUrl},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateReleaseVer" parameterType="ReleaseVer">
+        update app_release_ver
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="platform != null">platform = #{platform},</if>
+            <if test="ver != null">ver = #{ver},</if>
+            <if test="lowestVer != null">lowest_ver = #{lowestVer},</if>
+            <if test="forceUpdate != null">force_update = #{forceUpdate},</if>
+            <if test="updates != null">updates = #{updates},</if>
+            <if test="updatesZhTw != null">updates_zh_tw = #{updatesZhTw},</if>
+            <if test="updatesEnUs != null">updates_en_us = #{updatesEnUs},</if>
+            <if test="updatesKoKr != null">updates_ko_kr = #{updatesKoKr},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="downType != null">down_type = #{downType},</if>
+            <if test="downloadUrl != null">download_url = #{downloadUrl},</if>
+            <if test="jumpUrl != null">jump_url = #{jumpUrl},</if>
+            <if test="appStoreUrl != null">app_store_url = #{appStoreUrl},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteReleaseVerById" parameterType="Long">
+        delete from app_release_ver where id = #{id}
+    </delete>
+
+    <delete id="deleteReleaseVerByIds" parameterType="String">
+        delete from app_release_ver where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

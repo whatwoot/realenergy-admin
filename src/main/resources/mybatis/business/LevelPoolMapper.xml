@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.LevelPoolMapper">
+
+    <resultMap type="LevelPool" id="LevelPoolResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="rate"    column="rate"    />
+        <result property="amount"    column="amount"    />
+        <result property="prized"    column="prized"    />
+        <result property="lastBonusDay"    column="last_bonus_day"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLevelPoolVo">
+        select id, name, rate, amount, prized, last_bonus_day, create_time, update_time from b_level_pool
+    </sql>
+
+    <sql id="SelectDomainLevelPoolVo">
+        select a.id, a.name, a.rate, a.amount, a.prized, a.last_bonus_day, a.create_time, a.update_time from b_level_pool a
+    </sql>
+
+    <select id="selectLevelPoolList" parameterType="LevelPool" resultMap="LevelPoolResult">
+        <include refid="selectLevelPoolVo"/>
+        <where>
+            <if test="prized != null "> and prized = #{prized}</if>
+        </where>
+    </select>
+
+    <select id="selectLevelPoolById" parameterType="Long" resultMap="LevelPoolResult">
+        <include refid="selectLevelPoolVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLevelPool" parameterType="LevelPool" useGeneratedKeys="true" keyProperty="id">
+        insert into b_level_pool
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="rate != null">rate,</if>
+            <if test="amount != null">amount,</if>
+            <if test="prized != null">prized,</if>
+            <if test="lastBonusDay != null">last_bonus_day,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="prized != null">#{prized},</if>
+            <if test="lastBonusDay != null">#{lastBonusDay},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLevelPool" parameterType="LevelPool">
+        update b_level_pool
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="prized != null">prized = #{prized},</if>
+            <if test="lastBonusDay != null">last_bonus_day = #{lastBonusDay},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLevelPoolById" parameterType="Long">
+        delete from b_level_pool where id = #{id}
+    </delete>
+
+    <delete id="deleteLevelPoolByIds" parameterType="String">
+        delete from b_level_pool where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

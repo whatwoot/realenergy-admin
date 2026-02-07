@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.MemberMapper">
+    <resultMap type="Member" id="BaseResult">
+        <result property="id"    column="id"    />
+        <result property="pid"    column="pid"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="photoUrl"    column="photo_url"    />
+        <result property="valid"    column="valid"    />
+        <result property="validAt"    column="valid_at"    />
+        <result property="regSource"    column="reg_source"    />
+        <result property="levelId"    column="level_id"    />
+        <result property="inviteLevelId"    column="invite_level_id"    />
+        <result property="canWithdraw"    column="can_withdraw"    />
+        <result property="canPay"    column="can_pay"    />
+        <result property="inviteCode"    column="invite_code"    />
+        <result property="inviteNum"    column="invite_num"    />
+        <result property="status"    column="status"    />
+        <result property="regAt"    column="reg_at"    />
+        <result property="countryCode"    column="country_code"    />
+        <result property="country"    column="country"    />
+        <result property="fullName"    column="full_name"    />
+        <result property="familyName"    column="family_name"    />
+        <result property="givenName"    column="given_name"    />
+        <result property="mobileCode"    column="mobile_code"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="gender"    column="gender"    />
+        <result property="address"    column="address"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="memo"    column="memo"    />
+        <result property="currency"    column="currency"    />
+        <result property="wizardEnd"    column="wizard_end"    />
+        <result property="wizardEndAt"    column="wizard_end_at"    />
+        <result property="performance"    column="performance"    />
+        <result property="teamPerformance"    column="team_performance"    />
+        <result property="frozenPerformance"    column="frozen_performance"    />
+        <result property="prizeAmount"    column="prize_amount"    />
+        <result property="prizeBonusDay"    column="prize_bonus_day"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+
+
+        <result property="mainAccount"    column="main_account"    />
+        <result property="agentCode"    column="agent_code"    />
+        <result property="imGroupId"    column="im_group_id"    />
+        <result property="genesis"    column="genesis"    />
+        <result property="validDirectInviteNum"    column="valid_direct_invite_num"    />
+        <result property="directInviteNum"    column="directInvite_num"    />
+        <result property="agented"    column="agented"    />
+        <result property="community"    column="community"    />
+        <result property="coolDownAt"    column="cool_down_at"    />
+        <result property="lockAmount"    column="lock_amount"    />
+        <result property="codeDownAt"    column="code_down_at"    />
+
+    </resultMap>
+
+    <sql id="selectMemberVo">
+        select id,pid,main_account, nickname,photo_url,valid,valid_at,reg_source,level_id,invite_level_id,can_withdraw,can_pay,invite_code,
+               invite_num,status,reg_at,country_code,country,full_name,family_name,given_name,mobile_code,mobile,gender,
+               address,birthday,memo,currency,wizard_end,wizard_end_at,performance,team_performance,frozen_performance,agent_code,im_group_id,genesis,
+               valid_direct_invite_num,direct_invite_num,agented,community,cool_down_at,lock_amount,code_down_at,
+               prize_amount,prize_bonus_day,create_time,update_time,deleted
+        from u_member
+    </sql>
+
+    <sql id="SelectDomainMemberVo">
+        select a.id, a.pid, a.main_account, a.nickname, a.photo_url, a.valid, a.valid_at, a.reg_source, a.level_id, a.invite_level_id,
+               a.can_withdraw,a.can_pay, a.invite_code, a.invite_num, a.status, a.reg_at, a.country_code, a.country, a.full_name,
+               a.family_name, a.given_name, a.mobile_code, a.mobile, a.gender, a.address, a.birthday, a.memo, a.currency,
+               a.wizard_end, a.wizard_end_at, a.performance, a.team_performance, a.frozen_performance, a.prize_amount,agent_code,im_group_id,genesis,
+        valid_direct_invite_num,direct_invite_num,agented,community,cool_down_at,lock_amount,code_down_at,
+               a.prize_bonus_day, a.create_time, a.update_time, a.deleted, l.account from u_member a left join u_login l on l.uid = a.id and l.type = 3
+    </sql>
+
+    <select id="selectList" parameterType="Member" resultMap="BaseResult">
+        <include refid="SelectDomainMemberVo"/>
+        <where>
+            <if test="id != null">
+                and a.id = #{id}
+            </if>
+            <if test="mainAccount != null  and mainAccount != ''">
+                and l.account like concat('%',#{mainAccount},'%')
+            </if>
+            <if test="pid != null "> and a.pid = #{pid}</if>
+            <if test="genesis != null "> and a.genesis = #{genesis}</if>
+            <if test="levelId != null "> and a.level_id = #{levelId}</if>
+            <if test="inviteCode != null  and inviteCode != ''"> and a.invite_code = #{inviteCode}</if>
+            <if test="status != null "> and a.`status` = #{status}</if>
+            <if test="valid != null "> and a.valid = #{valid}</if>
+            <if test="params.beginRegAt != null and params.beginRegAt != '' and params.endRegAt != null and params.endRegAt != ''"> and a.reg_at between #{params.beginRegAt} and #{params.endRegAt}</if>
+            <if test="canWithdraw != null "> and a.can_withdraw = #{canWithdraw}</if>
+            and a.deleted = 0
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="selectById" parameterType="Long" resultMap="BaseResult">
+        <include refid="selectMemberVo"/>
+        where id = #{id}
+        and deleted = 0
+    </select>
+
+    <insert id="insertMember" parameterType="Member" useGeneratedKeys="true" keyProperty="id">
+        insert into u_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pid != null">pid,</if>
+            <if test="nickname != null">nickname,</if>
+            <if test="photoUrl != null">photo_url,</if>
+            <if test="countryCode != null">country_code,</if>
+            <if test="country != null">country,</if>
+            <if test="familyName != null">family_name,</if>
+            <if test="givenName != null">given_name,</if>
+            <if test="fullName != null">full_name,</if>
+            <if test="mobileCode != null">mobile_code,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="gender != null">gender,</if>
+            <if test="birthday != null">birthday,</if>
+            <if test="address != null">address,</if>
+            <if test="inviteCode != null">invite_code,</if>
+            <if test="status != null">status,</if>
+            <if test="valid != null">valid,</if>
+            <if test="validAt != null">valid_at,</if>
+            <if test="wizardEnd != null">wizard_end,</if>
+            <if test="wizardEndAt != null">wizard_end_at,</if>
+            <if test="regAt != null">reg_at,</if>
+            <if test="regSource != null">reg_source,</if>
+            <if test="levelId != null">level_id,</if>
+            <if test="inviteLevelId != null">invite_level_id,</if>
+            <if test="canWithdraw != null">can_withdraw,</if>
+            <if test="canPay != null">can_pay,</if>
+            <if test="inviteNum != null">invite_num,</if>
+            <if test="performance != null">performance,</if>
+            <if test="teamPerformance != null">team_performance,</if>
+            <if test="frozenPerformance != null">frozen_performance,</if>
+            <if test="performanceUpdateAt != null">performance_update_at,</if>
+            <if test="prizeAmount != null">prize_amount,</if>
+            <if test="prizeBonusDay != null">prize_bonus_day,</if>
+            <if test="currency != null">currency,</if>
+            <if test="memo != null">memo,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pid != null">#{pid},</if>
+            <if test="mainAccount != null">#{mainAccount},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="photoUrl != null">#{photoUrl},</if>
+            <if test="countryCode != null">#{countryCode},</if>
+            <if test="country != null">#{country},</if>
+            <if test="familyName != null">#{familyName},</if>
+            <if test="givenName != null">#{givenName},</if>
+            <if test="fullName != null">#{fullName},</if>
+            <if test="mobileCode != null">#{mobileCode},</if>
+            <if test="mobile != null">#{mobile},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="birthday != null">#{birthday},</if>
+            <if test="address != null">#{address},</if>
+            <if test="inviteCode != null">#{inviteCode},</if>
+            <if test="status != null">#{status},</if>
+            <if test="valid != null">#{valid},</if>
+            <if test="validAt != null">#{validAt},</if>
+            <if test="wizardEnd != null">#{wizardEnd},</if>
+            <if test="wizardEndAt != null">#{wizardEndAt},</if>
+            <if test="regAt != null">#{regAt},</if>
+            <if test="regSource != null">#{regSource},</if>
+            <if test="levelId != null">#{levelId},</if>
+            <if test="inviteLevelId != null">#{inviteLevelId},</if>
+            <if test="canWithdraw != null">#{canWithdraw},</if>
+            <if test="canPay != null">#{canPay},</if>
+            <if test="inviteNum != null">#{inviteNum},</if>
+            <if test="performance != null">#{performance},</if>
+            <if test="teamPerformance != null">#{teamPerformance},</if>
+            <if test="frozenPerformance != null">#{frozenPerformance},</if>
+            <if test="performanceUpdateAt != null">#{performanceUpdateAt},</if>
+            <if test="prizeAmount != null">#{prizeAmount},</if>
+            <if test="prizeBonusDay != null">#{prizeBonusDay},</if>
+            <if test="currency != null">#{currency},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMember" parameterType="Member">
+        update u_member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="mainAccount != null">main_account = #{mainAccount},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="photoUrl != null">photo_url = #{photoUrl},</if>
+            <if test="countryCode != null">country_code = #{countryCode},</if>
+            <if test="country != null">country = #{country},</if>
+            <if test="familyName != null">family_name = #{familyName},</if>
+            <if test="givenName != null">given_name = #{givenName},</if>
+            <if test="fullName != null">full_name = #{fullName},</if>
+            <if test="mobileCode != null">mobile_code = #{mobileCode},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="inviteCode != null">invite_code = #{inviteCode},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="valid != null">valid = #{valid},</if>
+            <if test="validAt != null">valid_at = #{validAt},</if>
+            <if test="wizardEnd != null">wizard_end = #{wizardEnd},</if>
+            <if test="wizardEndAt != null">wizard_end_at = #{wizardEndAt},</if>
+            <if test="regAt != null">reg_at = #{regAt},</if>
+            <if test="regSource != null">reg_source = #{regSource},</if>
+            <if test="levelId != null">level_id = #{levelId},</if>
+            <if test="inviteLevelId != null">invite_level_id = #{inviteLevelId},</if>
+            <if test="canWithdraw != null">can_withdraw = #{canWithdraw},</if>
+            <if test="canPay != null">can_pay = #{canPay},</if>
+            <if test="inviteNum != null">invite_num = #{inviteNum},</if>
+            <if test="performance != null">performance = #{performance},</if>
+            <if test="teamPerformance != null">team_performance = #{teamPerformance},</if>
+            <if test="frozenPerformance != null">frozen_performance = #{frozenPerformance},</if>
+            <if test="performanceUpdateAt != null">performance_update_at = #{performanceUpdateAt},</if>
+            <if test="prizeAmount != null">prize_amount = #{prizeAmount},</if>
+            <if test="prizeBonusDay != null">prize_bonus_day = #{prizeBonusDay},</if>
+            <if test="currency != null">currency = #{currency},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateMemberWithForce" parameterType="Member">
+        update u_member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="e.pid != null">pid = #{e.pid},</if>
+            <if test="e.mainAccount != null">main_account = #{e.mainAccount},</if>
+            <if test="e.nickname != null">nickname = #{e.nickname},</if>
+            <if test="e.photoUrl != null">photo_url = #{e.photoUrl},</if>
+            <if test="e.countryCode != null">country_code = #{e.countryCode},</if>
+            <if test="e.country != null">country = #{e.country},</if>
+            <if test="e.familyName != null">family_name = #{e.familyName},</if>
+            <if test="e.givenName != null">given_name = #{e.givenName},</if>
+            <if test="e.fullName != null">full_name = #{e.fullName},</if>
+            <if test="e.mobileCode != null">mobile_code = #{e.mobileCode},</if>
+            <if test="e.mobile != null">mobile = #{e.mobile},</if>
+            <if test="e.gender != null">gender = #{e.gender},</if>
+            <if test="e.birthday != null">birthday = #{e.birthday},</if>
+            <if test="e.address != null">address = #{e.address},</if>
+            <if test="e.inviteCode != null">invite_code = #{e.inviteCode},</if>
+            <if test="e.status != null">status = #{e.status},</if>
+            <if test="e.valid != null">valid = #{e.valid},</if>
+            <if test="e.validAt != null">valid_at = #{e.validAt},</if>
+            <if test="e.wizardEnd != null">wizard_end = #{e.wizardEnd},</if>
+            <if test="e.wizardEndAt != null">wizard_end_at = #{e.wizardEndAt},</if>
+            <if test="e.regAt != null">reg_at = #{e.regAt},</if>
+            <if test="e.regSource != null">reg_source = #{e.regSource},</if>
+            <if test="e.levelId != null">level_id = #{e.levelId},</if>
+            <if test="e.inviteLevelId != null">invite_level_id = #{e.inviteLevelId},</if>
+            <if test="e.canWithdraw != null">can_withdraw = #{e.canWithdraw},</if>
+            <if test="e.canPay != null">can_pay = #{e.canPay},</if>
+            <if test="e.inviteNum != null">invite_num = #{e.inviteNum},</if>
+            <if test="e.performance != null">performance = #{e.performance},</if>
+            <if test="e.teamPerformance != null">team_performance = #{e.teamPerformance},</if>
+            <if test="e.frozenPerformance != null">frozen_performance = #{e.frozenPerformance},</if>
+            <if test="e.performanceUpdateAt != null">performance_update_at = #{e.performanceUpdateAt},</if>
+            <if test="e.prizeAmount != null">prize_amount = #{e.prizeAmount},</if>
+            <if test="e.prizeBonusDay != null">prize_bonus_day = #{e.prizeBonusDay},</if>
+            <if test="e.currency != null">currency = #{e.currency},</if>
+            <if test="e.memo != null">memo = #{e.memo},</if>
+            <if test="e.createTime != null">create_time = #{e.createTime},</if>
+            <if test="e.updateTime != null">update_time = #{e.updateTime},</if>
+            <if test="e.deleted != null">deleted = #{e.deleted},</if>
+            <if test="cols != null and cols.length > 0">
+                <foreach collection="cols" item="col">
+                    ${col} = null,
+                </foreach>
+            </if>
+        </trim>
+        where id = #{e.id}
+    </update>
+
+    <update id="deleteByIdLogic" parameterType="Long">
+        update u_member
+        set deleted = id
+        where id = #{id}
+    </update>
+
+    <update id="deleteByIdsLogic" parameterType="String">
+        update u_member set deleted = id where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        delete
+        from u_member
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByIds" parameterType="String">
+        delete from u_member where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listWithChildren" resultMap="BaseResult">
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="mainAccount != null  and mainAccount != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            <if test="id != null "> and u.id = #{id}</if>
+            <if test="mainAccount != null and mainAccount != ''"> and ul.account = #{mainAccount,jdbcType=VARCHAR}</if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+            and u.deleted = 0
+        </where>
+        union all
+        select n+1,e.* from u_member e inner join `cte` c on e.pid = c.id where e.deleted = 0
+        ) select *, l.account from `cte` a left join u_login l on a.id = l.uid and l.type = 3
+        <where>
+            <if test="genesis != null ">
+                and a.genesis = #{genesis}
+            </if>
+            <if test="inviteCode != null  and inviteCode != ''">
+                and a.invite_code = #{inviteCode}
+            </if>
+            <if test="levelId != null ">
+                and a.level_id = #{levelId}
+            </if>
+            <if test="status != null ">
+                and a.`status` = #{status}
+            </if>
+            <if test="valid != null ">
+                and a.valid = #{valid}
+            </if>
+            <if test="canWithdraw != null ">
+                and a.can_withdraw = #{canWithdraw}
+            </if>
+            <if test="memo != null ">
+                and a.memo = #{memo}
+            </if>
+
+            <if test="params.beginRegAt != null and params.beginRegAt != '' and params.endRegAt != null and params.endRegAt != ''"> and a.reg_at between #{params.beginRegAt} and #{params.endRegAt}</if>
+        </where>
+        order by a.n
+    </select>
+
+    <select id="listWithParents" resultMap="BaseResult">
+        WITH RECURSIVE cte AS (
+        select 0 as n, u.* from u_member u <if test="mainAccount != null  and mainAccount != ''">join u_login ul on u.id = ul.uid and ul.type in (3)</if>
+        <where>
+            <if test="id != null "> and u.id = #{id}</if>
+            <if test="mainAccount != null and mainAccount != ''"> and ul.account = #{mainAccount,jdbcType=VARCHAR}</if>
+            <if test="pid != null "> and u.pid = #{pid}</if>
+            and u.deleted = 0
+        </where>
+        union all
+        select n+1, e.* from u_member e inner join `cte` c on c.pid = e.id where e.deleted = 0
+        ) select *, l.account from `cte` a left join  u_login l on a.id = l.uid and l.type = 3
+        <where>
+            <if test="genesis != null ">
+                and a.genesis = #{genesis}
+            </if>
+            <if test="inviteCode != null  and inviteCode != ''">
+                and a.invite_code = #{inviteCode}
+            </if>
+            <if test="levelId != null ">
+                and a.level_id = #{levelId}
+            </if>
+            <if test="status != null ">
+                and a.`status` = #{status}
+            </if>
+            <if test="valid != null ">
+                and a.valid = #{valid}
+            </if>
+            <if test="canWithdraw != null ">
+                and a.can_withdraw = #{canWithdraw}
+            </if>
+            <if test="memo != null ">
+                and a.memo = #{memo}
+            </if>
+        </where>
+        order by a.n
+    </select>
+
+    <select id="listAll" parameterType="com.ruoyi.project.business.domain.Member" resultMap="BaseResult">
+        select a.*
+        from u_member a
+        where a.deleted = 0
+    </select>
+
+    <update id="updateMemberBatch">
+        update u_member
+        <set>
+            <if test="e.status != null">
+                status = #{e.status},
+            </if>
+            <if test="e.valid != null ">
+                valid = #{e.valid},
+            </if>
+            <if test="e.levelId != null ">
+                level_id = #{e.levelId},
+            </if>
+            <if test="e.canWithdraw != null ">
+                can_withdraw = #{e.canWithdraw},
+            </if>
+            <if test="e.canPay != null ">
+                can_pay = #{e.canPay},
+            </if>
+        </set>
+        where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+
+
+    <select id="listParents" resultMap="BaseResult">
+        WITH RECURSIVE cte AS (
+            select *
+            from u_member
+            where id = #{id} and deleted = 0
+            union all
+            select a.*
+            from u_member a inner join cte c on a.id = c.pid and a.deleted = 0
+        )
+        select *
+        from cte
+        where deleted = 0
+    </select>
+
+    <update id="updateNoLoop" parameterType="Member">
+        WITH RECURSIVE InviteTree AS (
+        SELECT id, pid
+        FROM u_member
+        WHERE id = #{pid} and deleted = 0
+        UNION ALL
+        SELECT u.id, u.pid
+        FROM u_member u INNER JOIN InviteTree it ON u.id = it.pid and u.deleted = 0
+        )
+        update u_member
+        <set>
+            pid = #{pid},
+        </set>
+        where id = #{id}
+        and pid is null
+        and not exists (
+        SELECT 1 FROM InviteTree WHERE id = #{id}
+        )
+    </update>
+
+    <select id="countLoop" resultType="int">
+        WITH RECURSIVE InviteTree AS (
+            SELECT id, pid
+            FROM u_member
+            WHERE id = #{id} and deleted = 0
+            UNION ALL
+            SELECT u.id, u.pid
+            FROM u_member u INNER JOIN InviteTree it ON u.id = it.pid and u.deleted = 0
+            where u.id != #{id}
+        )
+        select count(*) from InviteTree
+        where pid = #{id}
+    </select>
+
+    <update id="updateAll">
+        update u_member
+        <set>
+            <if test="e.status != null">
+                status = #{e.status},
+            </if>
+            <if test="e.valid != null ">
+                valid = #{e.valid},
+            </if>
+            <if test="e.canWithdraw != null ">
+                can_withdraw = #{e.canWithdraw},
+            </if>
+            <if test="e.canPay != null ">
+                can_pay = #{e.canPay},
+            </if>
+        </set>
+    </update>
+
+    <select id="selectByEmail"  resultMap="BaseResult">
+        select * from u_member where main_account = #{mainAccount}
+    </select>
+
+    <select id="selectByMainAccount" resultMap="BaseResult">
+        select * from u_member where main_account = #{mainAccount}
+    </select>
+</mapper>

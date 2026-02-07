@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.SymbolMapper">
+
+    <resultMap type="Symbol" id="SymbolResult">
+        <result property="id"    column="id"    />
+        <result property="orgId"    column="org_id"    />
+        <result property="chain"    column="chain"    />
+        <result property="chainEngine"    column="chain_engine"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="canRecharge"    column="can_recharge"    />
+        <result property="canWithdraw"    column="can_withdraw"    />
+        <result property="stablecoin"    column="stablecoin"    />
+        <result property="chaincoin"    column="chaincoin"    />
+        <result property="contractAddr"    column="contract_addr"    />
+        <result property="decimals"    column="decimals"    />
+        <result property="withdrawDecimals"    column="withdraw_decimals"    />
+        <result property="withdrawMin"    column="withdraw_min"    />
+        <result property="rechargeMin"    column="recharge_min"    />
+        <result property="withdrawFeeRate"    column="withdraw_fee_rate"    />
+        <result property="withdrawFee"    column="withdraw_fee"    />
+        <result property="withdrawFeeMin"    column="withdraw_fee_min"    />
+        <result property="prizeRate"    column="prize_rate"    />
+        <result property="collect"    column="collect"    />
+        <result property="collectMin"    column="collect_min"    />
+        <result property="collectGas"    column="collect_gas"    />
+        <result property="gasSymbol"    column="gas_symbol"    />
+        <result property="weight"    column="weight"    />
+        <result property="showed"    column="showed"    />
+    </resultMap>
+
+    <sql id="selectSymbolVo">
+        select id, org_id, chain, chain_engine, symbol, can_recharge, can_withdraw, stablecoin, chaincoin, contract_addr, decimals, withdraw_decimals, withdraw_min, recharge_min, withdraw_fee_rate, withdraw_fee, withdraw_fee_min, prize_rate, collect, collect_min, collect_gas, gas_symbol, weight, showed from c_symbol
+    </sql>
+
+    <sql id="SelectDomainSymbolVo">
+        select a.id, a.org_id, a.chain, a.chain_engine, a.symbol, a.can_recharge, a.can_withdraw, a.stablecoin, a.chaincoin, a.contract_addr, a.decimals, a.withdraw_decimals, a.withdraw_min, a.recharge_min, a.withdraw_fee_rate, a.withdraw_fee, a.withdraw_fee_min, a.prize_rate, a.collect, a.collect_min, a.collect_gas, a.gas_symbol, a.weight, a.showed from c_symbol a
+    </sql>
+
+    <select id="selectSymbolList" parameterType="Symbol" resultMap="SymbolResult">
+        <include refid="selectSymbolVo"/>
+        <where>
+            <if test="orgId != null "> and org_id = #{orgId}</if>
+            <if test="chain != null  and chain != ''"> and chain = #{chain}</if>
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="canRecharge != null "> and can_recharge = #{canRecharge}</if>
+            <if test="canWithdraw != null "> and can_withdraw = #{canWithdraw}</if>
+            <if test="stablecoin != null "> and stablecoin = #{stablecoin}</if>
+            <if test="chaincoin != null "> and chaincoin = #{chaincoin}</if>
+            <if test="collect != null "> and collect = #{collect}</if>
+            <if test="showed != null "> and showed = #{showed}</if>
+        </where>
+    </select>
+
+    <select id="selectSymbolById" parameterType="Long" resultMap="SymbolResult">
+        <include refid="selectSymbolVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSymbol" parameterType="Symbol" useGeneratedKeys="true" keyProperty="id">
+        insert into c_symbol
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">org_id,</if>
+            <if test="chain != null">chain,</if>
+            <if test="chainEngine != null">chain_engine,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="canRecharge != null">can_recharge,</if>
+            <if test="canWithdraw != null">can_withdraw,</if>
+            <if test="stablecoin != null">stablecoin,</if>
+            <if test="chaincoin != null">chaincoin,</if>
+            <if test="contractAddr != null">contract_addr,</if>
+            <if test="decimals != null">decimals,</if>
+            <if test="withdrawDecimals != null">withdraw_decimals,</if>
+            <if test="withdrawMin != null">withdraw_min,</if>
+            <if test="rechargeMin != null">recharge_min,</if>
+            <if test="withdrawFeeRate != null">withdraw_fee_rate,</if>
+            <if test="withdrawFee != null">withdraw_fee,</if>
+            <if test="withdrawFeeMin != null">withdraw_fee_min,</if>
+            <if test="prizeRate != null">prize_rate,</if>
+            <if test="collect != null">collect,</if>
+            <if test="collectMin != null">collect_min,</if>
+            <if test="collectGas != null">collect_gas,</if>
+            <if test="gasSymbol != null">gas_symbol,</if>
+            <if test="weight != null">weight,</if>
+            <if test="showed != null">showed,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">#{orgId},</if>
+            <if test="chain != null">#{chain},</if>
+            <if test="chainEngine != null">#{chainEngine},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="canRecharge != null">#{canRecharge},</if>
+            <if test="canWithdraw != null">#{canWithdraw},</if>
+            <if test="stablecoin != null">#{stablecoin},</if>
+            <if test="chaincoin != null">#{chaincoin},</if>
+            <if test="contractAddr != null">#{contractAddr},</if>
+            <if test="decimals != null">#{decimals},</if>
+            <if test="withdrawDecimals != null">#{withdrawDecimals},</if>
+            <if test="withdrawMin != null">#{withdrawMin},</if>
+            <if test="rechargeMin != null">#{rechargeMin},</if>
+            <if test="withdrawFeeRate != null">#{withdrawFeeRate},</if>
+            <if test="withdrawFee != null">#{withdrawFee},</if>
+            <if test="withdrawFeeMin != null">#{withdrawFeeMin},</if>
+            <if test="prizeRate != null">#{prizeRate},</if>
+            <if test="collect != null">#{collect},</if>
+            <if test="collectMin != null">#{collectMin},</if>
+            <if test="collectGas != null">#{collectGas},</if>
+            <if test="gasSymbol != null">#{gasSymbol},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="showed != null">#{showed},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSymbol" parameterType="Symbol">
+        update c_symbol
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="chain != null">chain = #{chain},</if>
+            <if test="chainEngine != null">chain_engine = #{chainEngine},</if>
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="canRecharge != null">can_recharge = #{canRecharge},</if>
+            <if test="canWithdraw != null">can_withdraw = #{canWithdraw},</if>
+            <if test="stablecoin != null">stablecoin = #{stablecoin},</if>
+            <if test="chaincoin != null">chaincoin = #{chaincoin},</if>
+            <if test="contractAddr != null">contract_addr = #{contractAddr},</if>
+            <if test="decimals != null">decimals = #{decimals},</if>
+            <if test="withdrawDecimals != null">withdraw_decimals = #{withdrawDecimals},</if>
+            <if test="withdrawMin != null">withdraw_min = #{withdrawMin},</if>
+            <if test="rechargeMin != null">recharge_min = #{rechargeMin},</if>
+            <if test="withdrawFeeRate != null">withdraw_fee_rate = #{withdrawFeeRate},</if>
+            <if test="withdrawFee != null">withdraw_fee = #{withdrawFee},</if>
+            <if test="withdrawFeeMin != null">withdraw_fee_min = #{withdrawFeeMin},</if>
+            <if test="prizeRate != null">prize_rate = #{prizeRate},</if>
+            <if test="collect != null">collect = #{collect},</if>
+            <if test="collectMin != null">collect_min = #{collectMin},</if>
+            <if test="collectGas != null">collect_gas = #{collectGas},</if>
+            <if test="gasSymbol != null">gas_symbol = #{gasSymbol},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="showed != null">showed = #{showed},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSymbolById" parameterType="Long">
+        delete from c_symbol where id = #{id}
+    </delete>
+
+    <delete id="deleteSymbolByIds" parameterType="String">
+        delete from c_symbol where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

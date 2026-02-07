@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.business.mapper.TradeFlowMapper">
+
+    <resultMap type="TradeFlow" id="TradeFlowResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="uid"    column="uid"    />
+        <result property="price"    column="price"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="amount"    column="amount"    />
+        <result property="close"    column="close"    />
+        <result property="ymd"    column="ymd"    />
+        <result property="createAt"    column="create_at"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTradeFlowVo">
+        select id, type, uid, price, quantity, amount, close, ymd, create_at, create_time from b_trade_flow
+    </sql>
+
+    <sql id="SelectDomainTradeFlowVo">
+        select a.id, a.type, a.uid, a.price, a.quantity, a.amount, a.close, a.ymd, a.create_at, a.create_time from b_trade_flow a
+    </sql>
+
+    <select id="selectTradeFlowList" parameterType="TradeFlow" resultMap="TradeFlowResult">
+        <include refid="selectTradeFlowVo"/>
+        <where>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="extraParams.beginYmd != null and extraParams.beginYmd != '' and extraParams.endYmd != null and extraParams.endYmd != ''"> and ymd between #{extraParams.beginYmd} and #{extraParams.endYmd}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectTradeFlowById" parameterType="Long" resultMap="TradeFlowResult">
+        <include refid="selectTradeFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTradeFlow" parameterType="TradeFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into b_trade_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="uid != null">uid,</if>
+            <if test="price != null">price,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="amount != null">amount,</if>
+            <if test="close != null">close,</if>
+            <if test="ymd != null">ymd,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="price != null">#{price},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="close != null">#{close},</if>
+            <if test="ymd != null">#{ymd},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTradeFlow" parameterType="TradeFlow">
+        update b_trade_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="close != null">close = #{close},</if>
+            <if test="ymd != null">ymd = #{ymd},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTradeFlowById" parameterType="Long">
+        delete from b_trade_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteTradeFlowByIds" parameterType="String">
+        delete from b_trade_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
