@@ -207,3 +207,7 @@ tg:
    config:
      enable: ${tg.bot.enable}
      api: ${tg.bot.api}
+
+tron:
+  aes:
+    key: ${tron.aes.key}

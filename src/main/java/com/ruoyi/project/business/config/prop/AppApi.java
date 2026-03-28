@@ -14,6 +14,8 @@ public interface AppApi {
     String APPLY_AUDIT = "/sapi/sys/applyFlow/audit";
     String PAYFLOW_REFUND = "/sapi/sys/payFlow/setToRefund";
     String PAYFLOW_OK = "/sapi/sys/payFlow/setToOk";
+    String REFRESH_ENERGYPOOL= "/sapi/sys/refreshEnergyPool";
+    String REFRESH_WHITELIST = "/sapi/sys/refreshWhiteList";
 
 
 }
